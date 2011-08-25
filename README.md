@@ -18,6 +18,8 @@ It requires the project to be built against 4.0 or higher.
 
 # Usage
 
+    #import "GCImagePickerController.h"
+
     // create picker
     GCImagePickerController *picker = [[GCImagePickerController alloc] initWithRootViewController:nil];
     
