@@ -23,7 +23,7 @@
  */
  
 #ifndef __IPHONE_4_0
-#warning "This project uses features only available in iPhone SDK 4.0 and later."
+#error "This project uses features only available in iPhone SDK 4.0 and later."
 #endif
 #ifndef GC_IS_IPAD
 #define GC_IS_IPAD (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
