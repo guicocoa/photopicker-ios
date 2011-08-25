@@ -21,6 +21,17 @@
  THE SOFTWARE.
  
  */
+ 
+#ifndef __IPHONE_4_0
+#warning "This project uses features only available in iPhone SDK 4.0 and later."
+#endif
+#ifndef GC_IS_IPAD
+#define GC_IS_IPAD (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+#endif
+#ifndef GC_SHOULD_ALLOW_ORIENTATION
+#define GC_SHOULD_ALLOW_ORIENTATION(orientation) \
+    (GC_IS_IPAD) ? YES : (orientation == UIInterfaceOrientationPortrait);
+#endif
 
 #import <UIKit/UIKit.h>
 

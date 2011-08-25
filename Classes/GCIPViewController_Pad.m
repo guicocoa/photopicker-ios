@@ -24,6 +24,7 @@
 
 #import <AssetsLibrary/AssetsLibrary.h>
 
+#import "GCImagePickerController.h"
 #import "GCIPViewController_Pad.h"
 #import "GCIPAssetPickerController.h"
 
@@ -183,7 +184,7 @@
             [assetPicker setValue:self forKey:@"parentViewController"];
         }
         @catch (NSException *exception) {
-            GC_LOG_ERROR(@"unable to set parent view controller\n%@", exception);
+            NSLog(@"%@", exception);
         }
         
         // save child controllers

@@ -145,7 +145,7 @@
     return [[NSBundle mainBundle] localizedStringForKey:key value:nil table:NSStringFromClass(self)];
 }
 + (void)failedToLoadAssetsWithError:(NSError *)error {
-    GC_LOG_NSERROR(error);
+    NSLog(@"%@", error);
     NSInteger code = [error code];
     if (code == ALAssetsLibraryAccessUserDeniedError || code == ALAssetsLibraryAccessGloballyDeniedError) {
         UIAlertView *alert = [[UIAlertView alloc]
@@ -171,7 +171,7 @@
 + (NSString *)extensionForAssetRepresentation:(ALAssetRepresentation *)rep {
     NSString *UTI = [rep UTI];
     if (UTI == nil) {
-        GC_LOG_ERROR(@"Missing UTI for asset representation %@", UTI);
+        NSLog(@"Missing UTI for asset representation %@", UTI);
         return nil;
     }
     else {
@@ -181,7 +181,7 @@
 + (NSString *)MIMETypeForAssetRepresentation:(ALAssetRepresentation *)rep {
     NSString *UTI = [rep UTI];
     if (UTI == nil) {
-        GC_LOG_ERROR(@"Missing UTI for asset representation %@", UTI);
+        NSLog(@"Missing MIME type for asset representation %@", UTI);
         return nil;
     }
     else {
@@ -190,7 +190,7 @@
 }
 + (NSString *)extensionForUTI:(CFStringRef)UTI {
     if (UTI == NULL) {
-        GC_LOG_ERROR(@"Requested extension for nil UTI");
+        NSLog(@"Requested extension for nil UTI");
         return nil;
     }
     else if (CFStringCompare(UTI, kUTTypeJPEG, 0) == kCFCompareEqualTo) {
@@ -199,7 +199,7 @@
     else {
         CFStringRef extension = UTTypeCopyPreferredTagWithClass(UTI, kUTTagClassFilenameExtension);
         if (extension == NULL) {
-            GC_LOG_ERROR(@"Missing extension for UTI %@", (NSString *)UTI);
+            NSLog(@"Missing extension for UTI %@", (NSString *)UTI);
             return nil;
         }
         else {
@@ -209,13 +209,13 @@
 }
 + (NSString *)MIMETypeForUTI:(CFStringRef)UTI {
     if (UTI == NULL) {
-        GC_LOG_ERROR(@"Requested MIME for nil UTI");
+        NSLog(@"Requested MIME type for nil UTI");
         return nil;
     }
     else {
         CFStringRef MIME = UTTypeCopyPreferredTagWithClass(UTI, kUTTagClassMIMEType);
         if (MIME == NULL) {
-            GC_LOG_ERROR(@"Missing MIME for UTI %@", (NSString *)UTI);
+            NSLog(@"Missing MIME type for UTI %@", (NSString *)UTI);
             return nil;
         }
         else {
@@ -232,7 +232,7 @@
         NSError *error = nil;
         NSUInteger written = [rep getBytes:bytes fromOffset:offset length:1024 error:&error];
         if (error) {
-            GC_LOG_NSERROR(error);
+            NSLog(@"%@", error);
             [data release];
             data = nil;
             break;
@@ -272,7 +272,7 @@
         NSError *error = nil;
         NSUInteger written = [rep getBytes:buffer fromOffset:offset length:1024 error:&error];
         if (error) {
-            GC_LOG_NSERROR(error);
+            NSLog(@"%@", error);
             [handle closeFile];
             [[NSFileManager defaultManager] removeItemAtPath:writePath error:nil];
             return NO;
@@ -296,4 +296,5 @@
     return YES;
     
 }
+
 @end

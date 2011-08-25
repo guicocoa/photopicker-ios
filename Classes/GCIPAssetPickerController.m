@@ -363,7 +363,7 @@
                  [image release];
              }
              failureBlock:^(NSError *error) {
-                 GC_LOG_NSERROR(error);
+                 NSLog(@"%@", error);
              }];
         }];
         [[UIPasteboard generalPasteboard] setImages:images];
@@ -398,7 +398,10 @@
     
     // action
     else if ([title isEqualToString:controller.actionTitle]) {
-        [self.selectedAssetURLs enumerateObjectsUsingBlock:controller.actionBlock];
+        GCImagePickerControllerActionBlock block = controller.actionBlock;
+        [self.selectedAssetURLs enumerateObjectsUsingBlock:^(id obj, BOOL *stop) {
+            block(obj, stop);
+        }];
         self.editing = NO;
     }
     

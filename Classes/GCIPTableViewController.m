@@ -23,6 +23,7 @@
  */
 
 #import "GCIPTableViewController.h"
+#import "GCImagePickerController.h"
 
 @implementation GCIPTableViewController
 
