@@ -81,7 +81,7 @@
     
     // wait
     while (groups == nil) {
-        CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.1, NO);
+        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
     }
         
     // return
@@ -122,7 +122,7 @@
     
     // wait
     while (assets == nil) {
-        CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0.1, NO);
+        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
     }
     
     // return
