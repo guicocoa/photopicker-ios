@@ -36,7 +36,7 @@
 // asset resources
 @property (nonatomic, copy) NSArray *allAssets;
 @property (nonatomic, retain) NSMutableSet *selectedAssetURLs;
-@property (nonatomic, copy) NSString *groupName;
+@property (nonatomic, retain) ALAssetsGroup *group;
 
 // ui resources
 @property (nonatomic, retain) UIActionSheet *sheet;
@@ -60,20 +60,19 @@
                       count];
     }
     else {
-        self.title = self.groupName;
+        self.title = [self.group valueForProperty:ALAssetsGroupPropertyName];
     }
 }
 @end
 
 @implementation GCIPAssetPickerController
 
-@synthesize allAssets           = __allAssets;
 @synthesize selectedAssetURLs   = __selectedAssets;
-@synthesize groupName           = __groupName;
 @synthesize groupIdentifier     = __groupIdentifier;
-
-@synthesize sheet               = __sheet;
 @synthesize numberOfColumns     = __numberOfColumns;
+@synthesize allAssets           = __allAssets;
+@synthesize group               = __group;
+@synthesize sheet               = __sheet;
 
 #pragma mark - object methods
 - (id)initWithImagePickerController:(GCImagePickerController *)controller {
@@ -90,8 +89,8 @@
     self.selectedAssetURLs = nil;
     self.groupIdentifier = nil;
     self.allAssets = nil;
-    self.groupName = nil;
-    [self.sheet dismissWithClickedButtonIndex:self.sheet.cancelButtonIndex animated:NO];
+    self.group = nil;
+    self.sheet = nil;
     
     // super
     [super dealloc];
@@ -100,9 +99,9 @@
 - (void)reloadAssets {
     
     // no group
-    if (!self.groupIdentifier) {
+    if (self.groupIdentifier == nil) {
         self.allAssets = nil;
-        self.groupName = nil;
+        self.group = nil;
     }
     
     // view loaded
@@ -121,7 +120,7 @@
         }
         
         // get group name
-        self.groupName = [group valueForProperty:ALAssetsGroupPropertyName];
+        self.group = group;
         
     }
     
@@ -130,6 +129,7 @@
     
     // trigger a reload
     self.editing = NO;
+    
 }
 
 #pragma mark - accessors
@@ -146,7 +146,15 @@
     
     // reload assets
     [self reloadAssets];
-    self.tableView.contentOffset = CGPointMake(0.0, -4.0);
+    
+    // update scroll position
+    NSNumber *type = [self.group valueForProperty:ALAssetsGroupPropertyType];
+    if ([type unsignedIntegerValue] & ALAssetsGroupSavedPhotos) {
+        self.tableView.contentOffset = CGPointMake(0.0, self.tableView.contentSize.height);
+    }
+    else {
+        self.tableView.contentOffset = CGPointMake(0.0, -4.0);
+    }
     
 }
 
@@ -170,12 +178,18 @@
     // reload
     [self reloadAssets];
     
+    // scroll to bottom for certain albums
+    NSNumber *type = [self.group valueForProperty:ALAssetsGroupPropertyType];
+    if ([type unsignedIntegerValue] & ALAssetsGroupSavedPhotos) {
+        self.tableView.contentOffset = CGPointMake(0.0, self.tableView.contentSize.height);
+    }
+    
 }
 - (void)viewDidUnload {
     [super viewDidUnload];
     self.allAssets = nil;
-    self.groupName = nil;
-    [self.sheet dismissWithClickedButtonIndex:self.sheet.cancelButtonIndex animated:NO];
+    self.group = nil;
+    self.sheet = nil;
     self.editing = NO;
 }
 
