@@ -37,7 +37,7 @@
  
  returns: an array of groups.
  */
-- (NSArray *)gc_assetGroupsWithTypes:(ALAssetsGroupType)types assetsFilter:(ALAssetsFilter *)filter error:(NSError **)error;
+- (NSArray *)gc_assetGroupsWithTypes:(ALAssetsGroupType)types assetsFilter:(ALAssetsFilter *)filter error:(NSError **)inError;
 
 /*
  get assets belonging to a certain group.

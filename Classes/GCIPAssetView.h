@@ -26,7 +26,7 @@
 
 @class ALAsset;
 
-@interface GCIPAssetPickerView : UIView {
+@interface GCIPAssetView : UIView {
     
 }
 

@@ -25,15 +25,15 @@
 #import <QuartzCore/QuartzCore.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 
-#import "GCIPAssetPickerView.h"
+#import "GCIPAssetView.h"
 
-@interface GCIPAssetPickerView()
+@interface GCIPAssetView()
 @property (nonatomic, retain) UIImageView *thumbnailView;
 @property (nonatomic, retain) UIImageView *videoIconView;
 @property (nonatomic, retain) UIImageView *selectedIconView;
 @end
 
-@implementation GCIPAssetPickerView
+@implementation GCIPAssetView
 
 @synthesize asset               = __asset;
 @synthesize selected            = __selected;

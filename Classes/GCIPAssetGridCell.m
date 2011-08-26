@@ -24,10 +24,10 @@
 
 #import <AssetsLibrary/AssetsLibrary.h>
 
-#import "GCIPAssetPickerCell.h"
-#import "GCIPAssetPickerView.h"
+#import "GCIPAssetGridCell.h"
+#import "GCIPAssetView.h"
 
-@implementation GCIPAssetPickerCell
+@implementation GCIPAssetGridCell
 
 @synthesize numberOfColumns = __numberOfColumns;
 
@@ -62,11 +62,11 @@
         
         // get view
         NSUInteger tag = index + 1;
-        GCIPAssetPickerView *assetView = (GCIPAssetPickerView *)[self.contentView viewWithTag:tag];
+        GCIPAssetView *assetView = (GCIPAssetView *)[self.contentView viewWithTag:tag];
         
         // create view if we need one
         if (assetView == nil && index < count) {
-            assetView = [[GCIPAssetPickerView alloc] initWithFrame:CGRectZero];
+            assetView = [[GCIPAssetView alloc] initWithFrame:CGRectZero];
             assetView.tag = tag;
             [self.contentView addSubview:assetView];
             [assetView release];

@@ -25,7 +25,7 @@
 #import <MobileCoreServices/MobileCoreServices.h>
 
 #import "GCIPAssetPickerController.h"
-#import "GCIPAssetPickerCell.h"
+#import "GCIPAssetGridCell.h"
 
 #import "GCImagePickerController.h"
 
@@ -275,9 +275,9 @@
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *identifier = @"CellIdentifier";
-    GCIPAssetPickerCell *cell = (GCIPAssetPickerCell *)[tableView dequeueReusableCellWithIdentifier:identifier];
+    GCIPAssetGridCell *cell = (GCIPAssetGridCell *)[tableView dequeueReusableCellWithIdentifier:identifier];
     if (cell == nil) {
-        cell = [[[GCIPAssetPickerCell alloc] initWithStyle:0 reuseIdentifier:identifier] autorelease];
+        cell = [[[GCIPAssetGridCell alloc] initWithStyle:0 reuseIdentifier:identifier] autorelease];
     }
     cell.numberOfColumns = self.numberOfColumns;
     NSUInteger start = indexPath.row * self.numberOfColumns;

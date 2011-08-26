@@ -25,7 +25,7 @@
 #import <UIKit/UIKit.h>
 
 // cell designed to display a grid of assets
-@interface GCIPAssetPickerCell : UITableViewCell {
+@interface GCIPAssetGridCell : UITableViewCell {
     
 }
 
