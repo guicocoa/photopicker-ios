@@ -147,14 +147,14 @@
     // reload assets
     [self reloadAssets];
     
-    // update scroll position
-    NSNumber *type = [self.group valueForProperty:ALAssetsGroupPropertyType];
-    if ([type unsignedIntegerValue] & ALAssetsGroupSavedPhotos) {
-        self.tableView.contentOffset = CGPointMake(0.0, self.tableView.contentSize.height);
-    }
-    else {
-        self.tableView.contentOffset = CGPointMake(0.0, -4.0);
-    }
+//    // update scroll position
+//    NSNumber *type = [self.group valueForProperty:ALAssetsGroupPropertyType];
+//    if ([type unsignedIntegerValue] & ALAssetsGroupSavedPhotos) {
+//        self.tableView.contentOffset = CGPointMake(0.0, (self.tableView.bounds.size.height - self.tableView.contentSize.height) * -1.0);
+//    }
+//    else {
+//        self.tableView.contentOffset = CGPointMake(0.0, -4.0);
+//    }
     
 }
 

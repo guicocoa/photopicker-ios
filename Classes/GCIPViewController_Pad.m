@@ -380,7 +380,7 @@
         [groupPicker.tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
     else {
-        [GCIPViewController_Pad dismissPopover:self.popover animated:YES];
+        [GCIPViewController_Pad dismissPopover:self.popover animated:NO];
         [groupPicker.tableView deselectRowAtIndexPath:indexPath animated:NO];
     }
     
