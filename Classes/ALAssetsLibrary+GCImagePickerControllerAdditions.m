@@ -76,7 +76,7 @@
      }
      failureBlock:^(NSError *error) {
          if (inError) { *inError = [error retain]; }
-         groups = [[NSArray alloc] init];
+         groups = [[NSMutableArray alloc] init];
      }];
     
     // wait
@@ -111,13 +111,13 @@
          }
          else {
              if (assets == nil) {
-                 assets = [[NSArray alloc] init];
+                 assets = [[NSMutableArray alloc] init];
              }
          }
      }
      failureBlock:^(NSError *error) {
          if (inError) { *inError = [error retain]; }
-         assets = [[NSArray alloc] init];
+         assets = [[NSMutableArray alloc] init];
      }];
     
     // wait
