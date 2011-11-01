@@ -226,7 +226,7 @@
 + (NSData *)dataForAssetRepresentation:(ALAssetRepresentation *)rep {
     long long size = [rep size];
     long long offset = 0;
-    NSMutableData *data = [[NSMutableData alloc] initWithCapacity:size];
+    NSMutableData *data = [[NSMutableData alloc] init];
     while (offset < size) {
         uint8_t bytes[1024];
         NSError *error = nil;
@@ -242,7 +242,9 @@
     }
     return [data autorelease];
 }
-+ (BOOL)writeDataForAssetRepresentation:(ALAssetRepresentation *)rep toFile:(NSString *)path atomically:(BOOL)atomically {
++ (BOOL)writeDataForAssetRepresentation:(ALAssetRepresentation *)rep
+                                 toFile:(NSString *)path
+                             atomically:(BOOL)atomically {
     
     // return if the file exists already
     if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
@@ -294,6 +296,19 @@
     
     // it worked!
     return YES;
+    
+}
++ (NSArray *)assetGroupsInLibary:(ALAssetsLibrary *)library
+                       withTypes:(ALAssetsGroupType)types
+                    assetsFilter:(ALAssetsFilter *)filter
+                           error:(NSError **)inError {
+    
+}
++ (NSArray *)assetsInLibary:(ALAssetsLibrary *)library 
+        groupWithIdentifier:(NSString *)identifier
+                     filter:(ALAssetsFilter *)filter
+                      group:(ALAssetsGroup **)inGroup
+                      error:(NSError **)inError {
     
 }
 

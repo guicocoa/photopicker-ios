@@ -86,6 +86,19 @@ typedef void (^GCImagePickerControllerActionBlock) (NSURL *assetURL, BOOL *stop)
 + (NSData *)dataForAssetRepresentation:(ALAssetRepresentation *)rep;
 
 // write data to a given file
-+ (BOOL)writeDataForAssetRepresentation:(ALAssetRepresentation *)rep toFile:(NSString *)path atomically:(BOOL)atomically;
++ (BOOL)writeDataForAssetRepresentation:(ALAssetRepresentation *)rep
+                                 toFile:(NSString *)path
+                             atomically:(BOOL)atomically;
+
++ (NSArray *)assetGroupsInLibary:(ALAssetsLibrary *)library
+                       withTypes:(ALAssetsGroupType)types
+                    assetsFilter:(ALAssetsFilter *)filter
+                           error:(NSError **)inError;
+
++ (NSArray *)assetsInLibary:(ALAssetsLibrary *)library 
+        groupWithIdentifier:(NSString *)identifier
+                     filter:(ALAssetsFilter *)filter
+                      group:(ALAssetsGroup **)inGroup
+                      error:(NSError **)inError;
 
 @end
