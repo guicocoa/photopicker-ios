@@ -28,26 +28,28 @@
 
 
 /*
- get assets groups sorted the same as seen in UIImagePickerController
+ Get groups sorted the same as seen in UIImagePickerController
  
- types: filter group types. pass ALAssetGroupAll for all groups.
- filter: filter the types of assets shown. groups with no assets
-    matching the filter will be omitted.
- error: will be populated if no groups can be loaded.
+ types: Filter group types. Pass ALAssetGroupAll for all groups.
+ filter: Filter asset types. Groups with no assets matching the filter will be
+    omitted.
+ error: Populated if an error occurs.
  
- returns: an array of groups.
+ returns: An array of asset groups.
  */
-- (NSArray *)gc_assetGroupsWithTypes:(ALAssetsGroupType)types assetsFilter:(ALAssetsFilter *)filter error:(NSError **)inError;
+- (NSArray *)gc_assetGroupsWithTypes:(ALAssetsGroupType)types
+                        assetsFilter:(ALAssetsFilter *)filter
+                               error:(NSError **)inError;
 
 /*
- get assets belonging to a certain group.
+ Get assets belonging to a certain group.
  
- identifier: the persistent identifier of the group.
- filter: filter the types of assets returned.
- group: will be populated with the resulting group.
- error: will be populated if loading assets fails.
+ identifier: The persistent identifier of the group.
+ filter: Filter the types of assets returned.
+ group: Populated with the resulting group.
+ error: Populated if an error occurs.
  
- returns: an array of groups.
+ returns: An array of assets.
  */
 - (NSArray *)gc_assetsInGroupWithIdentifier:(NSString *)identifier filter:(ALAssetsFilter *)filter group:(ALAssetsGroup **)inGroup error:(NSError **)inError;
 

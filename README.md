@@ -18,18 +18,25 @@ It requires the project to be built against 4.0 or higher.
 
 # Usage
 
-    #import "GCImagePickerController.h"
+Drag the "Photo Picker" folder into your project. Import the main header where you intent to use the picker.
 
-    // create picker
-    GCImagePickerController *picker = [[GCImagePickerController alloc] initWithRootViewController:nil];
-    
-    // set custom action title and block
-    picker.actionTitle = @"Upload";
-    picker.actionBlock = ^(NSURL *URL, BOOL *stop) {
-        // block to perform on each selected item
-    }
-    
-    // show and release
-    [self presentModalViewController:picker animated:YES];
-    [picker release];
-    
+````objc
+#import "GCImagePickerController.h"
+````
+
+Use the picker.
+
+````objc
+// create picker
+GCImagePickerController *picker = [[GCImagePickerController alloc] initWithRootViewController:nil];
+
+// set custom action title and block
+picker.actionTitle = @"Upload"; // add custom action button
+picker.actionBlock = ^(NSURL *URL, BOOL *stop) {
+    // special action to perform on each selected item
+}
+
+// show and release
+[self presentModalViewController:picker animated:YES];
+[picker release];
+````
