@@ -34,12 +34,9 @@
 #endif
 
 #import <UIKit/UIKit.h>
+#import <AssetsLibrary/AssetsLibrary.h>
 
 #import "GCIPGroupPickerController.h"
-
-@class ALAssetsLibrary;
-@class ALAssetsFilter;
-@class ALAssetRepresentation;
 
 // block to be called on each selected asset
 typedef void (^GCImagePickerControllerActionBlock) (NSURL *assetURL, BOOL *stop);
@@ -90,11 +87,31 @@ typedef void (^GCImagePickerControllerActionBlock) (NSURL *assetURL, BOOL *stop)
                                  toFile:(NSString *)path
                              atomically:(BOOL)atomically;
 
+/*
+ Get groups sorted the same as seen in UIImagePickerController
+ 
+ types: Filter group types. Pass ALAssetGroupAll for all groups.
+ filter: Filter asset types. Groups with no assets matching the filter will be
+ omitted.
+ error: Populated if an error occurs.
+ 
+ returns: An array of asset groups.
+ */
 + (NSArray *)assetGroupsInLibary:(ALAssetsLibrary *)library
                        withTypes:(ALAssetsGroupType)types
                     assetsFilter:(ALAssetsFilter *)filter
                            error:(NSError **)inError;
 
+/*
+ Get assets belonging to a certain group.
+ 
+ identifier: The persistent identifier of the group.
+ filter: Filter the types of assets returned.
+ group: Populated with the resulting group.
+ error: Populated if an error occurs.
+ 
+ returns: An array of assets.
+ */
 + (NSArray *)assetsInLibary:(ALAssetsLibrary *)library 
         groupWithIdentifier:(NSString *)identifier
                      filter:(ALAssetsFilter *)filter

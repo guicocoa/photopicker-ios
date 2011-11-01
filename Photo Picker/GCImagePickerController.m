@@ -303,12 +303,114 @@
                     assetsFilter:(ALAssetsFilter *)filter
                            error:(NSError **)inError {
     
+    // this will be returned
+    __block NSMutableArray *groups = nil;
+    
+    // load groups
+    [library
+     enumerateGroupsWithTypes:types
+     usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
+         if (group) {
+             [group setAssetsFilter:filter];
+             if ([group numberOfAssets]) {
+//                 
+//                 NSNumber *type = [group valueForProperty:ALAssetsGroupPropertyType];
+//                 NSMutableArray *groupsByType = [dictionary objectForKey:type];
+//                 if (groupsByType == nil) {
+//                     groupsByType = [NSMutableArray arrayWithCapacity:1];
+//                     [dictionary setObject:groupsByType forKey:type];
+//                 }
+//                 [groupsByType addObject:group];
+//                 
+             }
+         }
+         else {
+//             
+//             // make our groups array
+//             groups = [[NSMutableArray alloc] init];
+//             
+//             // sort groups into final container
+//             NSArray *typeNumbers = [NSArray arrayWithObjects:
+//                                     [NSNumber numberWithUnsignedInteger:ALAssetsGroupSavedPhotos],
+//                                     [NSNumber numberWithUnsignedInteger:ALAssetsGroupAlbum],
+//                                     [NSNumber numberWithUnsignedInteger:ALAssetsGroupEvent],
+//                                     [NSNumber numberWithUnsignedInteger:ALAssetsGroupFaces],
+//                                     nil];
+//             for (NSNumber *type in typeNumbers) {
+//                 NSArray *groupsByType = [dictionary objectForKey:type];
+//                 [groups addObjectsFromArray:groupsByType];
+//                 [dictionary removeObjectForKey:type];
+//             }
+//             
+//             // get any groups we do not have contants for
+//             for (NSNumber *type in [dictionary keysSortedByValueUsingSelector:@selector(compare:)]) {
+//                 NSArray *groupsByType = [dictionary objectForKey:type];
+//                 [groups addObjectsFromArray:groupsByType];
+//                 [dictionary removeObjectForKey:type];
+//             }
+//             
+         }
+     }
+     failureBlock:^(NSError *error) {
+         if (inError) { *inError = [error retain]; }
+         groups = [[NSMutableArray alloc] init];
+     }];
+    
+    // wait
+    while (groups == nil) {
+        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+    }
+    
+    // return
+    if (inError) { [*inError autorelease]; }
+    return [groups autorelease];
+    
 }
 + (NSArray *)assetsInLibary:(ALAssetsLibrary *)library 
         groupWithIdentifier:(NSString *)identifier
                      filter:(ALAssetsFilter *)filter
                       group:(ALAssetsGroup **)inGroup
                       error:(NSError **)inError {
+    
+    // this will be returned
+    __block NSMutableArray *assets = nil;
+
+    // load assets
+    [library
+     enumerateGroupsWithTypes:ALAssetsGroupAll
+     usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
+         if (group) {
+             NSString *groupID = [group valueForProperty:ALAssetsGroupPropertyPersistentID];
+             if ([groupID isEqualToString:identifier]) {
+                 [group setAssetsFilter:filter];
+                 assets = [[NSMutableArray alloc] init];
+                 [group enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
+                     if (result) { [assets addObject:result]; }
+                 }];
+                 if (inGroup) { *inGroup = [group retain]; }
+                 *stop = YES;
+             }
+         }
+         else {
+             if (assets == nil) {
+                 assets = [[NSMutableArray alloc] init];
+             }
+         }
+     }
+     failureBlock:^(NSError *error) {
+         if (inError) { *inError = [error retain]; }
+         assets = [[NSMutableArray alloc] init];
+     }];
+    
+    // wait
+    while (assets == nil) {
+        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+    }
+    
+    // return
+    if (inGroup) { [*inGroup autorelease]; }
+    if (inError) { [*inError autorelease]; }
+    return [assets autorelease];
     
 }
 
