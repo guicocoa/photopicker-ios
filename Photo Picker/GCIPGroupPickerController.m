@@ -26,8 +26,6 @@
 
 #import "GCImagePickerController.h"
 
-#import "ALAssetsLibrary+GCImagePickerControllerAdditions.h"
-
 @interface GCIPGroupPickerController ()
 @property (nonatomic, readwrite, copy) NSArray *groups;
 @property (nonatomic, retain) NSNumberFormatter *numberFormatter;

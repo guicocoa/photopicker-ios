@@ -29,8 +29,6 @@
 
 #import "GCImagePickerController.h"
 
-#import "ALAssetsLibrary+GCImagePickerControllerAdditions.h"
-
 @interface GCIPAssetPickerController ()
 
 // asset resources

@@ -303,16 +303,16 @@
                     assetsFilter:(ALAssetsFilter *)filter
                            error:(NSError **)inError {
     
-    // this will be returned
-    __block NSMutableArray *groups = nil;
-    
     // load groups
+    __block BOOL wait = YES;
+    NSMutableArray *groups = [NSMutableArray array];
     [library
      enumerateGroupsWithTypes:types
      usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
          if (group) {
              [group setAssetsFilter:filter];
              if ([group numberOfAssets]) {
+                 [groups addObject:group];
 //                 
 //                 NSNumber *type = [group valueForProperty:ALAssetsGroupPropertyType];
 //                 NSMutableArray *groupsByType = [dictionary objectForKey:type];
@@ -349,21 +349,25 @@
 //                 [dictionary removeObjectForKey:type];
 //             }
 //             
+             
+             // don't wait any more
+             wait = NO;
+             
          }
      }
      failureBlock:^(NSError *error) {
          if (inError) { *inError = [error retain]; }
-         groups = [[NSMutableArray alloc] init];
+         wait = NO;
      }];
     
     // wait
-    while (groups == nil) {
+    while (wait) {
         [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
     }
     
     // return
     if (inError) { [*inError autorelease]; }
-    return [groups autorelease];
+    return groups;
     
 }
 + (NSArray *)assetsInLibary:(ALAssetsLibrary *)library 
