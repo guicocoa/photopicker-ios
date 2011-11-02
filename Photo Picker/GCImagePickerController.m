@@ -56,6 +56,9 @@
 
 #pragma mark - object methods
 - (id)initWithRootViewController:(UIViewController *)root {
+    
+    
+    
     self = [super initWithRootViewController:nil];
     if (self) {
         
@@ -313,7 +316,6 @@
              [group setAssetsFilter:filter];
              if ([group numberOfAssets]) {
                  [groups addObject:group];
-//                 
 //                 NSNumber *type = [group valueForProperty:ALAssetsGroupPropertyType];
 //                 NSMutableArray *groupsByType = [dictionary objectForKey:type];
 //                 if (groupsByType == nil) {
@@ -321,7 +323,6 @@
 //                     [dictionary setObject:groupsByType forKey:type];
 //                 }
 //                 [groupsByType addObject:group];
-//                 
              }
          }
          else {
@@ -359,6 +360,8 @@
          if (inError) { *inError = [error retain]; }
          wait = NO;
      }];
+    
+    // TODO: sort array
     
     // wait
     while (wait) {

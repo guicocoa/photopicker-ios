@@ -50,5 +50,8 @@
         
     }
 }
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)orientation {
+    return (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? YES :  (orientation == UIInterfaceOrientationPortrait);
+}
 
 @end
