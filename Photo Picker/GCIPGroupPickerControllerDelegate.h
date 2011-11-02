@@ -22,24 +22,21 @@
  
  */
 
-#import "GCIPTableViewController.h"
+#import <Foundation/Foundation.h>
 
-@protocol GCIPGroupPickerControllerDelegate;
+@class GCIPGroupPickerController;
+@class ALAssetsGroup;
 
 /*
  
- View controller that allows selection of a group shown from the assets library.
+ Delegate protocol that allows customization of the action that will be
+ performed when a group is selected from the provided controller.
  
  */
-@interface GCIPGroupPickerController : GCIPTableViewController
+@protocol GCIPGroupPickerControllerDelegate <NSObject>
+@required
 
-// group picker delegate
-@property (nonatomic, assign) id<GCIPGroupPickerControllerDelegate> delegate;
-
-// list of groups
-@property (nonatomic, readonly, copy) NSArray *groups;
-
-// show or hide disclosure indicators
-@property (nonatomic, assign) BOOL showDisclosureIndicators;
+// callback for group selection
+- (void)groupPicker:(GCIPGroupPickerController *)picker didSelectGroup:(ALAssetsGroup *)group;
 
 @end

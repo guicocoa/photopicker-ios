@@ -33,7 +33,7 @@
 
 @implementation GCIPGroupPickerController
 
-@synthesize groupPickerDelegate         = __pickerDelegate;
+@synthesize delegate                    = __delegate;
 @synthesize showDisclosureIndicators    = __showDisclosureIndicators;
 @synthesize groups                      = __groups;
 @synthesize numberFormatter             = __numberFormatter;
@@ -59,14 +59,15 @@
 - (void)reloadAssets {
     if ([self isViewLoaded]) {
         NSError *error = nil;
-        self.groups = [self.imagePickerController.assetsLibrary
-                       gc_assetGroupsWithTypes:ALAssetsGroupAll
+        self.groups = [GCImagePickerController
+                       assetGroupsInLibary:self.imagePickerController.assetsLibrary
+                       withTypes:ALAssetsGroupAll
                        assetsFilter:self.imagePickerController.assetsFilter
                        error:&error];
         if (error) {
             [GCImagePickerController failedToLoadAssetsWithError:error];
         }
-        self.tableView.hidden = (![self.groups count]);
+        self.tableView.hidden = ([self.groups count] == 0);
         [self.tableView reloadData];
     }
 }
@@ -78,7 +79,7 @@
     [super viewDidLoad];
     
     // done button
-    if (!GC_IS_IPAD) {
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         UIBarButtonItem *item = [[UIBarButtonItem alloc]
                                  initWithBarButtonSystemItem:UIBarButtonSystemItemDone
                                  target:self
@@ -128,7 +129,7 @@
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     ALAssetsGroup *group = [self.groups objectAtIndex:indexPath.row];
-    [self.groupPickerDelegate groupPicker:self didSelectGroup:group];
+    [self.delegate groupPicker:self didSelectGroup:group];
 }
 
 @end
