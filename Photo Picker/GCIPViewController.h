@@ -28,16 +28,13 @@
 
 /*
  
- defines an abstract base class for view
- controllers that show items from the
+ Defines an abstract base class for view controllers that show items from the
  assets library.
  
  */
-@interface GCIPViewController : UIViewController {
-    
-}
+@interface GCIPViewController : UIViewController
 
-// object for which we get data and listen for changes
+// object from which we get data and listen for changes
 @property (nonatomic, readonly, assign) GCImagePickerController *imagePickerController;
 
 // designated initializer
@@ -45,11 +42,9 @@
 
 /*
  
- perform a reload of the assets we are displaying.
- the default implementation of this method does
- nothing and should only serve as a template for
- how subclasses should perform reloading. you do
- not need to call super.
+ Perform a reload of the assets we are displaying. The default implementation of
+ this method does nothing and should only serve as a template for how subclasses
+ should perform reloading. You do not need to call super.
  
  */
 - (void)reloadAssets;
