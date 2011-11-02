@@ -40,27 +40,9 @@
 @property (nonatomic, retain) UIActionSheet *sheet;
 @property (nonatomic, assign) NSUInteger numberOfColumns;
 
-@end
-
-@interface GCIPAssetPickerController (private)
+// reload view title
 - (void)updateTitle;
-@end
 
-@implementation GCIPAssetPickerController (private)
-- (void)updateTitle {
-    NSUInteger count = [self.selectedAssetURLs count];
-    if (count == 1) {
-        self.title = [GCImagePickerController localizedString:@"PHOTO_COUNT_SINGLE"];
-    }
-    else if (count > 1) {
-        self.title = [NSString stringWithFormat:
-                      [GCImagePickerController localizedString:@"PHOTO_COUNT_MULTIPLE"],
-                      count];
-    }
-    else {
-        self.title = [self.group valueForProperty:ALAssetsGroupPropertyName];
-    }
-}
 @end
 
 @implementation GCIPAssetPickerController
@@ -108,8 +90,9 @@
         // load assets
         ALAssetsGroup *group = nil;
         NSError *error = nil;
-        self.allAssets = [self.imagePickerController.assetsLibrary
-                          gc_assetsInGroupWithIdentifier:self.groupIdentifier
+        self.allAssets = [GCImagePickerController
+                          assetsInLibary:self.imagePickerController.assetsLibrary
+                          groupWithIdentifier:self.groupIdentifier
                           filter:[ALAssetsFilter allAssets]
                           group:&group
                           error:&error];
@@ -128,6 +111,20 @@
     // trigger a reload
     self.editing = NO;
     
+}
+- (void)updateTitle {
+    NSUInteger count = [self.selectedAssetURLs count];
+    if (count == 1) {
+        self.title = [GCImagePickerController localizedString:@"PHOTO_COUNT_SINGLE"];
+    }
+    else if (count > 1) {
+        self.title = [NSString stringWithFormat:
+                      [GCImagePickerController localizedString:@"PHOTO_COUNT_MULTIPLE"],
+                      count];
+    }
+    else {
+        self.title = [self.group valueForProperty:ALAssetsGroupPropertyName];
+    }
 }
 
 #pragma mark - accessors
