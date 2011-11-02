@@ -23,14 +23,18 @@
  */
 
 #import "GCIPTableViewController.h"
-#import "GCImagePickerController.h"
 
 @implementation GCIPTableViewController
 
 @synthesize tableView = __tableView;
+@synthesize clearsSelectionOnViewWillAppear = __clearsSelectionOnViewWillAppear;
 
 - (id)initWithImagePickerController:(GCImagePickerController *)controller {
-    return [super initWithImagePickerController:controller];
+    self = [super initWithImagePickerController:controller];
+    if (self) {
+        self.clearsSelectionOnViewWillAppear = YES;
+    }
+    return self;
 }
 - (void)dealloc {
     self.tableView = nil;
@@ -64,11 +68,10 @@
 }
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-    [self.tableView deselectRowAtIndexPath:indexPath animated:animated];
-}
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)orientation {
-    return GC_SHOULD_ALLOW_ORIENTATION(orientation);
+    if (self.clearsSelectionOnViewWillAppear) {
+        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+        [self.tableView deselectRowAtIndexPath:indexPath animated:animated];
+    }
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return 0;
