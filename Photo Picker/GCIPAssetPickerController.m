@@ -31,13 +31,13 @@
 
 @interface GCIPAssetPickerController ()
 
-// asset resources
+// clear with view
 @property (nonatomic, copy) NSArray *allAssets;
 @property (nonatomic, retain) NSMutableSet *selectedAssetURLs;
 @property (nonatomic, retain) ALAssetsGroup *group;
-
-// ui resources
 @property (nonatomic, retain) UIActionSheet *sheet;
+
+// clear normally
 @property (nonatomic, assign) NSUInteger numberOfColumns;
 
 // reload view title
@@ -47,8 +47,8 @@
 
 @implementation GCIPAssetPickerController
 
-@synthesize selectedAssetURLs   = __selectedAssets;
 @synthesize groupIdentifier     = __groupIdentifier;
+@synthesize selectedAssetURLs   = __selectedAssets;
 @synthesize numberOfColumns     = __numberOfColumns;
 @synthesize allAssets           = __allAssets;
 @synthesize group               = __group;
@@ -58,16 +58,15 @@
 - (id)initWithImagePickerController:(GCImagePickerController *)controller {
     self = [super initWithImagePickerController:controller];
     if (self) {
-        self.numberOfColumns = (GC_IS_IPAD) ? 5 : 4;
-        self.editing = NO;
+        self.numberOfColumns = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? 5 : 4;
     }
     return self;
 }
 - (void)dealloc {
     
     // clear properties
-    self.selectedAssetURLs = nil;
     self.groupIdentifier = nil;
+    self.selectedAssetURLs = nil;
     self.allAssets = nil;
     self.group = nil;
     self.sheet = nil;
@@ -182,10 +181,10 @@
 }
 - (void)viewDidUnload {
     [super viewDidUnload];
+    self.selectedAssetURLs = nil;
     self.allAssets = nil;
     self.group = nil;
     self.sheet = nil;
-    self.editing = NO;
 }
 
 #pragma mark - button actions
@@ -237,7 +236,12 @@
 }
 - (void)action:(UIBarButtonItem *)sender {
     if (!self.sheet) {
-        UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
+        UIActionSheet *sheet = [[UIActionSheet alloc]
+                                initWithTitle:nil
+                                delegate:self
+                                cancelButtonTitle:nil
+                                destructiveButtonTitle:nil
+                                otherButtonTitles:nil];
         GCImagePickerController *controller = self.imagePickerController;
         if (controller.actionBlock && controller.actionTitle) {
             [sheet addButtonWithTitle:controller.actionTitle];
@@ -248,7 +252,7 @@
         if ([self.selectedAssetURLs count] < 6) {
             [sheet addButtonWithTitle:[GCImagePickerController localizedString:@"COPY"]];
         }
-        if (GC_IS_IPAD) {
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
             [sheet showFromBarButtonItem:sender animated:YES];
         }
         else {
@@ -288,9 +292,9 @@
 - (void)tableDidReceiveTap:(UITapGestureRecognizer *)gesture {
     if (gesture.state == UIGestureRecognizerStateEnded && gesture.view == self.tableView) {
         CGPoint location = [gesture locationInView:gesture.view];
-        NSUInteger row = location.y / self.tableView.rowHeight;
+        NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:location];
         NSUInteger column = location.x / (self.tableView.bounds.size.width / self.numberOfColumns);
-        NSUInteger index = row * self.numberOfColumns + column;
+        NSUInteger index = indexPath.row * self.numberOfColumns + column;
         if (index < [self.allAssets count]) {
             
             // get asset stuff
@@ -312,19 +316,19 @@
             }
             
             // check set count
-            if (![self.selectedAssetURLs count]) {
-                self.editing = NO;
-            }
-            else {
+            if ([self.selectedAssetURLs count]) {
                 GCImagePickerController *controller = self.imagePickerController;
                 BOOL action = (controller.actionBlock && controller.actionTitle);
                 BOOL count = ([self.selectedAssetURLs count] < 6);
                 self.navigationItem.rightBarButtonItem.enabled = (action || count);
             }
+            else {
+                self.editing = NO;
+            }
             
             // reload
             [self updateTitle];
-            NSArray *paths = [NSArray arrayWithObject:[NSIndexPath indexPathForRow:row inSection:0]];
+            NSArray *paths = [NSArray arrayWithObject:indexPath];
             [self.tableView reloadRowsAtIndexPaths:paths withRowAnimation:UITableViewRowAnimationNone];
             
         }
