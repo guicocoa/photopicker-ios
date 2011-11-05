@@ -24,8 +24,6 @@
 
 #import <UIKit/UIKit.h>
 
-@class GCImagePickerController;
-
 /*
  
  Defines an abstract base class for view controllers that show items from the
@@ -33,12 +31,6 @@
  
  */
 @interface GCIPViewController : UIViewController
-
-// object from which we get data and listen for changes
-@property (nonatomic, readonly, assign) GCImagePickerController *imagePickerController;
-
-// designated initializer
-- (id)initWithImagePickerController:(GCImagePickerController *)controller;
 
 /*
  
@@ -48,5 +40,14 @@
  
  */
 - (void)reloadAssets;
+
+/*
+ 
+ Walk the parent view controller stack until we find an object that can respond
+ to the given selector. Once a target it found it executes the selector and
+ returns the result. Otherwise, this method returns nil.
+ 
+ */
+- (id)performSelectorInViewHierarchy:(SEL)action;
 
 @end

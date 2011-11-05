@@ -24,21 +24,8 @@
 
 #import "GCIPViewController.h"
 
-@interface GCIPViewController ()
-@property (nonatomic, readwrite, assign) GCImagePickerController *imagePickerController;
-@end
-
 @implementation GCIPViewController
 
-@synthesize imagePickerController = __imagePickerController;
-
-- (id)initWithImagePickerController:(GCImagePickerController *)controller {
-    self = [super initWithNibName:nil bundle:nil];
-    if (self) {
-        self.imagePickerController = controller;
-    }
-    return self;
-}
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
@@ -52,6 +39,20 @@
 }
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)orientation {
     return (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? YES :  (orientation == UIInterfaceOrientationPortrait);
+}
+- (id)performSelectorInViewHierarchy:(SEL)action {
+    if ([self respondsToSelector:action]) {
+        return [self performSelector:action];
+    }
+    else if ([self.parentViewController respondsToSelector:action]) {
+        return [self.parentViewController performSelector:action];
+    }
+    else if ([self.parentViewController respondsToSelector:_cmd]) {
+        return [self.parentViewController performSelector:_cmd];
+    }
+    else {
+        return nil;
+    }
 }
 
 @end
