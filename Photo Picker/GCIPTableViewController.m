@@ -29,8 +29,9 @@
 @synthesize tableView = __tableView;
 @synthesize clearsSelectionOnViewWillAppear = __clearsSelectionOnViewWillAppear;
 
-- (id)initWithImagePickerController:(GCImagePickerController *)controller {
-    self = [super initWithImagePickerController:controller];
+#pragma mark - object methods
+- (id)initWithNibName:(NSString *)nib bundle:(NSBundle *)bundle {
+    self = [super initWithNibName:nib bundle:bundle];
     if (self) {
         self.clearsSelectionOnViewWillAppear = YES;
     }
@@ -40,6 +41,8 @@
     self.tableView = nil;
     [super dealloc];
 }
+
+#pragma mark - view lifecycle
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -73,6 +76,12 @@
         [self.tableView deselectRowAtIndexPath:indexPath animated:animated];
     }
 }
+- (void)viewDidUnload {
+    [super viewDidUnload];
+    self.tableView = nil;
+}
+
+#pragma mark - table view
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return 0;
 }
