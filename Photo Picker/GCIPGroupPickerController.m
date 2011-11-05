@@ -23,7 +23,8 @@
  */
 
 #import "GCIPGroupPickerController.h"
-
+#import "GCIPGroupPickerControllerDelegate.h"
+#import "GCIPAssetPickerController.h"
 #import "GCImagePickerController.h"
 
 @interface GCIPGroupPickerController ()
@@ -39,15 +40,11 @@
 @synthesize numberFormatter             = __numberFormatter;
 
 #pragma mark - object methods
-- (id)initWithImagePickerController:(GCImagePickerController *)controller {
-    self = [super initWithImagePickerController:controller];
+- (id)initWithNibName:(NSString *)nib bundle:(NSBundle *)bundle {
+    self = [super initWithNibName:nib bundle:bundle];
     if (self) {
         self.title = [GCImagePickerController localizedString:@"PHOTO_LIBRARY"];
         self.showDisclosureIndicators = YES;
-        NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-        [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
-        self.numberFormatter = formatter;
-        [formatter release];
     }
     return self;
 }
@@ -58,11 +55,13 @@
 }
 - (void)reloadAssets {
     if ([self isViewLoaded]) {
+        ALAssetsLibrary *library = [self performSelectorInViewHierarchy:@selector(assetsLibrary)];
+        ALAssetsFilter *filter = [self performSelectorInViewHierarchy:@selector(assetsFilter)];
         NSError *error = nil;
         self.groups = [GCImagePickerController
-                       assetGroupsInLibary:self.imagePickerController.assetsLibrary
+                       assetGroupsInLibary:library
                        withTypes:ALAssetsGroupAll
-                       assetsFilter:self.imagePickerController.assetsFilter
+                       assetsFilter:filter
                        error:&error];
         if (error) {
             [GCImagePickerController failedToLoadAssetsWithError:error];
@@ -74,30 +73,25 @@
 
 #pragma mark - view lifecycle
 - (void)viewDidLoad {
-    
-    // super
     [super viewDidLoad];
-    
-    // done button
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        UIBarButtonItem *item = [[UIBarButtonItem alloc]
-                                 initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-                                 target:self
-                                 action:@selector(done)];
-        self.navigationItem.rightBarButtonItem = item;
-        [item release];
+        self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc]
+                                                   initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                                   target:self
+                                                   action:@selector(done)]
+                                                  autorelease];
     }
-    
-    // table view
+    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+    [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
+    self.numberFormatter = formatter;
+    [formatter release];
     self.tableView.rowHeight = 60.0;
-    
-    // reload
     [self reloadAssets];
-    
 }
 - (void)viewDidUnload {
     [super viewDidUnload];
     self.groups = nil;
+    self.numberFormatter = nil;
 }
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
@@ -129,7 +123,15 @@
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     ALAssetsGroup *group = [self.groups objectAtIndex:indexPath.row];
-    [self.delegate groupPicker:self didSelectGroup:group];
+    if (self.delegate) {
+        [self.delegate groupPicker:self didSelectGroup:group];
+    }
+    else {
+        GCIPAssetPickerController *assetPicker = [[GCIPAssetPickerController alloc] initWithNibName:nil bundle:nil];
+        assetPicker.groupIdentifier = [group valueForProperty:ALAssetsGroupPropertyPersistentID];
+        [self.navigationController pushViewController:assetPicker animated:YES];
+        [assetPicker release];
+    }
 }
 
 @end
