@@ -38,21 +38,29 @@
     }
 }
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)orientation {
-    return (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? YES :  (orientation == UIInterfaceOrientationPortrait);
+    return (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? YES : (orientation == UIInterfaceOrientationPortrait);
 }
 - (id)performSelectorInViewHierarchy:(SEL)action {
+    
+    // check if i can perform the action
     if ([self respondsToSelector:action]) {
         return [self performSelector:action];
     }
-    else if ([self.parentViewController respondsToSelector:action]) {
-        return [self.parentViewController performSelector:action];
-    }
-    else if ([self.parentViewController respondsToSelector:_cmd]) {
-        return [self.parentViewController performSelector:_cmd];
-    }
+    
+    // otherwise loop over ally my parents
     else {
+        UIViewController *controller = self.parentViewController;
+        while (controller) {
+            if ([controller respondsToSelector:action]) {
+                return [controller performSelector:action];
+            }
+            else {
+                controller = controller.parentViewController;
+            }
+        }
         return nil;
     }
+    
 }
 
 @end
