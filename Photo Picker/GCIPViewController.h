@@ -24,6 +24,8 @@
 
 #import <UIKit/UIKit.h>
 
+@class ALAssetsLibrary;
+
 /*
  
  Defines an abstract base class for view controllers that show items from the
@@ -31,6 +33,9 @@
  
  */
 @interface GCIPViewController : UIViewController
+
+// assets library
+@property (nonatomic, readonly, retain) ALAssetsLibrary *assetsLibrary;
 
 /*
  

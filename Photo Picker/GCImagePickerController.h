@@ -25,29 +25,27 @@
 #ifndef __IPHONE_4_0
 #error "This project uses features only available in iPhone SDK 4.0 and later."
 #endif
-#ifndef GC_IS_IPAD
-#define GC_IS_IPAD (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-#endif
 
 #import <UIKit/UIKit.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 
 // block to be called on each selected asset
-typedef void (^GCImagePickerControllerActionBlock) (NSURL *assetURL, BOOL *stop);
+typedef void (^GCImagePickerControllerActionBlock) (NSSet *set);
 
+/*
+ Defines the public interface for dealing with an image picker. All of the
+ properties defined in this interface must be set before the view is presented
+ */
 @interface GCImagePickerController : UINavigationController
 
-// assets library
-@property (nonatomic, readonly, retain) ALAssetsLibrary *assetsLibrary;
-
-// mechanism to filter assets that are loaded
+// filter assets shown in the picker
 @property (nonatomic, copy) ALAssetsFilter *assetsFilter;
-
-// block to execute on each selected asset
-@property (nonatomic, copy) GCImagePickerControllerActionBlock actionBlock;
 
 // title of custom action button
 @property (nonatomic, copy) NSString *actionTitle;
+
+// action to perform with set of selected asset URLs
+@property (nonatomic, copy) GCImagePickerControllerActionBlock actionBlock;
 
 @end
 

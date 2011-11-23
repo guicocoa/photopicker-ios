@@ -74,7 +74,7 @@
 #pragma mark - view lifecycle
 - (void)viewDidLoad {
     [super viewDidLoad];
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc]
                                                    initWithBarButtonSystemItem:UIBarButtonSystemItemDone
                                                    target:self

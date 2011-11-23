@@ -28,9 +28,6 @@
 #import "GCIPViewController_Pad.h"
 #import "GCIPGroupPickerController.h"
 
-@interface GCImagePickerController ()
-@property (nonatomic, readwrite, retain) ALAssetsLibrary *assetsLibrary;
-@end
 
 @interface GCImagePickerController (private)
 - (void)reloadChildren;
@@ -51,11 +48,10 @@
 @synthesize actionBlock     = __actionBlock;
 @synthesize actionTitle     = __actionTitle;
 @synthesize assetsFilter    = __assetsFilter;
-@synthesize assetsLibrary   = __assetsLibrary;
 
 #pragma mark - object methods
 - (id)initWithRootViewController:(UIViewController *)root {
-    if (GC_IS_IPAD) {
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         GCIPViewController_Pad *controller = [[GCIPViewController_Pad alloc] initWithNibName:nil bundle:nil];
         self = [super initWithRootViewController:controller];
         [controller release];
@@ -66,26 +62,13 @@
         [controller release];
     }
     if (self) {
-        self.assetsLibrary = [[[ALAssetsLibrary alloc] init] autorelease];
         self.assetsFilter = [ALAssetsFilter allAssets];
-        [[NSNotificationCenter defaultCenter]
-         addObserver:self
-         selector:@selector(assetsLibraryDidChange:)
-         name:ALAssetsLibraryChangedNotification
-         object:self.assetsLibrary];
     }
     return self;
 }
 - (void)dealloc {
     
-    // clear notifs
-    [[NSNotificationCenter defaultCenter]
-     removeObserver:self
-     name:ALAssetsLibraryChangedNotification
-     object:self.assetsLibrary];
-    
     // clear properties
-    self.assetsLibrary = nil;
     self.actionBlock = nil;
     self.actionTitle = nil;
     self.assetsFilter = nil;
@@ -93,20 +76,6 @@
     // super
     [super dealloc];
     
-}
-
-#pragma mark - group picker delegate
-- (void)groupPicker:(GCIPGroupPickerController *)groupPicker didSelectGroup:(ALAssetsGroup *)group {
-//    GCImagePickerController *controller = groupPicker.imagePickerController;
-//    GCIPAssetPickerController *assetPicker = [[GCIPAssetPickerController alloc] initWithImagePickerController:controller];
-//    assetPicker.groupIdentifier = [group valueForProperty:ALAssetsGroupPropertyPersistentID];
-//    [self pushViewController:assetPicker animated:YES];
-//    [assetPicker release];
-}
-
-#pragma mark - notifications
-- (void)assetsLibraryDidChange:(NSNotification *)notif {
-    [self reloadChildren];
 }
 
 #pragma mark - accessors

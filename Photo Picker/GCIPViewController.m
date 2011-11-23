@@ -22,10 +22,30 @@
  
  */
 
+#import <AssetsLibrary/AssetsLibrary.h>
+
 #import "GCIPViewController.h"
+
+@interface GCIPViewController ()
+@property (nonatomic, readwrite, retain) ALAssetsLibrary *assetsLibrary;
+@end
 
 @implementation GCIPViewController
 
+@synthesize assetsLibrary = __assetsLibrary;
+
+- (id)initWithNibName:(NSString *)name bundle:(NSBundle *)bundle {
+    self = [super initWithNibName:name bundle:bundle];
+    if (self) {
+        self.assetsLibrary = [[[ALAssetsLibrary alloc] init] autorelease];
+        [[NSNotificationCenter defaultCenter]
+         addObserver:self
+         selector:@selector(assetsLibraryDidChange:)
+         name:ALAssetsLibraryChangedNotification
+         object:self.assetsLibrary];
+    }
+    return self;
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
@@ -37,8 +57,19 @@
         
     }
 }
+- (void)assetsLibraryDidChange:(NSNotification *)notif {
+    [self reloadAssets];
+}
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)orientation {
     return (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? YES : (orientation == UIInterfaceOrientationPortrait);
+}
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter]
+     removeObserver:self
+     name:ALAssetsLibraryChangedNotification
+     object:self.assetsLibrary];
+    self.assetsLibrary = nil;
+    [super dealloc];
 }
 - (id)performSelectorInViewHierarchy:(SEL)action {
     

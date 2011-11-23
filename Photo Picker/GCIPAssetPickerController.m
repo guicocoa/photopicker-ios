@@ -146,7 +146,7 @@
     
     // table view
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    self.tableView.rowHeight = (GC_IS_IPAD) ? 140.0 : 79.0;
+    self.tableView.rowHeight = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? 140.0 : 79.0;
     self.tableView.contentInset = UIEdgeInsetsMake(4.0, 0.0, 0.0, 0.0);
     self.tableView.contentOffset = CGPointMake(0.0, -4.0);
     
@@ -203,7 +203,7 @@
     else {
         self.selectedAssetURLs = nil;
         UIBarButtonItem *item = nil;
-        if (GC_IS_IPAD) {
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
             item = [[[UIBarButtonItem alloc]
                      initWithBarButtonSystemItem:UIBarButtonSystemItemDone
                      target:self
@@ -388,11 +388,13 @@
              assetForURL:obj
              resultBlock:^(ALAsset *asset) {
                  ALAssetRepresentation *rep = [asset defaultRepresentation];
+                 NSString *MIME = [GCImagePickerController MIMETypeForAssetRepresentation:rep];
+                 NSString *extension = [GCImagePickerController extensionForAssetRepresentation:rep];
                  NSData *data = [GCImagePickerController dataForAssetRepresentation:rep];
                  [mail
                   addAttachmentData:data
-                  mimeType:[GCImagePickerController MIMETypeForAssetRepresentation:rep]
-                  fileName:[NSString stringWithFormat:@"Item %lu", index++]];
+                  mimeType:MIME
+                  fileName:[NSString stringWithFormat:@"Item %lu.%@", index++, extension]];
              }
              failureBlock:^(NSError *error) {
                  NSLog(@"%@", error);
@@ -404,10 +406,10 @@
     
     // action
     else if ([title isEqualToString:[self performSelectorInViewHierarchy:@selector(actionTitle)]]) {
-        GCImagePickerControllerActionBlock block = [self performSelectorInViewHierarchy:@selector(actionBlock)];
-        [self.selectedAssetURLs enumerateObjectsUsingBlock:^(id obj, BOOL *stop) {
-            block(obj, stop);
-        }];
+//        GCImagePickerControllerActionBlock block = [self performSelectorInViewHierarchy:@selector(actionBlock)];
+//        [self.selectedAssetURLs enumerateObjectsUsingBlock:^(id obj, BOOL *stop) {
+//            block(obj, stop);
+//        }];
         self.editing = NO;
     }
     
