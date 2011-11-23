@@ -32,14 +32,10 @@
 #import <UIKit/UIKit.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 
-#import "GCIPGroupPickerController.h"
-
 // block to be called on each selected asset
 typedef void (^GCImagePickerControllerActionBlock) (NSURL *assetURL, BOOL *stop);
 
-@interface GCImagePickerController : UINavigationController <GCIPGroupPickerControllerDelegate> {
-    
-}
+@interface GCImagePickerController : UINavigationController
 
 // assets library
 @property (nonatomic, readonly, retain) ALAssetsLibrary *assetsLibrary;
