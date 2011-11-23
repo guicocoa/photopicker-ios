@@ -41,11 +41,13 @@
         
     }
 }
-- (void)assetsLibraryDidChange:(NSNotification *)notif {
-    [self reloadAssets];
-}
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)orientation {
-    return (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? YES : (orientation == UIInterfaceOrientationPortrait);
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        return YES;
+    }
+    else {
+        return (orientation == UIInterfaceOrientationPortrait);
+    }
 }
 
 @end
