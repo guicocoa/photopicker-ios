@@ -55,11 +55,10 @@
 }
 - (void)reloadAssets {
     if ([self isViewLoaded]) {
-        ALAssetsLibrary *library = [self performSelectorInViewHierarchy:@selector(assetsLibrary)];
         ALAssetsFilter *filter = [self performSelectorInViewHierarchy:@selector(assetsFilter)];
         NSError *error = nil;
         self.groups = [GCImagePickerController
-                       assetGroupsInLibary:library
+                       assetGroupsInLibary:self.assetsLibrary
                        withTypes:ALAssetsGroupAll
                        assetsFilter:filter
                        error:&error];

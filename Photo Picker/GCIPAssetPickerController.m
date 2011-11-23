@@ -82,10 +82,9 @@
     else if ([self isViewLoaded]) {
         ALAssetsGroup *group = nil;
         NSError *error = nil;
-        ALAssetsLibrary *library = [self performSelectorInViewHierarchy:@selector(assetsLibrary)];
         ALAssetsFilter *filter = [self performSelectorInViewHierarchy:@selector(assetsFilter)];
         self.allAssets = [GCImagePickerController
-                          assetsInLibary:library
+                          assetsInLibary:self.assetsLibrary
                           groupWithIdentifier:self.groupIdentifier
                           filter:filter
                           group:&group
