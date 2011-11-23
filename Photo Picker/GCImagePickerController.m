@@ -194,10 +194,13 @@
     return YES;
     
 }
-+ (NSArray *)assetGroupsInLibary:(ALAssetsLibrary *)library
-                       withTypes:(ALAssetsGroupType)types
-                    assetsFilter:(ALAssetsFilter *)filter
-                           error:(NSError **)inError {
++ (NSArray *)assetsGroupsInLibary:(ALAssetsLibrary *)library
+                        withTypes:(ALAssetsGroupType)types
+                     assetsFilter:(ALAssetsFilter *)filter
+                            error:(NSError **)inError {
+    
+    // check library
+    if (library == nil) { return nil; }
     
     // load groups
     __block BOOL wait = YES;
@@ -266,51 +269,73 @@
     return groups;
     
 }
-+ (NSArray *)assetsInLibary:(ALAssetsLibrary *)library 
-        groupWithIdentifier:(NSString *)identifier
-                     filter:(ALAssetsFilter *)filter
-                      group:(ALAssetsGroup **)inGroup
-                      error:(NSError **)inError {
++ (ALAssetsGroup *)assetsGroupInLibrary:(ALAssetsLibrary *)library
+                         withIdentifier:(NSString *)identifier
+                                  error:(NSError **)inError {
     
-    // this will be returned
-    __block NSMutableArray *assets = nil;
+    // check library
+    if (library == nil) { return nil; }
     
-    // load assets
+    // load groups
+    __block BOOL wait = YES;
+    __block ALAssetsGroup *toReturn = nil;
     [library
      enumerateGroupsWithTypes:ALAssetsGroupAll
      usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
          if (group) {
-             NSString *groupID = [group valueForProperty:ALAssetsGroupPropertyPersistentID];
-             if ([groupID isEqualToString:identifier]) {
-                 [group setAssetsFilter:filter];
-                 assets = [[NSMutableArray alloc] init];
-                 [group enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
-                     if (result) { [assets addObject:result]; }
-                 }];
-                 if (inGroup) { *inGroup = [group retain]; }
+             if ([[group valueForProperty:ALAssetsGroupPropertyPersistentID] isEqualToString:identifier]) {
+                 toReturn = [group retain];
                  *stop = YES;
+                 wait = NO;
              }
          }
          else {
-             if (assets == nil) {
-                 assets = [[NSMutableArray alloc] init];
-             }
+             wait = NO;
          }
      }
      failureBlock:^(NSError *error) {
          if (inError) { *inError = [error retain]; }
-         assets = [[NSMutableArray alloc] init];
+         wait = NO;
      }];
     
     // wait
-    while (assets == nil) {
+    while (wait) {
         [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
     }
     
     // return
-    if (inGroup) { [*inGroup autorelease]; }
     if (inError) { [*inError autorelease]; }
-    return [assets autorelease];
+    return [toReturn autorelease];
+    
+}
++ (NSArray *)assetsInLibary:(ALAssetsLibrary *)library 
+                      group:(ALAssetsGroup *)group
+                     filter:(ALAssetsFilter *)filter
+                      error:(NSError **)inError {
+    
+    // check library
+    if (library == nil) { return nil; }
+    
+    // load assets
+    __block BOOL wait = YES;
+    [group setAssetsFilter:filter];
+    NSMutableArray *toReturn = [NSMutableArray arrayWithCapacity:[group numberOfAssets]];
+    [group enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
+        if (result) { [toReturn addObject:result]; }
+        else {
+            *stop = YES;
+            wait = NO;
+        }
+     }];
+    
+    // wait
+    while (wait) {
+        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+    }
+    
+    // return
+    if (inError) { [*inError autorelease]; }
+    return toReturn;
     
 }
 

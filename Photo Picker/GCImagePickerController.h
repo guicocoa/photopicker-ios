@@ -77,6 +77,7 @@ typedef void (^GCImagePickerControllerActionBlock) (NSSet *set);
                              atomically:(BOOL)atomically;
 
 /*
+ 
  Get groups sorted the same as seen in UIImagePickerController
  
  types: Filter group types. Pass ALAssetGroupAll for all groups.
@@ -85,13 +86,20 @@ typedef void (^GCImagePickerControllerActionBlock) (NSSet *set);
  error: Populated if an error occurs.
  
  returns: An array of asset groups.
+ 
  */
-+ (NSArray *)assetGroupsInLibary:(ALAssetsLibrary *)library
-                       withTypes:(ALAssetsGroupType)types
-                    assetsFilter:(ALAssetsFilter *)filter
-                           error:(NSError **)inError;
++ (NSArray *)assetsGroupsInLibary:(ALAssetsLibrary *)library
+                        withTypes:(ALAssetsGroupType)types
+                     assetsFilter:(ALAssetsFilter *)filter
+                            error:(NSError **)inError;
+
+// Get an assets group with the given identifier.
++ (ALAssetsGroup *)assetsGroupInLibrary:(ALAssetsLibrary *)library
+                         withIdentifier:(NSString *)identifier
+                                  error:(NSError **)inError;
 
 /*
+ 
  Get assets belonging to a certain group.
  
  identifier: The persistent identifier of the group.
@@ -100,11 +108,11 @@ typedef void (^GCImagePickerControllerActionBlock) (NSSet *set);
  error: Populated if an error occurs.
  
  returns: An array of assets.
+ 
  */
 + (NSArray *)assetsInLibary:(ALAssetsLibrary *)library 
-        groupWithIdentifier:(NSString *)identifier
+                      group:(ALAssetsGroup *)group
                      filter:(ALAssetsFilter *)filter
-                      group:(ALAssetsGroup **)inGroup
                       error:(NSError **)inError;
 
 
