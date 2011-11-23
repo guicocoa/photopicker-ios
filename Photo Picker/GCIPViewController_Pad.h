@@ -23,11 +23,8 @@
  */
 
 #import "GCIPViewController.h"
-#import "GCIPGroupPickerController.h"
+#import "GCIPGroupPickerControllerDelegate.h"
 
-@interface GCIPViewController_Pad : GCIPViewController
-<GCIPGroupPickerControllerDelegate, UIPopoverControllerDelegate> {
-    
-}
+@interface GCIPViewController_Pad : GCIPViewController <GCIPGroupPickerControllerDelegate>
 
 @end

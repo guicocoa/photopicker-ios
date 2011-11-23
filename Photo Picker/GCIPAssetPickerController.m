@@ -117,6 +117,9 @@
         self.title = [self.group valueForProperty:ALAssetsGroupPropertyName];
     }
 }
+- (void)done {
+    [self dismissModalViewControllerAnimated:YES];
+}
 
 #pragma mark - accessors
 - (void)setGroupIdentifier:(NSString *)identifier {
@@ -143,7 +146,7 @@
     
     // table view
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    self.tableView.rowHeight = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? 140.0 : 79.0;
+    self.tableView.rowHeight = (GC_IS_IPAD) ? 140.0 : 79.0;
     self.tableView.contentInset = UIEdgeInsetsMake(4.0, 0.0, 0.0, 0.0);
     self.tableView.contentOffset = CGPointMake(0.0, -4.0);
     
@@ -187,18 +190,27 @@
                                   action:@selector(action:)]
                                  autorelease];
         item.style = UIBarButtonItemStyleBordered;
-        
+        [self.navigationItem setRightBarButtonItem:item animated:animated];
         item = [[[UIBarButtonItem alloc]
                  initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
                  target:self
                  action:@selector(cancel)]
                 autorelease];
         item.style = UIBarButtonItemStyleBordered;
+        [self.navigationItem setLeftBarButtonItem:item animated:animated];
         
     }
     else {
         self.selectedAssetURLs = nil;
-        [self.navigationItem setRightBarButtonItem:nil animated:animated];
+        UIBarButtonItem *item = nil;
+        if (GC_IS_IPAD) {
+            item = [[[UIBarButtonItem alloc]
+                     initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                     target:self
+                     action:@selector(done)]
+                    autorelease];
+        }
+        [self.navigationItem setRightBarButtonItem:item animated:animated];
         [self.navigationItem setLeftBarButtonItem:nil animated:animated];
     }
     
