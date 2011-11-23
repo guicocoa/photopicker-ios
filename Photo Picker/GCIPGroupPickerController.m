@@ -55,12 +55,11 @@
 }
 - (void)reloadAssets {
     if ([self isViewLoaded]) {
-        ALAssetsFilter *filter = [self performSelectorInViewHierarchy:@selector(assetsFilter)];
         NSError *error = nil;
         self.groups = [GCImagePickerController
-                       assetGroupsInLibary:self.assetsLibrary
+                       assetGroupsInLibary:self.parent.assetsLibrary
                        withTypes:ALAssetsGroupAll
-                       assetsFilter:filter
+                       assetsFilter:self.parent.assetsFilter
                        error:&error];
         if (error) {
             [GCImagePickerController failedToLoadAssetsWithError:error];
@@ -127,6 +126,7 @@
     }
     else {
         GCIPAssetPickerController *assetPicker = [[GCIPAssetPickerController alloc] initWithNibName:nil bundle:nil];
+        assetPicker.parent = self.parent;
         assetPicker.groupIdentifier = [group valueForProperty:ALAssetsGroupPropertyPersistentID];
         [self.navigationController pushViewController:assetPicker animated:YES];
         [assetPicker release];
