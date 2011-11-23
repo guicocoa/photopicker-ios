@@ -23,7 +23,6 @@
  */
 
 #import "GCIPGroupPickerController.h"
-#import "GCIPGroupPickerControllerDelegate.h"
 #import "GCIPAssetPickerController.h"
 #import "GCImagePickerController.h"
 
@@ -34,12 +33,13 @@
 
 @implementation GCIPGroupPickerController
 
+#pragma mark - object methods
+
 @synthesize delegate                    = __delegate;
 @synthesize showDisclosureIndicators    = __showDisclosureIndicators;
 @synthesize groups                      = __groups;
 @synthesize numberFormatter             = __numberFormatter;
 
-#pragma mark - object methods
 - (id)initWithNibName:(NSString *)nib bundle:(NSBundle *)bundle {
     self = [super initWithNibName:nib bundle:bundle];
     if (self) {
@@ -62,7 +62,7 @@
     if ([self isViewLoaded]) {
         NSError *error = nil;
         self.groups = [GCImagePickerController
-                       assetGroupsInLibary:self.parent.assetsLibrary
+                       assetsGroupsInLibary:self.parent.assetsLibrary
                        withTypes:ALAssetsGroupAll
                        assetsFilter:self.parent.assetsFilter
                        error:&error];

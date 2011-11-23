@@ -24,13 +24,24 @@
 
 #import "GCIPTableViewController.h"
 
-@protocol GCIPGroupPickerControllerDelegate;
+@class GCIPGroupPickerController;
+@class ALAssetsGroup;
 
 /*
  
- View controller that allows selection of a group shown from the assets library.
+ Delegate protocol that allows customization of the action that will be
+ performed when a group is selected from the provided controller.
  
  */
+@protocol GCIPGroupPickerControllerDelegate <NSObject>
+@required
+
+// callback for group selection
+- (void)groupPicker:(GCIPGroupPickerController *)picker didSelectGroup:(ALAssetsGroup *)group;
+
+@end
+
+// select a group from the assets library
 @interface GCIPGroupPickerController : GCIPTableViewController
 
 // group picker delegate
