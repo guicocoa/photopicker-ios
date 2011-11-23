@@ -34,6 +34,8 @@ typedef void (^GCImagePickerControllerActionBlock) (NSSet *set);
 
 @interface GCImagePickerController : UINavigationController
 
+#pragma mark - properties
+
 // used to load assets
 @property (nonatomic, readonly, retain) ALAssetsLibrary *assetsLibrary;
 
@@ -46,9 +48,7 @@ typedef void (^GCImagePickerControllerActionBlock) (NSSet *set);
 // action to perform with set of selected asset URLs
 @property (nonatomic, copy) GCImagePickerControllerActionBlock actionBlock;
 
-@end
-
-@interface GCImagePickerController (ClassMethods)
+#pragma mark - class methods
 
 // get a localized string from the library
 + (NSString *)localizedString:(NSString *)key;
@@ -106,5 +106,6 @@ typedef void (^GCImagePickerControllerActionBlock) (NSSet *set);
                      filter:(ALAssetsFilter *)filter
                       group:(ALAssetsGroup **)inGroup
                       error:(NSError **)inError;
+
 
 @end

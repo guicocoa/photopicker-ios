@@ -35,80 +35,8 @@
 
 @implementation GCImagePickerController
 
-@synthesize assetsLibrary   = __assetsLibrary;
-@synthesize actionBlock     = __actionBlock;
-@synthesize actionTitle     = __actionTitle;
-@synthesize assetsFilter    = __assetsFilter;
+#pragma mark - class methods
 
-#pragma mark - object methods
-- (id)initWithRootViewController:(UIViewController *)root {
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        GCIPViewController_Pad *controller = [[GCIPViewController_Pad alloc] initWithNibName:nil bundle:nil];
-        self = [super initWithRootViewController:controller];
-        controller.parent = self;
-        [controller release];
-    }
-    else {
-        GCIPGroupPickerController *controller = [[GCIPGroupPickerController alloc] initWithNibName:nil bundle:nil];
-        self = [super initWithRootViewController:controller];
-        controller.parent = self;
-        [controller release];
-    }
-    if (self) {
-        self.assetsLibrary = [[[ALAssetsLibrary alloc] init] autorelease];
-        self.assetsFilter = [ALAssetsFilter allAssets];
-        [[NSNotificationCenter defaultCenter]
-         addObserver:self
-         selector:@selector(assetsLibraryDidChange:)
-         name:ALAssetsLibraryChangedNotification
-         object:self.assetsLibrary];
-    }
-    return self;
-}
-- (void)dealloc {
-    
-    // clear notifs
-    [[NSNotificationCenter defaultCenter]
-     removeObserver:self
-     name:ALAssetsLibraryChangedNotification
-     object:self.assetsLibrary];
-    
-    // clear properties
-    self.assetsLibrary = nil;
-    self.actionBlock = nil;
-    self.actionTitle = nil;
-    self.assetsFilter = nil;
-    
-    // super
-    [super dealloc];
-    
-}
-- (void)reloadChildren {
-    [self.viewControllers enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        if ([obj isKindOfClass:[GCIPViewController class]]) {
-            [(GCIPViewController *)obj reloadAssets];
-        }
-    }];
-}
-
-#pragma mark - notifications
-- (void)assetsLibraryDidChange:(NSNotification *)notif {
-    [self reloadChildren];
-}
-
-#pragma mark - accessors
-- (void)setAssetsFilter:(ALAssetsFilter *)filter {
-    if ([filter isEqual:__assetsFilter]) {
-        return;
-    }
-    [__assetsFilter release];
-    __assetsFilter = [filter retain];
-    [self reloadChildren];
-}
-
-@end
-
-@implementation GCImagePickerController (ClassMethods)
 + (NSString *)localizedString:(NSString *)key {
     return [[NSBundle mainBundle] localizedStringForKey:key value:nil table:NSStringFromClass(self)];
 }
@@ -281,40 +209,40 @@
              [group setAssetsFilter:filter];
              if ([group numberOfAssets]) {
                  [groups addObject:group];
-//                 NSNumber *type = [group valueForProperty:ALAssetsGroupPropertyType];
-//                 NSMutableArray *groupsByType = [dictionary objectForKey:type];
-//                 if (groupsByType == nil) {
-//                     groupsByType = [NSMutableArray arrayWithCapacity:1];
-//                     [dictionary setObject:groupsByType forKey:type];
-//                 }
-//                 [groupsByType addObject:group];
+                 //                 NSNumber *type = [group valueForProperty:ALAssetsGroupPropertyType];
+                 //                 NSMutableArray *groupsByType = [dictionary objectForKey:type];
+                 //                 if (groupsByType == nil) {
+                 //                     groupsByType = [NSMutableArray arrayWithCapacity:1];
+                 //                     [dictionary setObject:groupsByType forKey:type];
+                 //                 }
+                 //                 [groupsByType addObject:group];
              }
          }
          else {
-//             
-//             // make our groups array
-//             groups = [[NSMutableArray alloc] init];
-//             
-//             // sort groups into final container
-//             NSArray *typeNumbers = [NSArray arrayWithObjects:
-//                                     [NSNumber numberWithUnsignedInteger:ALAssetsGroupSavedPhotos],
-//                                     [NSNumber numberWithUnsignedInteger:ALAssetsGroupAlbum],
-//                                     [NSNumber numberWithUnsignedInteger:ALAssetsGroupEvent],
-//                                     [NSNumber numberWithUnsignedInteger:ALAssetsGroupFaces],
-//                                     nil];
-//             for (NSNumber *type in typeNumbers) {
-//                 NSArray *groupsByType = [dictionary objectForKey:type];
-//                 [groups addObjectsFromArray:groupsByType];
-//                 [dictionary removeObjectForKey:type];
-//             }
-//             
-//             // get any groups we do not have contants for
-//             for (NSNumber *type in [dictionary keysSortedByValueUsingSelector:@selector(compare:)]) {
-//                 NSArray *groupsByType = [dictionary objectForKey:type];
-//                 [groups addObjectsFromArray:groupsByType];
-//                 [dictionary removeObjectForKey:type];
-//             }
-//             
+             //             
+             //             // make our groups array
+             //             groups = [[NSMutableArray alloc] init];
+             //             
+             //             // sort groups into final container
+             //             NSArray *typeNumbers = [NSArray arrayWithObjects:
+             //                                     [NSNumber numberWithUnsignedInteger:ALAssetsGroupSavedPhotos],
+             //                                     [NSNumber numberWithUnsignedInteger:ALAssetsGroupAlbum],
+             //                                     [NSNumber numberWithUnsignedInteger:ALAssetsGroupEvent],
+             //                                     [NSNumber numberWithUnsignedInteger:ALAssetsGroupFaces],
+             //                                     nil];
+             //             for (NSNumber *type in typeNumbers) {
+             //                 NSArray *groupsByType = [dictionary objectForKey:type];
+             //                 [groups addObjectsFromArray:groupsByType];
+             //                 [dictionary removeObjectForKey:type];
+             //             }
+             //             
+             //             // get any groups we do not have contants for
+             //             for (NSNumber *type in [dictionary keysSortedByValueUsingSelector:@selector(compare:)]) {
+             //                 NSArray *groupsByType = [dictionary objectForKey:type];
+             //                 [groups addObjectsFromArray:groupsByType];
+             //                 [dictionary removeObjectForKey:type];
+             //             }
+             //             
              
              // don't wait any more
              wait = NO;
@@ -346,7 +274,7 @@
     
     // this will be returned
     __block NSMutableArray *assets = nil;
-
+    
     // load assets
     [library
      enumerateGroupsWithTypes:ALAssetsGroupAll
@@ -384,6 +312,66 @@
     if (inError) { [*inError autorelease]; }
     return [assets autorelease];
     
+}
+
+#pragma mark - object methods
+
+@synthesize assetsLibrary   = __assetsLibrary;
+@synthesize actionBlock     = __actionBlock;
+@synthesize actionTitle     = __actionTitle;
+@synthesize assetsFilter    = __assetsFilter;
+
+- (id)initWithRootViewController:(UIViewController *)root {
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        GCIPViewController_Pad *controller = [[GCIPViewController_Pad alloc] initWithNibName:nil bundle:nil];
+        self = [super initWithRootViewController:controller];
+        controller.parent = self;
+        [controller release];
+    }
+    else {
+        GCIPGroupPickerController *controller = [[GCIPGroupPickerController alloc] initWithNibName:nil bundle:nil];
+        self = [super initWithRootViewController:controller];
+        controller.parent = self;
+        [controller release];
+    }
+    if (self) {
+        self.assetsLibrary = [[[ALAssetsLibrary alloc] init] autorelease];
+        self.assetsFilter = [ALAssetsFilter allAssets];
+        [[NSNotificationCenter defaultCenter]
+         addObserver:self
+         selector:@selector(assetsLibraryDidChange:)
+         name:ALAssetsLibraryChangedNotification
+         object:self.assetsLibrary];
+    }
+    return self;
+}
+- (void)dealloc {
+    
+    // clear notifs
+    [[NSNotificationCenter defaultCenter]
+     removeObserver:self
+     name:ALAssetsLibraryChangedNotification
+     object:self.assetsLibrary];
+    
+    // clear properties
+    self.assetsLibrary = nil;
+    self.actionBlock = nil;
+    self.actionTitle = nil;
+    self.assetsFilter = nil;
+    
+    // super
+    [super dealloc];
+    
+}
+- (void)reloadChildren {
+    [self.viewControllers enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        if ([obj isKindOfClass:[GCIPViewController class]]) {
+            [(GCIPViewController *)obj reloadAssets];
+        }
+    }];
+}
+- (void)assetsLibraryDidChange:(NSNotification *)notif {
+    [self reloadChildren];
 }
 
 @end
