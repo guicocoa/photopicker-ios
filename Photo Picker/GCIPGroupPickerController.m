@@ -45,6 +45,11 @@
     if (self) {
         self.title = [GCImagePickerController localizedString:@"PHOTO_LIBRARY"];
         self.showDisclosureIndicators = YES;
+        self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc]
+                                                   initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                                   target:self
+                                                   action:@selector(done)]
+                                                  autorelease];
     }
     return self;
 }
@@ -72,13 +77,6 @@
 #pragma mark - view lifecycle
 - (void)viewDidLoad {
     [super viewDidLoad];
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc]
-                                                   initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-                                                   target:self
-                                                   action:@selector(done)]
-                                                  autorelease];
-    }
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
     [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
     self.numberFormatter = formatter;
