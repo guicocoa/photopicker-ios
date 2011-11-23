@@ -49,9 +49,6 @@ typedef void (^GCImagePickerControllerActionBlock) (NSURL *assetURL, BOOL *stop)
 // title of custom action button
 @property (nonatomic, copy) NSString *actionTitle;
 
-// designated initializer
-- (id)init;
-
 @end
 
 @interface GCImagePickerController (ClassMethods)

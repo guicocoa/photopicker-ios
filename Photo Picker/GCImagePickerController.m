@@ -55,38 +55,24 @@
 
 #pragma mark - object methods
 - (id)initWithRootViewController:(UIViewController *)root {
-    
-    
-    
-    self = [super initWithRootViewController:nil];
+    if (GC_IS_IPAD) {
+        GCIPViewController_Pad *controller = [[GCIPViewController_Pad alloc] initWithNibName:nil bundle:nil];
+        self = [super initWithRootViewController:controller];
+        [controller release];
+    }
+    else {
+        GCIPGroupPickerController *controller = [[GCIPGroupPickerController alloc] initWithNibName:nil bundle:nil];
+        self = [super initWithRootViewController:controller];
+        [controller release];
+    }
     if (self) {
-        
-        // create library
         self.assetsLibrary = [[[ALAssetsLibrary alloc] init] autorelease];
         self.assetsFilter = [ALAssetsFilter allAssets];
-        
-        
-        
-        // sign up for notifs
         [[NSNotificationCenter defaultCenter]
          addObserver:self
          selector:@selector(assetsLibraryDidChange:)
          name:ALAssetsLibraryChangedNotification
          object:self.assetsLibrary];
-        
-        // create views
-        if (GC_IS_IPAD) {
-            GCIPViewController_Pad *controller = [[GCIPViewController_Pad alloc] initWithNibName:nil bundle:nil];
-            [self pushViewController:controller animated:NO];
-//            [self setNavigationBarHidden:YES animated:NO];
-            [controller release];
-        }
-        else {
-            GCIPGroupPickerController *controller = [[GCIPGroupPickerController alloc] initWithNibName:nil bundle:nil];
-            [self pushViewController:controller animated:NO];
-            [controller release];
-        }
-        
     }
     return self;
 }
