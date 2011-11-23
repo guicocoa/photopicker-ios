@@ -25,6 +25,7 @@
 #import <UIKit/UIKit.h>
 
 @class ALAssetsLibrary;
+@class GCImagePickerController;
 
 /*
  
@@ -34,8 +35,7 @@
  */
 @interface GCIPViewController : UIViewController
 
-// assets library
-@property (nonatomic, readonly, retain) ALAssetsLibrary *assetsLibrary;
+@property (nonatomic, assign) GCImagePickerController *parent;
 
 /*
  
@@ -45,14 +45,5 @@
  
  */
 - (void)reloadAssets;
-
-/*
- 
- Walk the parent view controller stack until we find an object that can respond
- to the given selector. Once a target it found it executes the selector and
- returns the result. Otherwise, this method returns nil.
- 
- */
-- (id)performSelectorInViewHierarchy:(SEL)action;
 
 @end

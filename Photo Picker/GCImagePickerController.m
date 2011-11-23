@@ -28,23 +28,14 @@
 #import "GCIPViewController_Pad.h"
 #import "GCIPGroupPickerController.h"
 
-
-@interface GCImagePickerController (private)
+@interface GCImagePickerController ()
+@property (nonatomic, readwrite, retain) ALAssetsLibrary *assetsLibrary;
 - (void)reloadChildren;
-@end
-
-@implementation GCImagePickerController (private)
-- (void)reloadChildren {
-    [self.viewControllers enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        if ([obj isKindOfClass:[GCIPViewController class]]) {
-            [(GCIPViewController *)obj reloadAssets];
-        }
-    }];
-}
 @end
 
 @implementation GCImagePickerController
 
+@synthesize assetsLibrary   = __assetsLibrary;
 @synthesize actionBlock     = __actionBlock;
 @synthesize actionTitle     = __actionTitle;
 @synthesize assetsFilter    = __assetsFilter;
@@ -54,21 +45,36 @@
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         GCIPViewController_Pad *controller = [[GCIPViewController_Pad alloc] initWithNibName:nil bundle:nil];
         self = [super initWithRootViewController:controller];
+        controller.parent = self;
         [controller release];
     }
     else {
         GCIPGroupPickerController *controller = [[GCIPGroupPickerController alloc] initWithNibName:nil bundle:nil];
         self = [super initWithRootViewController:controller];
+        controller.parent = self;
         [controller release];
     }
     if (self) {
+        self.assetsLibrary = [[[ALAssetsLibrary alloc] init] autorelease];
         self.assetsFilter = [ALAssetsFilter allAssets];
+        [[NSNotificationCenter defaultCenter]
+         addObserver:self
+         selector:@selector(assetsLibraryDidChange:)
+         name:ALAssetsLibraryChangedNotification
+         object:self.assetsLibrary];
     }
     return self;
 }
 - (void)dealloc {
     
+    // clear notifs
+    [[NSNotificationCenter defaultCenter]
+     removeObserver:self
+     name:ALAssetsLibraryChangedNotification
+     object:self.assetsLibrary];
+    
     // clear properties
+    self.assetsLibrary = nil;
     self.actionBlock = nil;
     self.actionTitle = nil;
     self.assetsFilter = nil;
@@ -77,22 +83,27 @@
     [super dealloc];
     
 }
+- (void)reloadChildren {
+    [self.viewControllers enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        if ([obj isKindOfClass:[GCIPViewController class]]) {
+            [(GCIPViewController *)obj reloadAssets];
+        }
+    }];
+}
+
+#pragma mark - notifications
+- (void)assetsLibraryDidChange:(NSNotification *)notif {
+    [self reloadChildren];
+}
 
 #pragma mark - accessors
 - (void)setAssetsFilter:(ALAssetsFilter *)filter {
-    
-    // check value
     if ([filter isEqual:__assetsFilter]) {
         return;
     }
-    
-    // capture value
     [__assetsFilter release];
     __assetsFilter = [filter retain];
-    
-    // reload
     [self reloadChildren];
-    
 }
 
 @end

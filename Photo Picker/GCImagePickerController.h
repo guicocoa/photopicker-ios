@@ -32,14 +32,13 @@
 // block to be called on each selected asset
 typedef void (^GCImagePickerControllerActionBlock) (NSSet *set);
 
-/*
- Defines the public interface for dealing with an image picker. All of the
- properties defined in this interface must be set before the view is presented
- */
 @interface GCImagePickerController : UINavigationController
 
-// filter assets shown in the picker
-@property (nonatomic, copy) ALAssetsFilter *assetsFilter;
+// used to load assets
+@property (nonatomic, readonly, retain) ALAssetsLibrary *assetsLibrary;
+
+// filter assets
+@property (nonatomic, retain) ALAssetsFilter *assetsFilter;
 
 // title of custom action button
 @property (nonatomic, copy) NSString *actionTitle;
