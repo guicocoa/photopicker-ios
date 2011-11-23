@@ -80,6 +80,9 @@
     [super viewDidUnload];
     self.tableView = nil;
 }
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated {
+    [self.tableView setEditing:editing animated:animated];
+}
 
 #pragma mark - table view
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
