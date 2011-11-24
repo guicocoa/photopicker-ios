@@ -35,6 +35,7 @@
 @property (nonatomic, retain) ALAssetsGroup *group;
 - (void)updateTitle;
 - (void)cancel;
+- (void)updateScrollPosition;
 @end
 
 @implementation GCIPAssetPickerController
@@ -70,6 +71,7 @@
     __groupIdentifier = [identifier copy];
     [self cancel];
     [self reloadAssets];
+    [self updateScrollPosition];
 }
 - (void)reloadAssets {
     
@@ -141,6 +143,19 @@
     [self.tableView reloadData];
     [self updateTitle];
 }
+- (void)updateScrollPosition {
+    NSNumber *type = [self.group valueForProperty:ALAssetsGroupPropertyType];
+    if ([type unsignedIntegerValue] & ALAssetsGroupSavedPhotos ||
+        [type unsignedIntegerValue] & ALAssetsGroupPhotoStream) {
+        if (self.tableView.contentSize.height > self.tableView.bounds.size.height) {
+            CGFloat offset = self.tableView.contentSize.height - self.tableView.bounds.size.height;
+            self.tableView.contentOffset = CGPointMake(0.0, offset);
+        }
+    }
+    else {
+        self.tableView.contentOffset = CGPointMake(0.0, -4.0);
+    }
+}
 
 #pragma mark - view lifecycle
 - (void)viewDidLoad {
@@ -152,7 +167,6 @@
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.rowHeight = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? 140.0 : 79.0;
     self.tableView.contentInset = UIEdgeInsetsMake(4.0, 0.0, 0.0, 0.0);
-    self.tableView.contentOffset = CGPointMake(0.0, -4.0);
     
     // gesture
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
@@ -165,13 +179,7 @@
     
     // reload
     [self reloadAssets];
-    
-    // scroll to bottom for certain albums
-    NSNumber *type = [self.group valueForProperty:ALAssetsGroupPropertyType];
-    if ([type unsignedIntegerValue] & ALAssetsGroupSavedPhotos ||
-        [type unsignedIntegerValue] & ALAssetsGroupPhotoStream) {
-        self.tableView.contentOffset = CGPointMake(0.0, self.tableView.contentSize.height);
-    }
+    [self updateScrollPosition];
     
 }
 - (void)viewDidUnload {

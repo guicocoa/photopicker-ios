@@ -70,7 +70,11 @@
             [GCImagePickerController failedToLoadAssetsWithError:error];
         }
         self.tableView.hidden = ([self.groups count] == 0);
+        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
         [self.tableView reloadData];
+        if (indexPath && indexPath.row < [self.groups count]) {
+            [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+        }
     }
 }
 

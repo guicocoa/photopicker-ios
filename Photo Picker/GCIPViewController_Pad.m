@@ -24,7 +24,6 @@
 
 #import "GCIPViewController_Pad.h"
 #import "GCImagePickerController.h"
-#import "GCIPGroupPickerController.h"
 #import "GCIPAssetPickerController.h"
 
 @interface GCIPViewController_Pad ()
@@ -90,6 +89,11 @@
 - (UINavigationItem *)navigationItem {
     return self.assetPickerController.navigationItem;
 }
+- (void)setParent:(GCImagePickerController *)parent {
+    [super setParent:parent];
+    self.groupPickerController.parent = parent;
+    self.assetPickerController.parent = parent;
+}
 
 #pragma mark - view lifecycle
 - (void)viewDidLoad {
@@ -140,17 +144,15 @@
 
 #pragma mark - kvo
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    
-    // view title
-    if (object == self.assetPickerController && [keyPath isEqualToString:@"title"]) {
-        NSString *title = self.assetPickerController.title;
-        self.title = (title == nil) ? self.groupPickerController.title : self.assetPickerController.title;
-    }
-    
-    else if (object == self.groupPickerController && [keyPath isEqualToString:@"groups"]) {
+    if (object == self.groupPickerController && [keyPath isEqualToString:@"groups"]) {
         if (!self.assetPickerController.groupIdentifier && [self.groupPickerController.groups count]) {
             ALAssetsGroup *group = [self.groupPickerController.groups objectAtIndex:0];
             [self groupPicker:self.groupPickerController didSelectGroup:group];
+            [self.groupPickerController.tableView reloadData];
+            [self.groupPickerController.tableView
+             selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]
+             animated:NO
+             scrollPosition:UITableViewScrollPositionNone];
         }
     }
 }

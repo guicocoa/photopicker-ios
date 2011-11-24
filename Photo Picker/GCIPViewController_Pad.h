@@ -23,7 +23,7 @@
  */
 
 #import "GCIPViewController.h"
-#import "GCIPGroupPickerControllerDelegate.h"
+#import "GCIPGroupPickerController.h"
 
 @interface GCIPViewController_Pad : GCIPViewController <GCIPGroupPickerControllerDelegate>
 
