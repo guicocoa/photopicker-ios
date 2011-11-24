@@ -127,8 +127,17 @@
 }
 - (void)cancel {
     self.selectedAssetURLs = [NSMutableSet set];
-    self.navigationItem.rightBarButtonItem = nil;
     self.navigationItem.leftBarButtonItem = nil;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc]
+                                                   initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                                   target:self
+                                                   action:@selector(done)]
+                                                  autorelease];
+    }
+    else {
+        self.navigationItem.rightBarButtonItem = nil;
+    }
     [self.tableView reloadData];
     [self updateTitle];
 }
@@ -221,7 +230,10 @@
             }
             
             // check set count
-            if ([self.selectedAssetURLs count]) {
+            if ([self.selectedAssetURLs count] == 0) {
+                [self cancel];
+            }
+            else {
                 UIBarButtonItem *item = [[[UIBarButtonItem alloc]
                                           initWithTitle:self.parent.actionTitle
                                           style:UIBarButtonItemStyleDone
@@ -236,16 +248,10 @@
                         autorelease];
                 item.style = UIBarButtonItemStyleBordered;
                 self.navigationItem.leftBarButtonItem = item;
+                [self updateTitle];
+                NSArray *paths = [NSArray arrayWithObject:indexPath];
+                [self.tableView reloadRowsAtIndexPaths:paths withRowAnimation:UITableViewRowAnimationNone];
             }
-            else {
-                self.navigationItem.rightBarButtonItem = nil;
-                self.navigationItem.leftBarButtonItem = nil;
-            }
-            
-            // reload
-            [self updateTitle];
-            NSArray *paths = [NSArray arrayWithObject:indexPath];
-            [self.tableView reloadRowsAtIndexPaths:paths withRowAnimation:UITableViewRowAnimationNone];
             
         }
     }
