@@ -204,6 +204,7 @@
     
     // load groups
     __block BOOL wait = YES;
+    NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
     NSMutableArray *groups = [NSMutableArray array];
     [library
      enumerateGroupsWithTypes:types
@@ -211,41 +212,38 @@
          if (group) {
              [group setAssetsFilter:filter];
              if ([group numberOfAssets]) {
-                 [groups addObject:group];
-                 //                 NSNumber *type = [group valueForProperty:ALAssetsGroupPropertyType];
-                 //                 NSMutableArray *groupsByType = [dictionary objectForKey:type];
-                 //                 if (groupsByType == nil) {
-                 //                     groupsByType = [NSMutableArray arrayWithCapacity:1];
-                 //                     [dictionary setObject:groupsByType forKey:type];
-                 //                 }
-                 //                 [groupsByType addObject:group];
+                 NSNumber *type = [group valueForProperty:ALAssetsGroupPropertyType];
+                 NSMutableArray *array = [dictionary objectForKey:type];
+                 if (array == nil) {
+                     array = [NSMutableArray arrayWithCapacity:1];
+                     [dictionary setObject:array forKey:type];
+                 }
+                 [array addObject:group];
              }
          }
          else {
-             //             
-             //             // make our groups array
-             //             groups = [[NSMutableArray alloc] init];
-             //             
-             //             // sort groups into final container
-             //             NSArray *typeNumbers = [NSArray arrayWithObjects:
-             //                                     [NSNumber numberWithUnsignedInteger:ALAssetsGroupSavedPhotos],
-             //                                     [NSNumber numberWithUnsignedInteger:ALAssetsGroupAlbum],
-             //                                     [NSNumber numberWithUnsignedInteger:ALAssetsGroupEvent],
-             //                                     [NSNumber numberWithUnsignedInteger:ALAssetsGroupFaces],
-             //                                     nil];
-             //             for (NSNumber *type in typeNumbers) {
-             //                 NSArray *groupsByType = [dictionary objectForKey:type];
-             //                 [groups addObjectsFromArray:groupsByType];
-             //                 [dictionary removeObjectForKey:type];
-             //             }
-             //             
-             //             // get any groups we do not have contants for
-             //             for (NSNumber *type in [dictionary keysSortedByValueUsingSelector:@selector(compare:)]) {
-             //                 NSArray *groupsByType = [dictionary objectForKey:type];
-             //                 [groups addObjectsFromArray:groupsByType];
-             //                 [dictionary removeObjectForKey:type];
-             //             }
-             //             
+             
+             // sort known groups into final container
+             NSArray *typeNumbers = [NSArray arrayWithObjects:
+                                     [NSNumber numberWithUnsignedInteger:ALAssetsGroupSavedPhotos],
+                                     [NSNumber numberWithUnsignedInteger:ALAssetsGroupPhotoStream],
+                                     [NSNumber numberWithUnsignedInteger:ALAssetsGroupLibrary],
+                                     [NSNumber numberWithUnsignedInteger:ALAssetsGroupAlbum],
+                                     [NSNumber numberWithUnsignedInteger:ALAssetsGroupEvent],
+                                     [NSNumber numberWithUnsignedInteger:ALAssetsGroupFaces],
+                                     nil];
+             for (NSNumber *type in typeNumbers) {
+                 NSArray *groupsByType = [dictionary objectForKey:type];
+                 [groups addObjectsFromArray:groupsByType];
+                 [dictionary removeObjectForKey:type];
+             }
+             
+             // get any groups we do not have contants for
+             for (NSNumber *type in [dictionary keysSortedByValueUsingSelector:@selector(compare:)]) {
+                 NSArray *groupsByType = [dictionary objectForKey:type];
+                 [groups addObjectsFromArray:groupsByType];
+                 [dictionary removeObjectForKey:type];
+             }
              
              // don't wait any more
              wait = NO;
@@ -256,8 +254,6 @@
          if (inError) { *inError = [error retain]; }
          wait = NO;
      }];
-    
-    // TODO: sort array
     
     // wait
     while (wait) {
