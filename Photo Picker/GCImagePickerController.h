@@ -93,11 +93,6 @@ typedef void (^GCImagePickerControllerActionBlock) (NSSet *set);
                      assetsFilter:(ALAssetsFilter *)filter
                             error:(NSError **)inError;
 
-// Get an assets group with the given identifier.
-+ (ALAssetsGroup *)assetsGroupInLibrary:(ALAssetsLibrary *)library
-                         withIdentifier:(NSString *)identifier
-                                  error:(NSError **)inError;
-
 /*
  
  Get assets belonging to a certain group.
@@ -111,8 +106,9 @@ typedef void (^GCImagePickerControllerActionBlock) (NSSet *set);
  
  */
 + (NSArray *)assetsInLibary:(ALAssetsLibrary *)library 
-                      group:(ALAssetsGroup *)group
+        groupWithIdentifier:(NSString *)identifier
                      filter:(ALAssetsFilter *)filter
+                      group:(ALAssetsGroup **)inGroup
                       error:(NSError **)inError;
 
 
