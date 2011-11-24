@@ -206,61 +206,71 @@
     __block BOOL wait = YES;
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
     NSMutableArray *groups = [NSMutableArray array];
-    [library
-     enumerateGroupsWithTypes:types
-     usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
-         if (group) {
-             [group setAssetsFilter:filter];
-             if ([group numberOfAssets]) {
-                 NSNumber *type = [group valueForProperty:ALAssetsGroupPropertyType];
-                 NSMutableArray *array = [dictionary objectForKey:type];
-                 if (array == nil) {
-                     array = [NSMutableArray arrayWithCapacity:1];
-                     [dictionary setObject:array forKey:type];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [library
+         enumerateGroupsWithTypes:types
+         usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
+             if (group) {
+                 [group setAssetsFilter:filter];
+                 if ([group numberOfAssets]) {
+                     NSNumber *type = [group valueForProperty:ALAssetsGroupPropertyType];
+                     NSMutableArray *array = [dictionary objectForKey:type];
+                     if (array == nil) {
+                         array = [NSMutableArray arrayWithCapacity:1];
+                         [dictionary setObject:array forKey:type];
+                     }
+                     [array addObject:group];
                  }
-                 [array addObject:group];
+             }
+             else {
+                 
+                 // sort known groups into final container
+                 NSArray *typeNumbers = [NSArray arrayWithObjects:
+                                         [NSNumber numberWithUnsignedInteger:ALAssetsGroupSavedPhotos],
+                                         [NSNumber numberWithUnsignedInteger:ALAssetsGroupPhotoStream],
+                                         [NSNumber numberWithUnsignedInteger:ALAssetsGroupLibrary],
+                                         [NSNumber numberWithUnsignedInteger:ALAssetsGroupAlbum],
+                                         [NSNumber numberWithUnsignedInteger:ALAssetsGroupEvent],
+                                         [NSNumber numberWithUnsignedInteger:ALAssetsGroupFaces],
+                                         nil];
+                 for (NSNumber *type in typeNumbers) {
+                     NSArray *groupsByType = [dictionary objectForKey:type];
+                     [groups addObjectsFromArray:groupsByType];
+                     [dictionary removeObjectForKey:type];
+                 }
+                 
+                 // get any groups we do not have contants for
+                 for (NSNumber *type in [dictionary keysSortedByValueUsingSelector:@selector(compare:)]) {
+                     NSArray *groupsByType = [dictionary objectForKey:type];
+                     [groups addObjectsFromArray:groupsByType];
+                     [dictionary removeObjectForKey:type];
+                 }
+                 
+                 // unlock
+                 wait = NO;
+                 
              }
          }
-         else {
-             
-             // sort known groups into final container
-             NSArray *typeNumbers = [NSArray arrayWithObjects:
-                                     [NSNumber numberWithUnsignedInteger:ALAssetsGroupSavedPhotos],
-                                     [NSNumber numberWithUnsignedInteger:ALAssetsGroupPhotoStream],
-                                     [NSNumber numberWithUnsignedInteger:ALAssetsGroupLibrary],
-                                     [NSNumber numberWithUnsignedInteger:ALAssetsGroupAlbum],
-                                     [NSNumber numberWithUnsignedInteger:ALAssetsGroupEvent],
-                                     [NSNumber numberWithUnsignedInteger:ALAssetsGroupFaces],
-                                     nil];
-             for (NSNumber *type in typeNumbers) {
-                 NSArray *groupsByType = [dictionary objectForKey:type];
-                 [groups addObjectsFromArray:groupsByType];
-                 [dictionary removeObjectForKey:type];
-             }
-             
-             // get any groups we do not have contants for
-             for (NSNumber *type in [dictionary keysSortedByValueUsingSelector:@selector(compare:)]) {
-                 NSArray *groupsByType = [dictionary objectForKey:type];
-                 [groups addObjectsFromArray:groupsByType];
-                 [dictionary removeObjectForKey:type];
-             }
-             
-             // don't wait any more
+         failureBlock:^(NSError *error) {
+             if (inError) { *inError = [error retain]; }
              wait = NO;
-             
-         }
-     }
-     failureBlock:^(NSError *error) {
-         if (inError) { *inError = [error retain]; }
-         wait = NO;
-     }];
+         }];
+    });
     
-    // wait
-    while (wait) {
-        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+    // spin
+    if ([library respondsToSelector:@selector(addAssetsGroupAlbumWithName:resultBlock:failureBlock:)]) {
+        while (wait) {
+            [NSThread sleepForTimeInterval:0.1];
+        }
+    }
+    else {
+        while (wait) {
+            [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+        }
     }
     
-    // return
+    
+    // wait
     if (inError) { [*inError autorelease]; }
     return groups;
     
@@ -277,39 +287,49 @@
     // load assets
     __block BOOL wait = YES;
     NSMutableArray *assets = [NSMutableArray array];
-    [library
-     enumerateGroupsWithTypes:ALAssetsGroupAll
-     usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
-         if (group) {
-             NSString *groupID = [group valueForProperty:ALAssetsGroupPropertyPersistentID];
-             if ([groupID isEqualToString:identifier]) {
-                 [group setAssetsFilter:filter];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [library
+         enumerateGroupsWithTypes:ALAssetsGroupAll
+         usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
+             if (group) {
+                 NSString *groupID = [group valueForProperty:ALAssetsGroupPropertyPersistentID];
+                 if ([groupID isEqualToString:identifier]) {
+                     [group setAssetsFilter:filter];
 #if 0
-                 [group enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
-                     if (result) { [assets addObject:result]; }
-                 }];
+                     [group enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
+                         if (result) { [assets addObject:result]; }
+                     }];
 #else
-                 [group enumerateAssetsWithOptions:NSEnumerationReverse usingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
-                     if (result) { [assets addObject:result]; }
-                 }];
+                     [group enumerateAssetsWithOptions:NSEnumerationReverse usingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
+                         if (result) { [assets addObject:result]; }
+                     }];
 #endif
-                 if (inGroup) { *inGroup = [group retain]; }
-                 *stop = YES;
+                     if (inGroup) { *inGroup = [group retain]; }
+                     *stop = YES;
+                     wait = NO;
+                 }
+             }
+             else {
                  wait = NO;
              }
          }
-         else {
+         failureBlock:^(NSError *error) {
+             if (inError) { *inError = [error retain]; }
              wait = NO;
-         }
-     }
-     failureBlock:^(NSError *error) {
-         if (inError) { *inError = [error retain]; }
-         wait = NO;
-     }];
+         }];
+    });
+    
     
     // wait
-    while (wait) {
-        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+    if ([library respondsToSelector:@selector(addAssetsGroupAlbumWithName:resultBlock:failureBlock:)]) {
+        while (wait) {
+            [NSThread sleepForTimeInterval:0.1];
+        }
+    }
+    else {
+        while (wait) {
+            [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+        }
     }
     
     // return

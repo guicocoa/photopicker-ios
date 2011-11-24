@@ -52,6 +52,7 @@
     if (self) {
         self.numberOfColumns = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? 5 : 4;
         self.selectedAssetURLs = [NSMutableSet set];
+        self.groupIdentifier = nil;
     }
     return self;
 }
