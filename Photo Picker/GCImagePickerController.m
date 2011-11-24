@@ -288,9 +288,15 @@
              NSString *groupID = [group valueForProperty:ALAssetsGroupPropertyPersistentID];
              if ([groupID isEqualToString:identifier]) {
                  [group setAssetsFilter:filter];
+#if 0
                  [group enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
                      if (result) { [assets addObject:result]; }
                  }];
+#else
+                 [group enumerateAssetsWithOptions:NSEnumerationReverse usingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
+                     if (result) { [assets addObject:result]; }
+                 }];
+#endif
                  if (inGroup) { *inGroup = [group retain]; }
                  *stop = YES;
                  wait = NO;
