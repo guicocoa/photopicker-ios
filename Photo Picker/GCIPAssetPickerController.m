@@ -35,7 +35,6 @@
 @property (nonatomic, retain) ALAssetsGroup *group;
 - (void)updateTitle;
 - (void)cancel;
-- (void)updateScrollPosition;
 @end
 
 @implementation GCIPAssetPickerController
@@ -71,7 +70,6 @@
     __groupIdentifier = [identifier copy];
     [self cancel];
     [self reloadAssets];
-    [self updateScrollPosition];
 }
 - (void)reloadAssets {
     
@@ -143,19 +141,6 @@
     [self.tableView reloadData];
     [self updateTitle];
 }
-- (void)updateScrollPosition {
-    NSNumber *type = [self.group valueForProperty:ALAssetsGroupPropertyType];
-    if ([type unsignedIntegerValue] & ALAssetsGroupSavedPhotos ||
-        [type unsignedIntegerValue] & ALAssetsGroupPhotoStream) {
-        if (self.tableView.contentSize.height > self.tableView.bounds.size.height) {
-            CGFloat offset = self.tableView.contentSize.height - self.tableView.bounds.size.height;
-            self.tableView.contentOffset = CGPointMake(0.0, offset);
-        }
-    }
-    else {
-        self.tableView.contentOffset = CGPointMake(0.0, -4.0);
-    }
-}
 
 #pragma mark - view lifecycle
 - (void)viewDidLoad {
@@ -179,7 +164,6 @@
     
     // reload
     [self reloadAssets];
-    [self updateScrollPosition];
     
 }
 - (void)viewDidUnload {
