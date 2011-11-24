@@ -22,12 +22,10 @@
  
  */
 
-#import <MessageUI/MessageUI.h>
-
 #import "GCIPTableViewController.h"
 
 // select an asset from a given group
-@interface GCIPAssetPickerController : GCIPTableViewController <UIActionSheetDelegate, MFMailComposeViewControllerDelegate>
+@interface GCIPAssetPickerController : GCIPTableViewController
 
 // the group to browse
 @property (nonatomic, copy) NSString *groupIdentifier;
