@@ -25,9 +25,7 @@
 #import <UIKit/UIKit.h>
 
 // cell designed to display a grid of assets
-@interface GCIPAssetGridCell : UITableViewCell {
-    
-}
+@interface GCIPAssetGridCell : UITableViewCell
 
 // number of columns for the cell to display
 @property (nonatomic, assign) NSUInteger numberOfColumns;

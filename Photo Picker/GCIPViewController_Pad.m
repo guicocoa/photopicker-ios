@@ -139,7 +139,7 @@
     [self.assetPickerController viewDidDisappear:animated];
 }
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)orientation {
-    return UIInterfaceOrientationIsLandscape(orientation);
+    return YES;
 }
 
 #pragma mark - kvo

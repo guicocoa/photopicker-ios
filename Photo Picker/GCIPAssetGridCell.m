@@ -40,24 +40,14 @@
     return self;
 }
 - (void)setNumberOfColumns:(NSUInteger)count {
-    
-    // check for same value
     if (count == __numberOfColumns) {
         return;
     }
-    
-    // save value
     __numberOfColumns = count;
-    
-    // set needs layout
     [self setNeedsLayout];
-    
 }
 - (void)setAssets:(NSArray *)assets selected:(NSSet *)selected {
-    
-    // setup stuff
     NSUInteger count = [assets count];
-    
     for (NSUInteger index = 0; index < self.numberOfColumns; index++) {
         
         // get view
@@ -82,17 +72,16 @@
         [assetView setAsset:asset];
         
     }
-    
 }
 - (void)layoutSubviews {
     [super layoutSubviews];
     CGSize viewSize = self.contentView.bounds.size;
-    CGSize tileSize = { 0.0, viewSize.height - 4.0 };
+    CGSize tileSize = CGSizeMake(0.0, viewSize.height - 4.0);
     NSUInteger columns = self.numberOfColumns;
     NSUInteger spaces = columns + 1;
     CGFloat totalHorizontalSpace = (CGFloat)spaces * 4.0;
     CGFloat occupiedWidth = viewSize.width - totalHorizontalSpace;
-    tileSize.width = occupiedWidth / (CGFloat)columns;
+    tileSize.width = floor(occupiedWidth / (CGFloat)columns);
     [self.contentView.subviews enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop){
         CGRect frame = CGRectMake(4.0 + (4.0 + tileSize.width) * (CGFloat)idx, 0.0, tileSize.width, tileSize.height);
         [(UIView *)obj setFrame:frame];

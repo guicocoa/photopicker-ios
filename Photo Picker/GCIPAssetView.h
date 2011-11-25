@@ -26,9 +26,7 @@
 
 @class ALAsset;
 
-@interface GCIPAssetView : UIView {
-    
-}
+@interface GCIPAssetView : UIView
 
 @property (nonatomic, retain) ALAsset *asset;
 @property (nonatomic, assign) BOOL selected;

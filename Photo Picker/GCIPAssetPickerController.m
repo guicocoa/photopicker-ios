@@ -30,7 +30,6 @@
 
 @interface GCIPAssetPickerController ()
 @property (nonatomic, copy) NSArray *allAssets;
-@property (nonatomic, assign) NSUInteger numberOfColumns;
 @property (nonatomic, retain) NSMutableSet *selectedAssetURLs;
 @property (nonatomic, retain) ALAssetsGroup *group;
 - (void)updateTitle;
@@ -43,14 +42,12 @@
 
 @synthesize groupIdentifier = __groupIdentifier;
 @synthesize selectedAssetURLs = __selectedAssets;
-@synthesize numberOfColumns = __numberOfColumns;
 @synthesize allAssets = __allAssets;
 @synthesize group = __group;
 
 - (id)initWithNibName:(NSString *)nib bundle:(NSBundle *)bundle {
     self = [super initWithNibName:nib bundle:bundle];
     if (self) {
-        self.numberOfColumns = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? 5 : 4;
         self.selectedAssetURLs = [NSMutableSet set];
         self.groupIdentifier = nil;
     }
@@ -151,7 +148,7 @@
     
     // table view
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    self.tableView.rowHeight = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? 140.0 : 79.0;
+    self.tableView.rowHeight = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? 109.0 : 79.0;
     self.tableView.contentInset = UIEdgeInsetsMake(4.0, 0.0, 0.0, 0.0);
     
     // gesture
@@ -180,17 +177,17 @@
 
 #pragma mark - table view
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return (NSInteger)ceilf((float)[self.allAssets count] / (float)self.numberOfColumns);
+    return (NSInteger)ceilf((float)[self.allAssets count] / 4.0);
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *identifier = @"CellIdentifier";
     GCIPAssetGridCell *cell = (GCIPAssetGridCell *)[tableView dequeueReusableCellWithIdentifier:identifier];
     if (cell == nil) {
         cell = [[[GCIPAssetGridCell alloc] initWithStyle:0 reuseIdentifier:identifier] autorelease];
+        cell.numberOfColumns = 4;
     }
-    cell.numberOfColumns = self.numberOfColumns;
-    NSUInteger start = indexPath.row * self.numberOfColumns;
-    NSUInteger length = MIN([self.allAssets count] - start, self.numberOfColumns);
+    NSUInteger start = indexPath.row * 4;
+    NSUInteger length = MIN([self.allAssets count] - start, 4);
     NSRange range = NSMakeRange(start, length);
     [cell
      setAssets:[self.allAssets subarrayWithRange:range]
@@ -204,8 +201,8 @@
         CGPoint location = [gesture locationInView:gesture.view];
         NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:location];
         if (indexPath == nil) { return; }
-        NSUInteger column = location.x / (self.tableView.bounds.size.width / self.numberOfColumns);
-        NSUInteger index = indexPath.row * self.numberOfColumns + column;
+        NSUInteger column = location.x / (self.tableView.bounds.size.width / 4);
+        NSUInteger index = indexPath.row * 4 + column;
         if (index < [self.allAssets count]) {
             
             // get asset stuff

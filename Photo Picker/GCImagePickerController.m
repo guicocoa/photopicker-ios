@@ -360,6 +360,7 @@
         [controller release];
     }
     if (self) {
+        self.modalPresentationStyle = UIModalPresentationPageSheet;
         self.assetsLibrary = [[[ALAssetsLibrary alloc] init] autorelease];
         self.assetsFilter = [ALAssetsFilter allAssets];
         [[NSNotificationCenter defaultCenter]
