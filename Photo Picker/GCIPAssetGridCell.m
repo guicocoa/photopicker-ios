@@ -79,13 +79,16 @@
     CGSize tileSize = CGSizeMake(0.0, viewSize.height - 4.0);
     NSUInteger columns = self.numberOfColumns;
     NSUInteger spaces = columns + 1;
-    CGFloat totalHorizontalSpace = (CGFloat)spaces * 4.0;
-    CGFloat occupiedWidth = viewSize.width - totalHorizontalSpace;
-    tileSize.width = floor(occupiedWidth / (CGFloat)columns);
+    CGFloat totalSpace = (CGFloat)spaces * 4.0;
+    tileSize.width = floorf((viewSize.width - totalSpace) / (CGFloat)columns);
+    CGFloat occupiedWidth = tileSize.width * 4;
+    CGFloat extraSpace = viewSize.width - occupiedWidth - totalSpace;
     [self.contentView.subviews enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop){
         CGRect frame = CGRectMake(4.0 + (4.0 + tileSize.width) * (CGFloat)idx, 0.0, tileSize.width, tileSize.height);
+        if (idx == columns - 1) { frame.size.width += extraSpace; }
         [(UIView *)obj setFrame:frame];
     }];
+    
 }
 
 @end
