@@ -362,6 +362,7 @@
     if (self) {
         self.modalPresentationStyle = UIModalPresentationPageSheet;
         self.assetsLibrary = [[[ALAssetsLibrary alloc] init] autorelease];
+        [self.assetsLibrary writeImageToSavedPhotosAlbum:nil metadata:nil completionBlock:nil];
         self.assetsFilter = [ALAssetsFilter allAssets];
         [[NSNotificationCenter defaultCenter]
          addObserver:self
