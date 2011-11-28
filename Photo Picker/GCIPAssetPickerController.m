@@ -68,6 +68,8 @@
     __groupIdentifier = [identifier copy];
     [self cancel];
     [self reloadAssets];
+    self.tableView.contentOffset = CGPointMake(0.0, -4.0);
+    [self.tableView flashScrollIndicators];
 }
 - (void)reloadAssets {
     
