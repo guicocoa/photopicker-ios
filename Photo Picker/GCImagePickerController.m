@@ -235,6 +235,13 @@
                                          nil];
                  for (NSNumber *type in typeNumbers) {
                      NSArray *groupsByType = [dictionary objectForKey:type];
+                     if ([type unsignedIntegerValue] == ALAssetsGroupFaces) {
+                         groupsByType = [groupsByType sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+                             NSString *name1 = [obj1 valueForProperty:ALAssetsGroupPropertyName];
+                             NSString *name2 = [obj2 valueForProperty:ALAssetsGroupPropertyName];
+                             return [name1 localizedCompare:name2];
+                         }];
+                     }
                      [groups addObjectsFromArray:groupsByType];
                      [dictionary removeObjectForKey:type];
                  }
