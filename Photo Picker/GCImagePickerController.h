@@ -22,8 +22,8 @@
  
  */
  
-#ifndef __IPHONE_4_0
-#error "This project uses features only available in iPhone SDK 4.0 and later."
+#ifndef __IPHONE_5_0
+    #error "This project uses features only available in iPhone SDK 5.0 and later."
 #endif
 
 #import <UIKit/UIKit.h>
@@ -55,61 +55,5 @@ typedef void (^GCImagePickerControllerActionBlock) (NSSet *set);
 
 // called when assets fail to load
 + (void)failedToLoadAssetsWithError:(NSError *)error;
-
-// get the system extension given an asset representation
-+ (NSString *)extensionForAssetRepresentation:(ALAssetRepresentation *)rep;
-
-// get the MIME type given an asset representation
-+ (NSString *)MIMETypeForAssetRepresentation:(ALAssetRepresentation *)rep;
-
-// get the system extension for a given UTI
-+ (NSString *)extensionForUTI:(CFStringRef)UTI;
-
-// get the MIME type for a given UTI
-+ (NSString *)MIMETypeForUTI:(CFStringRef)UTI;
-
-// get data given an asset representation
-+ (NSData *)dataForAssetRepresentation:(ALAssetRepresentation *)rep;
-
-// write data to a given file
-+ (BOOL)writeDataForAssetRepresentation:(ALAssetRepresentation *)rep
-                                 toFile:(NSString *)path
-                             atomically:(BOOL)atomically;
-
-/*
- 
- Get groups sorted the same as seen in UIImagePickerController
- 
- types: Filter group types. Pass ALAssetGroupAll for all groups.
- filter: Filter asset types. Groups with no assets matching the filter will be
- omitted.
- error: Populated if an error occurs.
- 
- returns: An array of asset groups.
- 
- */
-+ (NSArray *)assetsGroupsInLibary:(ALAssetsLibrary *)library
-                        withTypes:(ALAssetsGroupType)types
-                     assetsFilter:(ALAssetsFilter *)filter
-                            error:(NSError **)inError;
-
-/*
- 
- Get assets belonging to a certain group.
- 
- identifier: The persistent identifier of the group.
- filter: Filter the types of assets returned.
- group: Populated with the resulting group.
- error: Populated if an error occurs.
- 
- returns: An array of assets.
- 
- */
-+ (NSArray *)assetsInLibary:(ALAssetsLibrary *)library 
-        groupWithIdentifier:(NSString *)identifier
-                     filter:(ALAssetsFilter *)filter
-                      group:(ALAssetsGroup **)inGroup
-                      error:(NSError **)inError;
-
 
 @end

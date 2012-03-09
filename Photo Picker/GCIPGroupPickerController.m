@@ -26,9 +26,10 @@
 #import "GCIPAssetPickerController.h"
 #import "GCImagePickerController.h"
 
+#import "ALAssetsLibrary+GCImagePickerControllerAdditions.h"
+
 @interface GCIPGroupPickerController ()
 @property (nonatomic, readwrite, copy) NSArray *groups;
-@property (nonatomic, retain) NSNumberFormatter *numberFormatter;
 @end
 
 @implementation GCIPGroupPickerController
@@ -38,7 +39,6 @@
 @synthesize delegate                    = __delegate;
 @synthesize showDisclosureIndicators    = __showDisclosureIndicators;
 @synthesize groups                      = __groups;
-@synthesize numberFormatter             = __numberFormatter;
 
 - (id)initWithNibName:(NSString *)nib bundle:(NSBundle *)bundle {
     self = [super initWithNibName:nib bundle:bundle];
@@ -53,60 +53,63 @@
     }
     return self;
 }
+
 - (void)dealloc {
     self.groups = nil;
-    self.numberFormatter = nil;
     [super dealloc];
 }
+
 - (void)reloadAssets {
     if ([self isViewLoaded]) {
+        ALAssetsLibrary *library = [self.parentViewController performSelector:@selector(assetsLibrary)];
+        ALAssetsFilter *filter = [self.parentViewController performSelector:@selector(assetsFilter)];
         NSError *error = nil;
-        self.groups = [GCImagePickerController
-                       assetsGroupsInLibary:self.parent.assetsLibrary
-                       withTypes:ALAssetsGroupAll
-                       assetsFilter:self.parent.assetsFilter
+        self.groups = [library
+                       assetsGroupsWithTypes:ALAssetsGroupAll
+                       assetsFilter:filter
                        error:&error];
         if (error) {
             [GCImagePickerController failedToLoadAssetsWithError:error];
         }
         self.tableView.hidden = ([self.groups count] == 0);
-        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+//        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
         [self.tableView reloadData];
-        if (indexPath && indexPath.row < [self.groups count]) {
-            [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
-        }
+//        if (indexPath && indexPath.row < [self.groups count]) {
+//            [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+//        }
     }
 }
 
 #pragma mark - view lifecycle
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-    [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
-    self.numberFormatter = formatter;
-    [formatter release];
     self.tableView.rowHeight = 60.0;
     [self reloadAssets];
 }
+
 - (void)viewDidUnload {
     [super viewDidUnload];
     self.groups = nil;
-    self.numberFormatter = nil;
 }
+
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:animated];
 }
 
 #pragma mark - button actions
+
 - (void)done {
     [self dismissModalViewControllerAnimated:YES];
 }
 
 #pragma mark - table view
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	return [self.groups count];
 }
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	static NSString *identifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
@@ -118,9 +121,10 @@
 	cell.textLabel.text = [group valueForProperty:ALAssetsGroupPropertyName];
 	cell.imageView.image = [UIImage imageWithCGImage:[group posterImage]];
     NSNumber *count = [NSNumber numberWithInteger:[group numberOfAssets]];
-    cell.detailTextLabel.text = [self.numberFormatter stringFromNumber:count];
+    cell.detailTextLabel.text = [count stringValue];
     return cell;
 }
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     ALAssetsGroup *group = [self.groups objectAtIndex:indexPath.row];
     if (self.delegate) {

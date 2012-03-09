@@ -28,6 +28,8 @@
 #import "GCIPAssetGridCell.h"
 #import "GCImagePickerController.h"
 
+#import "ALAssetsLibrary+GCImagePickerControllerAdditions.h"
+
 @interface GCIPAssetPickerController ()
 @property (nonatomic, copy) NSArray *allAssets;
 @property (nonatomic, retain) NSMutableSet *selectedAssetURLs;
@@ -82,16 +84,15 @@
     // view is loaded
     else if ([self isViewLoaded]) {
         
-        // cache vars
-        ALAssetsLibrary *library = self.parent.assetsLibrary;
-        ALAssetsFilter *filter = self.parent.assetsFilter;
+        // collect variables
+        ALAssetsLibrary *library = [self.parentViewController performSelector:@selector(assetsLibrary)];
+        ALAssetsFilter *filter = [self.parentViewController performSelector:@selector(assetsFilter)];
         ALAssetsGroup *group = nil;
         NSError *error = nil;
         
         // get assets
-        self.allAssets = [GCImagePickerController
-                          assetsInLibary:library
-                          groupWithIdentifier:self.groupIdentifier
+        self.allAssets = [library
+                          assetsInGroupWithIdentifier:self.groupIdentifier
                           filter:filter
                           group:&group
                           error:&error];
