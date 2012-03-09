@@ -33,42 +33,36 @@
 
 @implementation GCIPViewController_Pad
 
-#pragma mark - object methods
+@synthesize assetPickerController = __assetPickerController;
+@synthesize groupPickerController = __groupPickerController;
 
-@synthesize assetPickerController   = __assetPickerController;
-@synthesize groupPickerController   = __groupPickerController;
+#pragma mark - object methods
 
 - (id)initWithNibName:(NSString *)nib bundle:(NSBundle *)bundle {
     self = [super initWithNibName:nib bundle:bundle];
     if (self) {
         
         // create group picker controller
-        GCIPGroupPickerController *groupPicker = [[GCIPGroupPickerController alloc] initWithNibName:nil bundle:nil];
+        GCIPGroupPickerController *groupPicker = [[[GCIPGroupPickerController alloc] initWithNibName:nil bundle:nil] autorelease];
         groupPicker.clearsSelectionOnViewWillAppear = NO;
         groupPicker.showDisclosureIndicators = NO;
         groupPicker.delegate = self;
         [groupPicker addObserver:self forKeyPath:@"groups" options:0 context:0];
         self.title = groupPicker.title;
+        [self addChildViewController:groupPicker];
+        [groupPicker didMoveToParentViewController:self];
         self.groupPickerController = groupPicker;
-        [groupPicker release];
         
         // create asset picker
-        GCIPAssetPickerController *assetPicker = [[GCIPAssetPickerController alloc] initWithNibName:nil bundle:nil];
+        GCIPAssetPickerController *assetPicker = [[[GCIPAssetPickerController alloc] initWithNibName:nil bundle:nil] autorelease];
+        [self addChildViewController:assetPicker];
+        [assetPicker didMoveToParentViewController:self];
         self.assetPickerController = assetPicker;
-        [assetPicker release];
-        
-        // set parent controllers
-        @try {
-            [self.assetPickerController setValue:self forKey:@"parentViewController"];
-            [self.groupPickerController setValue:self forKey:@"parentViewController"];
-        }
-        @catch (NSException *exception) {
-            NSLog(@"%@", exception);
-        }
         
     }
     return self;
 }
+
 - (void)dealloc {
     
     // clear view controllers
@@ -82,6 +76,7 @@
     [super dealloc];
     
 }
+
 - (id)forwardingTargetForSelector:(SEL)selector {
     UIViewController *parent = self.parentViewController;
     if ([parent respondsToSelector:selector]) {
@@ -91,15 +86,17 @@
         return nil;
     }
 }
+
 - (void)reloadAssets {
-    [self.groupPickerController reloadAssets];
-    [self.assetPickerController reloadAssets];
+    [self.childViewControllers makeObjectsPerformSelector:@selector(reloadAssets)];
 }
+
 - (UINavigationItem *)navigationItem {
     return self.assetPickerController.navigationItem;
 }
 
 #pragma mark - view lifecycle
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -122,31 +119,9 @@
     [self.view addSubview:view];
     
 }
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    [self.groupPickerController viewWillAppear:animated];
-    [self.assetPickerController viewWillAppear:animated];
-}
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    [self.groupPickerController viewDidAppear:animated];
-    [self.assetPickerController viewDidAppear:animated];
-}
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-    [self.groupPickerController viewWillDisappear:animated];
-    [self.assetPickerController viewWillDisappear:animated];
-}
-- (void)viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
-    [self.groupPickerController viewDidDisappear:animated];
-    [self.assetPickerController viewDidDisappear:animated];
-}
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)orientation {
-    return YES;
-}
 
 #pragma mark - kvo
+
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if (object == self.groupPickerController && [keyPath isEqualToString:@"groups"]) {
         if (!self.assetPickerController.groupIdentifier && [self.groupPickerController.groups count]) {
@@ -162,6 +137,7 @@
 }
 
 #pragma mark - group picker delegate
+
 - (void)groupPicker:(GCIPGroupPickerController *)picker didSelectGroup:(ALAssetsGroup *)group {
     NSString *identifier = [group valueForProperty:ALAssetsGroupPropertyPersistentID];
     self.assetPickerController.groupIdentifier = identifier;

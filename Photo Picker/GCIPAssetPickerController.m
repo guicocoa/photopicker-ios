@@ -176,6 +176,7 @@
 - (void)action {
     GCImagePickerControllerActionBlock block = [self.parentViewController performSelector:@selector(actionBlock)];
     if (block) { block([[self.selectedAssetURLs copy] autorelease]); }
+    [self cancel];
 }
 
 #pragma mark - table view
