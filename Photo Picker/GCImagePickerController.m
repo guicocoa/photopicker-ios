@@ -76,13 +76,11 @@
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         GCIPViewController_Pad *controller = [[GCIPViewController_Pad alloc] initWithNibName:nil bundle:nil];
         self = [super initWithRootViewController:controller];
-        controller.parent = self;
         [controller release];
     }
     else {
         GCIPGroupPickerController *controller = [[GCIPGroupPickerController alloc] initWithNibName:nil bundle:nil];
         self = [super initWithRootViewController:controller];
-        controller.parent = self;
         [controller release];
     }
     if (self) {

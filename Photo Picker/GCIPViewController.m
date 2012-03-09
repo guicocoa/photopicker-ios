@@ -28,8 +28,6 @@
 
 @implementation GCIPViewController
 
-@synthesize parent = __parent;
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];

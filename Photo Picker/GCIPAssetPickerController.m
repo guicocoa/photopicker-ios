@@ -174,8 +174,8 @@
 
 #pragma mark - button actions
 - (void)action {
-    self.parent.actionBlock([[self.selectedAssetURLs copy] autorelease]);
-    [self cancel];
+    GCImagePickerControllerActionBlock block = [self.parentViewController performSelector:@selector(actionBlock)];
+    if (block) { block([[self.selectedAssetURLs copy] autorelease]); }
 }
 
 #pragma mark - table view
@@ -227,8 +227,9 @@
                 [self cancel];
             }
             else {
+                NSString *title = [self.parentViewController performSelector:@selector(actionTitle)];
                 UIBarButtonItem *item = [[[UIBarButtonItem alloc]
-                                          initWithTitle:self.parent.actionTitle
+                                          initWithTitle:title
                                           style:UIBarButtonItemStyleDone
                                           target:self
                                           action:@selector(action)]

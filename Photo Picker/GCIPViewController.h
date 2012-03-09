@@ -35,15 +35,6 @@
  */
 @interface GCIPViewController : UIViewController
 
-
-/*
- 
- Used to refer back to the controlling object. This object holds all items
- necessary for the functionality of the photo picker.
- 
- */
-@property (nonatomic, assign) GCImagePickerController *parent;
-
 /*
  
  Perform a reload of the assets we are displaying. The default implementation of

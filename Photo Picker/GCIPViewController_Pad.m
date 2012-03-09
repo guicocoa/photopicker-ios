@@ -82,17 +82,21 @@
     [super dealloc];
     
 }
+- (id)forwardingTargetForSelector:(SEL)selector {
+    UIViewController *parent = self.parentViewController;
+    if ([parent respondsToSelector:selector]) {
+        return parent;
+    }
+    else {
+        return nil;
+    }
+}
 - (void)reloadAssets {
     [self.groupPickerController reloadAssets];
     [self.assetPickerController reloadAssets];
 }
 - (UINavigationItem *)navigationItem {
     return self.assetPickerController.navigationItem;
-}
-- (void)setParent:(GCImagePickerController *)parent {
-    [super setParent:parent];
-    self.groupPickerController.parent = parent;
-    self.assetPickerController.parent = parent;
 }
 
 #pragma mark - view lifecycle

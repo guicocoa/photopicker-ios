@@ -132,7 +132,6 @@
     }
     else {
         GCIPAssetPickerController *assetPicker = [[GCIPAssetPickerController alloc] initWithNibName:nil bundle:nil];
-        assetPicker.parent = self.parent;
         assetPicker.groupIdentifier = [group valueForProperty:ALAssetsGroupPropertyPersistentID];
         [self.navigationController pushViewController:assetPicker animated:YES];
         [assetPicker release];
