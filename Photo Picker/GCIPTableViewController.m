@@ -30,6 +30,7 @@
 @synthesize clearsSelectionOnViewWillAppear = __clearsSelectionOnViewWillAppear;
 
 #pragma mark - object methods
+
 - (id)initWithNibName:(NSString *)nib bundle:(NSBundle *)bundle {
     self = [super initWithNibName:nib bundle:bundle];
     if (self) {
@@ -37,12 +38,14 @@
     }
     return self;
 }
+
 - (void)dealloc {
     self.tableView = nil;
     [super dealloc];
 }
 
 #pragma mark - view lifecycle
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -65,10 +68,12 @@
     [tableView release];
     
 }
+
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     [self.tableView flashScrollIndicators];
 }
+
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     if (self.clearsSelectionOnViewWillAppear) {
@@ -76,20 +81,28 @@
         [self.tableView deselectRowAtIndexPath:indexPath animated:animated];
     }
 }
+
 - (void)viewDidUnload {
     [super viewDidUnload];
     self.tableView = nil;
 }
+
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
     [self.tableView setEditing:editing animated:animated];
 }
 
 #pragma mark - table view
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 0;
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return 0;
 }
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 0;
+    return nil;
 }
 
 @end

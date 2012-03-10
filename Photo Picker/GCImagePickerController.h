@@ -29,31 +29,30 @@
 #import <UIKit/UIKit.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 
-// block to be called on each selected asset
+/*
+ 
+ This block will be called with a set of URLs that correspond to the selected
+ photo library assets. These assets can be fetched using methods on
+ ALAssetLibrary.
+ 
+ */
 typedef void (^GCImagePickerControllerActionBlock) (NSSet *set);
 
 @interface GCImagePickerController : UINavigationController
 
-#pragma mark - properties
-
-// used to load assets
-@property (nonatomic, readonly, retain) ALAssetsLibrary *assetsLibrary;
-
-// filter assets
+/*
+ 
+ Properties that allow you customize the functionality of the image picker. It
+ is best that these properties be set before the view loads.
+ 
+ */
 @property (nonatomic, retain) ALAssetsFilter *assetsFilter;
-
-// title of custom action button
 @property (nonatomic, copy) NSString *actionTitle;
-
-// action to perform with set of selected asset URLs
 @property (nonatomic, copy) GCImagePickerControllerActionBlock actionBlock;
 
-#pragma mark - class methods
-
-// get a localized string from the library
+// internal resources
+@property (nonatomic, readonly, retain) ALAssetsLibrary *assetsLibrary;
 + (NSString *)localizedString:(NSString *)key;
-
-// called when assets fail to load
 + (void)failedToLoadAssetsWithError:(NSError *)error;
 
 @end

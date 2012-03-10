@@ -30,7 +30,6 @@
 
 @interface GCImagePickerController ()
 @property (nonatomic, readwrite, retain) ALAssetsLibrary *assetsLibrary;
-- (void)reloadChildren;
 @end
 
 @implementation GCImagePickerController
@@ -41,7 +40,6 @@
     return [[NSBundle mainBundle] localizedStringForKey:key value:nil table:NSStringFromClass(self)];
 }
 + (void)failedToLoadAssetsWithError:(NSError *)error {
-    NSLog(@"%@", error);
     NSInteger code = [error code];
     if (code == ALAssetsLibraryAccessUserDeniedError || code == ALAssetsLibraryAccessGloballyDeniedError) {
         UIAlertView *alert = [[UIAlertView alloc]
@@ -114,15 +112,13 @@
     [super dealloc];
     
 }
-- (void)reloadChildren {
+
+- (void)assetsLibraryDidChange:(NSNotification *)notif {
     [self.viewControllers enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         if ([obj isKindOfClass:[GCIPViewController class]]) {
             [(GCIPViewController *)obj reloadAssets];
         }
     }];
-}
-- (void)assetsLibraryDidChange:(NSNotification *)notif {
-    [self reloadChildren];
 }
 
 @end

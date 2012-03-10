@@ -42,6 +42,7 @@
 @synthesize selectedIconView    = __selectedIconView;
 
 #pragma mark - object methods
+
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
@@ -83,6 +84,7 @@
     }
     return self;
 }
+
 - (void)dealloc {
     self.asset = nil;
     self.thumbnailView = nil;
@@ -90,6 +92,7 @@
     self.videoIconView = nil;
     [super dealloc];
 }
+
 - (void)setAsset:(ALAsset *)asset {
     
     // check for duplicate
@@ -124,9 +127,11 @@
     }
     
 }
+
 - (void)setSelected:(BOOL)selected {
     self.selectedIconView.hidden = !selected;
 }
+
 - (void)layoutSubviews {
     [super layoutSubviews];
     

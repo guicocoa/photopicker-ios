@@ -32,13 +32,11 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
 }
+
 - (void)reloadAssets {
-    if ([self isViewLoaded]) {
-        
-        // do reloading here
-        
-    }
+    [self doesNotRecognizeSelector:_cmd];
 }
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)orientation {
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         return YES;

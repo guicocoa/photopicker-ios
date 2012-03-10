@@ -40,12 +40,12 @@
 
 @implementation GCIPAssetPickerController
 
-#pragma mark - object methods
-
 @synthesize groupIdentifier = __groupIdentifier;
 @synthesize selectedAssetURLs = __selectedAssets;
 @synthesize allAssets = __allAssets;
 @synthesize group = __group;
+
+#pragma mark - object methods
 
 - (id)initWithNibName:(NSString *)nib bundle:(NSBundle *)bundle {
     self = [super initWithNibName:nib bundle:bundle];
@@ -55,6 +55,7 @@
     }
     return self;
 }
+
 - (void)dealloc {
     self.groupIdentifier = nil;
     self.selectedAssetURLs = nil;
@@ -62,6 +63,7 @@
     self.group = nil;
     [super dealloc];
 }
+
 - (void)setGroupIdentifier:(NSString *)identifier {
     if ([identifier isEqualToString:__groupIdentifier]) {
         return;
@@ -73,6 +75,7 @@
     self.tableView.contentOffset = CGPointMake(0.0, -4.0);
     [self.tableView flashScrollIndicators];
 }
+
 - (void)reloadAssets {
     
     // no group
@@ -109,6 +112,7 @@
     self.tableView.hidden = (![self.allAssets count]);
     
 }
+
 - (void)updateTitle {
     NSUInteger count = [self.selectedAssetURLs count];
     if (count == 1) {
@@ -123,9 +127,11 @@
         self.title = [self.group valueForProperty:ALAssetsGroupPropertyName];
     }
 }
+
 - (void)done {
     [self dismissModalViewControllerAnimated:YES];
 }
+
 - (void)cancel {
     self.selectedAssetURLs = [NSMutableSet set];
     self.navigationItem.leftBarButtonItem = nil;
@@ -144,6 +150,7 @@
 }
 
 #pragma mark - view lifecycle
+
 - (void)viewDidLoad {
     
     // super
@@ -167,12 +174,14 @@
     [self reloadAssets];
     
 }
+
 - (void)viewDidUnload {
     [super viewDidUnload];
     self.allAssets = nil;
 }
 
 #pragma mark - button actions
+
 - (void)action {
     GCImagePickerControllerActionBlock block = [self.parentViewController performSelector:@selector(actionBlock)];
     if (block) { block([[self.selectedAssetURLs copy] autorelease]); }
@@ -180,9 +189,15 @@
 }
 
 #pragma mark - table view
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return (NSInteger)ceilf((float)[self.allAssets count] / 4.0);
 }
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *identifier = @"CellIdentifier";
     GCIPAssetGridCell *cell = (GCIPAssetGridCell *)[tableView dequeueReusableCellWithIdentifier:identifier];
@@ -200,6 +215,7 @@
 }
 
 #pragma mark - gestures
+
 - (void)tableDidReceiveTap:(UITapGestureRecognizer *)gesture {
     if (gesture.state == UIGestureRecognizerStateEnded && gesture.view == self.tableView) {
         CGPoint location = [gesture locationInView:gesture.view];

@@ -32,6 +32,7 @@
 @synthesize numberOfColumns = __numberOfColumns;
 
 #pragma mark - object methods
+
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)identifier {
     self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     if (self) {
@@ -39,6 +40,7 @@
     }
     return self;
 }
+
 - (void)setNumberOfColumns:(NSUInteger)count {
     if (count == __numberOfColumns) {
         return;
@@ -46,6 +48,7 @@
     __numberOfColumns = count;
     [self setNeedsLayout];
 }
+
 - (void)setAssets:(NSArray *)assets selected:(NSSet *)selected {
     NSUInteger count = [assets count];
     for (NSUInteger index = 0; index < self.numberOfColumns; index++) {
@@ -73,6 +76,7 @@
         
     }
 }
+
 - (void)layoutSubviews {
     [super layoutSubviews];
     CGSize viewSize = self.contentView.bounds.size;

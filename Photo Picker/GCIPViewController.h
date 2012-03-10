@@ -25,7 +25,6 @@
 #import <UIKit/UIKit.h>
 
 @class ALAssetsLibrary;
-@class GCImagePickerController;
 
 /*
  
