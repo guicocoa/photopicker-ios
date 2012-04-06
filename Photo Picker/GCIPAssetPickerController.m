@@ -129,7 +129,8 @@
 }
 
 - (void)done {
-    [self dismissModalViewControllerAnimated:YES];
+    GCImagePickerControllerDidFinishBlock block = [self.parentViewController performSelector:@selector(didFinishBlock)];
+    if (block) { block(); }
 }
 
 - (void)cancel {

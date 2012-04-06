@@ -38,6 +38,13 @@
  */
 typedef void (^GCImagePickerControllerActionBlock) (NSSet *set);
 
+/*
+ 
+ Block called when the "Done" button is pressed. Dismiss the picker here.
+ 
+ */
+typedef void (^GCImagePickerControllerDidFinishBlock) ();
+
 @interface GCImagePickerController : UINavigationController
 
 /*
@@ -49,6 +56,7 @@ typedef void (^GCImagePickerControllerActionBlock) (NSSet *set);
 @property (nonatomic, retain) ALAssetsFilter *assetsFilter;
 @property (nonatomic, copy) NSString *actionTitle;
 @property (nonatomic, copy) GCImagePickerControllerActionBlock actionBlock;
+@property (nonatomic, copy) GCImagePickerControllerDidFinishBlock didFinishBlock;
 
 // internal resources
 @property (nonatomic, readonly, retain) ALAssetsLibrary *assetsLibrary;

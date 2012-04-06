@@ -69,6 +69,7 @@
 @synthesize actionBlock     = __actionBlock;
 @synthesize actionTitle     = __actionTitle;
 @synthesize assetsFilter    = __assetsFilter;
+@synthesize didFinishBlock  = __didFinishBlock;
 
 - (id)initWithRootViewController:(UIViewController *)root {
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
@@ -107,6 +108,7 @@
     self.actionBlock = nil;
     self.actionTitle = nil;
     self.assetsFilter = nil;
+    self.didFinishBlock = nil;
     
     // super
     [super dealloc];
