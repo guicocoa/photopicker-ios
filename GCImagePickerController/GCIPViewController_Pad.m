@@ -22,6 +22,8 @@
  
  */
 
+#import <AssetsLibrary/AssetsLibrary.h>
+
 #import "GCIPViewController_Pad.h"
 #import "GCImagePickerController.h"
 #import "GCIPAssetPickerController.h"

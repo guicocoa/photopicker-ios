@@ -22,20 +22,35 @@
  
  */
 
-#import "GCIPViewController.h"
+#import "GCIPTableViewController.h"
+
+@class GCIPGroupPickerController;
+@class ALAssetsGroup;
 
 /*
  
- Defines an abstract base class for view controllers that show items from the
- assets library in a table format.
+ Delegate protocol that allows customization of the action that will be
+ performed when a group is selected from the provided controller.
  
  */
-@interface GCIPTableViewController : GCIPViewController <UITableViewDelegate, UITableViewDataSource>
+@protocol GCIPGroupPickerControllerDelegate <NSObject>
+@required
 
-// table view - this should be hidden when there are no assets
-@property (nonatomic, retain) UITableView *tableView;
+// callback for group selection
+- (void)groupPicker:(GCIPGroupPickerController *)picker didSelectGroup:(ALAssetsGroup *)group;
 
-// set whether the table should clear selection
-@property (nonatomic, assign) BOOL clearsSelectionOnViewWillAppear;
+@end
+
+// select a group from the assets library
+@interface GCIPGroupPickerController : GCIPTableViewController
+
+// group picker delegate
+@property (nonatomic, assign) id<GCIPGroupPickerControllerDelegate> delegate;
+
+// list of groups
+@property (nonatomic, readonly) NSArray *groups;
+
+// show or hide disclosure indicators
+@property (nonatomic, assign) BOOL showDisclosureIndicators;
 
 @end

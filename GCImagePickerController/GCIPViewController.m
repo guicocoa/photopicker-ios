@@ -22,35 +22,24 @@
  
  */
 
-#import "GCIPTableViewController.h"
+#import <AssetsLibrary/AssetsLibrary.h>
 
-@class GCIPGroupPickerController;
-@class ALAssetsGroup;
+#import "GCIPViewController.h"
 
-/*
- 
- Delegate protocol that allows customization of the action that will be
- performed when a group is selected from the provided controller.
- 
- */
-@protocol GCIPGroupPickerControllerDelegate <NSObject>
-@required
+@implementation GCIPViewController
 
-// callback for group selection
-- (void)groupPicker:(GCIPGroupPickerController *)picker didSelectGroup:(ALAssetsGroup *)group;
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.view.backgroundColor = [UIColor whiteColor];
+}
 
-@end
+- (void)reloadAssets {
+    [self doesNotRecognizeSelector:_cmd];
+}
 
-// select a group from the assets library
-@interface GCIPGroupPickerController : GCIPTableViewController
-
-// group picker delegate
-@property (nonatomic, assign) id<GCIPGroupPickerControllerDelegate> delegate;
-
-// list of groups
-@property (nonatomic, readonly, copy) NSArray *groups;
-
-// show or hide disclosure indicators
-@property (nonatomic, assign) BOOL showDisclosureIndicators;
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)orientation {
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) { return YES; }
+    else { return (orientation == UIInterfaceOrientationPortrait); }
+}
 
 @end

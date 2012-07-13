@@ -26,22 +26,17 @@
 
 @implementation GCIPTableViewController
 
-@synthesize tableView = __tableView;
-@synthesize clearsSelectionOnViewWillAppear = __clearsSelectionOnViewWillAppear;
+@synthesize tableView = _tableView;
+@synthesize clearsSelectionOnViewWillAppear = _clearsSelectionOnViewWillAppear;
 
 #pragma mark - object methods
 
-- (id)initWithNibName:(NSString *)nib bundle:(NSBundle *)bundle {
-    self = [super initWithNibName:nib bundle:bundle];
+- (id)init {
+    self = [super init];
     if (self) {
         self.clearsSelectionOnViewWillAppear = YES;
     }
     return self;
-}
-
-- (void)dealloc {
-    self.tableView = nil;
-    [super dealloc];
 }
 
 #pragma mark - view lifecycle
@@ -56,7 +51,6 @@
     imageView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
     imageView.contentMode = UIViewContentModeCenter;
     [self.view addSubview:imageView];
-    [imageView release];
     
     // table view
     UITableView *tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
@@ -65,7 +59,6 @@
     tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
     [self.view addSubview:tableView];
     self.tableView = tableView;
-    [tableView release];
     
 }
 
@@ -80,11 +73,6 @@
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
         [self.tableView deselectRowAtIndexPath:indexPath animated:animated];
     }
-}
-
-- (void)viewDidUnload {
-    [super viewDidUnload];
-    self.tableView = nil;
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {

@@ -21,13 +21,11 @@
  THE SOFTWARE.
  
  */
- 
-#ifndef __IPHONE_5_0
-    #error "This project uses features only available in iPhone SDK 5.0 and later."
-#endif
 
 #import <UIKit/UIKit.h>
-#import <AssetsLibrary/AssetsLibrary.h>
+
+@class ALAssetsLibrary;
+@class ALAssetsFilter;
 
 /*
  
@@ -50,16 +48,24 @@ typedef void (^GCImagePickerControllerDidFinishBlock) ();
 /*
  
  Properties that allow you customize the functionality of the image picker. It
- is best that these properties be set before the view loads.
+ is best that these properties be set before presenting the view. Changing them
+ after the fact will result in unknown behavior.
  
  */
-@property (nonatomic, retain) ALAssetsFilter *assetsFilter;
+@property (nonatomic, strong) ALAssetsFilter *assetsFilter;
 @property (nonatomic, copy) NSString *actionTitle;
 @property (nonatomic, copy) GCImagePickerControllerActionBlock actionBlock;
-@property (nonatomic, copy) GCImagePickerControllerDidFinishBlock didFinishBlock;
+@property (nonatomic, copy) GCImagePickerControllerDidFinishBlock finishBlock;
+
+/*
+ 
+ Create a new picker which should be shown as a modal view controller.
+ 
+ */
++ (GCImagePickerController *)picker;
 
 // internal resources
-@property (nonatomic, readonly, retain) ALAssetsLibrary *assetsLibrary;
+@property (nonatomic, readonly) ALAssetsLibrary *assetsLibrary;
 + (NSString *)localizedString:(NSString *)key;
 + (void)failedToLoadAssetsWithError:(NSError *)error;
 

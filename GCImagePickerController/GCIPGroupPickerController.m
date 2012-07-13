@@ -28,35 +28,27 @@
 
 #import "ALAssetsLibrary+GCImagePickerControllerAdditions.h"
 
-@interface GCIPGroupPickerController ()
-@property (nonatomic, readwrite, copy) NSArray *groups;
-@end
-
-@implementation GCIPGroupPickerController
+@implementation GCIPGroupPickerController {
+    NSNumberFormatter *_numberFormatter;
+}
 
 #pragma mark - object methods
 
-@synthesize delegate                    = __delegate;
-@synthesize showDisclosureIndicators    = __showDisclosureIndicators;
-@synthesize groups                      = __groups;
+@synthesize delegate = _delegate;
+@synthesize showDisclosureIndicators = _showDisclosureIndicators;
+@synthesize groups = _groups;
 
-- (id)initWithNibName:(NSString *)nib bundle:(NSBundle *)bundle {
-    self = [super initWithNibName:nib bundle:bundle];
+- (id)init {
+    self = [super init];
     if (self) {
         self.title = [GCImagePickerController localizedString:@"PHOTO_LIBRARY"];
         self.showDisclosureIndicators = YES;
-        self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc]
-                                                   initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-                                                   target:self
-                                                   action:@selector(done)]
-                                                  autorelease];
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]
+                                                  initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                                  target:self
+                                                  action:@selector(done)];
     }
     return self;
-}
-
-- (void)dealloc {
-    self.groups = nil;
-    [super dealloc];
 }
 
 - (void)reloadAssets {
@@ -64,19 +56,19 @@
         ALAssetsLibrary *library = [self.parentViewController performSelector:@selector(assetsLibrary)];
         ALAssetsFilter *filter = [self.parentViewController performSelector:@selector(assetsFilter)];
         NSError *error = nil;
-        self.groups = [library
-                       assetsGroupsWithTypes:ALAssetsGroupAll
-                       assetsFilter:filter
-                       error:&error];
+//        self.groups = [library
+//                       assetsGroupsWithTypes:ALAssetsGroupAll
+//                       assetsFilter:filter
+//                       error:&error];
         if (error) {
             [GCImagePickerController failedToLoadAssetsWithError:error];
         }
         self.tableView.hidden = ([self.groups count] == 0);
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
         [self.tableView reloadData];
-        if (indexPath && (NSUInteger)indexPath.row < [self.groups count]) {
-            [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
-        }
+//        if (indexPath && (NSUInteger)indexPath.row < [self.groups count]) {
+//            [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+//        }
     }
 }
 
@@ -84,19 +76,22 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    _numberFormatter = [[NSNumberFormatter alloc] init];
     self.tableView.rowHeight = 60.0;
     [self reloadAssets];
 }
 
-- (void)viewDidUnload {
-    [super viewDidUnload];
-    self.groups = nil;
+- (void)didReceiveMemoryWarning {
+    if (![self isViewLoaded]) {
+        _groups = nil;
+        _numberFormatter = nil;
+    }
 }
 
 #pragma mark - button actions
 
 - (void)done {
-    GCImagePickerControllerDidFinishBlock block = [self.parentViewController performSelector:@selector(didFinishBlock)];
+    GCImagePickerControllerDidFinishBlock block = [self.parentViewController performSelector:@selector(finishBlock)];
     if (block) { block(); }
 }
 
@@ -114,14 +109,14 @@
 	static NSString *identifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identifier] autorelease];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identifier];
         cell.accessoryType = (self.showDisclosureIndicators) ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
     }
     ALAssetsGroup *group = [self.groups objectAtIndex:indexPath.row];
 	cell.textLabel.text = [group valueForProperty:ALAssetsGroupPropertyName];
 	cell.imageView.image = [UIImage imageWithCGImage:[group posterImage]];
     NSNumber *count = [NSNumber numberWithInteger:[group numberOfAssets]];
-    cell.detailTextLabel.text = [count stringValue];
+    cell.detailTextLabel.text = [_numberFormatter stringFromNumber:count];
     return cell;
 }
 
@@ -131,10 +126,9 @@
         [self.delegate groupPicker:self didSelectGroup:group];
     }
     else {
-        GCIPAssetPickerController *assetPicker = [[GCIPAssetPickerController alloc] initWithNibName:nil bundle:nil];
+        GCIPAssetPickerController *assetPicker = [[GCIPAssetPickerController alloc] init];
         assetPicker.groupIdentifier = [group valueForProperty:ALAssetsGroupPropertyPersistentID];
         [self.navigationController pushViewController:assetPicker animated:YES];
-        [assetPicker release];
     }
 }
 

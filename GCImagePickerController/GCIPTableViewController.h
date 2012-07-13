@@ -22,25 +22,20 @@
  
  */
 
-#import <AssetsLibrary/AssetsLibrary.h>
-
 #import "GCIPViewController.h"
 
-@implementation GCIPViewController
+/*
+ 
+ Defines an abstract base class for view controllers that show items from the
+ assets library in a table format.
+ 
+ */
+@interface GCIPTableViewController : GCIPViewController <UITableViewDelegate, UITableViewDataSource>
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    self.view.backgroundColor = [UIColor whiteColor];
-    self.view.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
-}
+// table view - this should be hidden when there are no assets
+@property (nonatomic, weak) UITableView *tableView;
 
-- (void)reloadAssets {
-    [self doesNotRecognizeSelector:_cmd];
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)orientation {
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) { return YES; }
-    else { return (orientation == UIInterfaceOrientationPortrait); }
-}
+// set whether the table should clear selection
+@property (nonatomic, assign) BOOL clearsSelectionOnViewWillAppear;
 
 @end
