@@ -28,55 +28,47 @@
 #import "GCImagePickerController.h"
 #import "GCIPAssetPickerController.h"
 
-@interface GCIPViewController_Pad ()
-@property (nonatomic, retain) GCIPAssetPickerController *assetPickerController;
-@property (nonatomic, retain) GCIPGroupPickerController *groupPickerController;
-@end
+static int GCIPGroupPickerControllerGroupsContext = 0;
 
-@implementation GCIPViewController_Pad
-
-@synthesize assetPickerController = __assetPickerController;
-@synthesize groupPickerController = __groupPickerController;
+@implementation GCIPViewController_Pad {
+    GCIPAssetPickerController *_assetPickerController;
+    GCIPGroupPickerController *_groupPickerController;
+}
 
 #pragma mark - object methods
 
-- (id)initWithNibName:(NSString *)nib bundle:(NSBundle *)bundle {
-    self = [super initWithNibName:nib bundle:bundle];
+- (id)init {
+    self = [super init];
     if (self) {
         
         // create group picker controller
-        GCIPGroupPickerController *groupPicker = [[[GCIPGroupPickerController alloc] initWithNibName:nil bundle:nil] autorelease];
-        groupPicker.clearsSelectionOnViewWillAppear = NO;
-        groupPicker.showDisclosureIndicators = NO;
-        groupPicker.delegate = self;
-        [groupPicker addObserver:self forKeyPath:@"groups" options:0 context:0];
-        self.title = groupPicker.title;
-        [self addChildViewController:groupPicker];
-        [groupPicker didMoveToParentViewController:self];
-        self.groupPickerController = groupPicker;
+        _groupPickerController = [[GCIPGroupPickerController alloc] init];
+        _groupPickerController.clearsSelectionOnViewWillAppear = NO;
+        _groupPickerController.showDisclosureIndicators = NO;
+        _groupPickerController.delegate = self;
+        [_groupPickerController
+         addObserver:self
+         forKeyPath:@"groups"
+         options:0
+         context:&GCIPGroupPickerControllerGroupsContext];
+        self.title = _groupPickerController.title;
+        [self addChildViewController:_groupPickerController];
+        [_groupPickerController didMoveToParentViewController:self];
         
         // create asset picker
-        GCIPAssetPickerController *assetPicker = [[[GCIPAssetPickerController alloc] initWithNibName:nil bundle:nil] autorelease];
-        [self addChildViewController:assetPicker];
-        [assetPicker didMoveToParentViewController:self];
-        self.assetPickerController = assetPicker;
+        _assetPickerController = [[GCIPAssetPickerController alloc] init];
+        [self addChildViewController:_assetPickerController];
+        [_assetPickerController didMoveToParentViewController:self];
         
     }
     return self;
 }
 
 - (void)dealloc {
-    
-    // clear view controllers
-    self.assetPickerController = nil;
-    [self.groupPickerController
+    [_groupPickerController
      removeObserver:self
-     forKeyPath:@"groups"];
-    self.groupPickerController = nil;
-    
-    // super
-    [super dealloc];
-    
+     forKeyPath:@"groups"
+     context:&GCIPGroupPickerControllerGroupsContext];
 }
 
 - (id)forwardingTargetForSelector:(SEL)selector {
@@ -84,9 +76,7 @@
     if ([parent respondsToSelector:selector]) {
         return parent;
     }
-    else {
-        return nil;
-    }
+    else { return nil; }
 }
 
 - (void)reloadAssets {
@@ -94,7 +84,7 @@
 }
 
 - (UINavigationItem *)navigationItem {
-    return self.assetPickerController.navigationItem;
+    return _assetPickerController.navigationItem;
 }
 
 #pragma mark - view lifecycle
@@ -109,13 +99,13 @@
     UIView *view;
     
     // group picker
-    view = self.groupPickerController.view;
+    view = _groupPickerController.view;
     view.frame = CGRectMake(0.0, 0.0, 320.0, self.view.bounds.size.height);
     view.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     [self.view addSubview:view];
     
     // asset picker
-    view = self.assetPickerController.view;
+    view = _assetPickerController.view;
     view.frame = CGRectMake(321.0, 0.0, self.view.bounds.size.width - 321.0, self.view.bounds.size.height);
     view.autoresizingMask = (UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth);
     [self.view addSubview:view];
@@ -125,12 +115,12 @@
 #pragma mark - kvo
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if (object == self.groupPickerController && [keyPath isEqualToString:@"groups"]) {
-        if (!self.assetPickerController.groupIdentifier && [self.groupPickerController.groups count]) {
-            ALAssetsGroup *group = [self.groupPickerController.groups objectAtIndex:0];
-            [self groupPicker:self.groupPickerController didSelectGroup:group];
-            [self.groupPickerController.tableView reloadData];
-            [self.groupPickerController.tableView
+    if (context == &GCIPGroupPickerControllerGroupsContext) {
+        if (!_assetPickerController.groupIdentifier && [_groupPickerController.groups count] > 0) {
+            ALAssetsGroup *group = [_groupPickerController.groups objectAtIndex:0];
+            [self groupPicker:_groupPickerController didSelectGroup:group];
+            [_groupPickerController.tableView reloadData];
+            [_groupPickerController.tableView
              selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]
              animated:NO
              scrollPosition:UITableViewScrollPositionNone];
@@ -142,7 +132,7 @@
 
 - (void)groupPicker:(GCIPGroupPickerController *)picker didSelectGroup:(ALAssetsGroup *)group {
     NSString *identifier = [group valueForProperty:ALAssetsGroupPropertyPersistentID];
-    self.assetPickerController.groupIdentifier = identifier;
+    _assetPickerController.groupIdentifier = identifier;
 }
 
 @end

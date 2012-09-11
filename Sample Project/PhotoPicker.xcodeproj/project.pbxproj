@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3BB0D41915FF7DF100A1D9CC /* GCIPAssetPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BF848E215AFD8E800922FB2 /* GCIPAssetPickerController.m */; };
+		3BB0D41A15FF7DF400A1D9CC /* GCIPAssetGridCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BF848E015AFD8E800922FB2 /* GCIPAssetGridCell.m */; };
+		3BB0D41B15FF7DF900A1D9CC /* GCIPAssetView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BF848E415AFD8E800922FB2 /* GCIPAssetView.m */; };
+		3BB0D41E15FF998300A1D9CC /* PPViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BB0D41D15FF998300A1D9CC /* PPViewController.m */; };
 		3BF848B215AFD7EA00922FB2 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BF848B115AFD7EA00922FB2 /* UIKit.framework */; };
 		3BF848B415AFD7EA00922FB2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BF848B315AFD7EA00922FB2 /* Foundation.framework */; };
 		3BF848B615AFD7EA00922FB2 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BF848B515AFD7EA00922FB2 /* CoreGraphics.framework */; };
@@ -15,17 +19,14 @@
 		3BF848C215AFD7EA00922FB2 /* PPAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BF848C115AFD7EA00922FB2 /* PPAppDelegate.m */; };
 		3BF848D115AFD85400922FB2 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BF848D015AFD85400922FB2 /* QuartzCore.framework */; };
 		3BF848D415AFD86200922FB2 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BF848D315AFD86200922FB2 /* AssetsLibrary.framework */; };
-		3BF848F415AFD8E800922FB2 /* ALAssetRepresentation+GCImagePickerControllerAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BF848D715AFD8E800922FB2 /* ALAssetRepresentation+GCImagePickerControllerAdditions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		3BF848F515AFD8E800922FB2 /* ALAssetsLibrary+GCImagePickerControllerAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BF848D915AFD8E800922FB2 /* ALAssetsLibrary+GCImagePickerControllerAdditions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		3BF848F415AFD8E800922FB2 /* ALAssetRepresentation+GCImagePickerControllerAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BF848D715AFD8E800922FB2 /* ALAssetRepresentation+GCImagePickerControllerAdditions.m */; };
+		3BF848F515AFD8E800922FB2 /* ALAssetsLibrary+GCImagePickerControllerAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BF848D915AFD8E800922FB2 /* ALAssetsLibrary+GCImagePickerControllerAdditions.m */; };
 		3BF848F615AFD8E800922FB2 /* GCImagePickerController.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3BF848DA15AFD8E800922FB2 /* GCImagePickerController.strings */; };
 		3BF848F715AFD8E800922FB2 /* GCImagePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BF848DE15AFD8E800922FB2 /* GCImagePickerController.m */; };
-		3BF848F815AFD8E800922FB2 /* GCIPAssetGridCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BF848E015AFD8E800922FB2 /* GCIPAssetGridCell.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		3BF848F915AFD8E800922FB2 /* GCIPAssetPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BF848E215AFD8E800922FB2 /* GCIPAssetPickerController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		3BF848FA15AFD8E800922FB2 /* GCIPAssetView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BF848E415AFD8E800922FB2 /* GCIPAssetView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		3BF848FB15AFD8E800922FB2 /* GCIPGroupPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BF848E615AFD8E800922FB2 /* GCIPGroupPickerController.m */; };
 		3BF848FC15AFD8E800922FB2 /* GCIPTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BF848E815AFD8E800922FB2 /* GCIPTableViewController.m */; };
 		3BF848FD15AFD8E800922FB2 /* GCIPViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BF848EA15AFD8E800922FB2 /* GCIPViewController.m */; };
-		3BF848FE15AFD8E800922FB2 /* GCIPViewController_Pad.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BF848EC15AFD8E800922FB2 /* GCIPViewController_Pad.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		3BF848FE15AFD8E800922FB2 /* GCIPViewController_Pad.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BF848EC15AFD8E800922FB2 /* GCIPViewController_Pad.m */; };
 		3BF848FF15AFD8E800922FB2 /* GCImagePickerControllerCheckGreen.png in Resources */ = {isa = PBXBuildFile; fileRef = 3BF848EE15AFD8E800922FB2 /* GCImagePickerControllerCheckGreen.png */; };
 		3BF8490015AFD8E800922FB2 /* GCImagePickerControllerCheckGreen@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3BF848EF15AFD8E800922FB2 /* GCImagePickerControllerCheckGreen@2x.png */; };
 		3BF8490115AFD8E800922FB2 /* GCImagePickerControllerFilmRoll.png in Resources */ = {isa = PBXBuildFile; fileRef = 3BF848F015AFD8E800922FB2 /* GCImagePickerControllerFilmRoll.png */; };
@@ -36,6 +37,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3BB0D41C15FF998300A1D9CC /* PPViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PPViewController.h; sourceTree = "<group>"; };
+		3BB0D41D15FF998300A1D9CC /* PPViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PPViewController.m; sourceTree = "<group>"; };
 		3BF848AD15AFD7EA00922FB2 /* PhotoPicker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PhotoPicker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3BF848B115AFD7EA00922FB2 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		3BF848B315AFD7EA00922FB2 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -130,6 +133,8 @@
 			children = (
 				3BF848C015AFD7EA00922FB2 /* PPAppDelegate.h */,
 				3BF848C115AFD7EA00922FB2 /* PPAppDelegate.m */,
+				3BB0D41C15FF998300A1D9CC /* PPViewController.h */,
+				3BB0D41D15FF998300A1D9CC /* PPViewController.m */,
 				3BF848B815AFD7EA00922FB2 /* Supporting Files */,
 			);
 			path = PhotoPicker;
@@ -158,19 +163,19 @@
 				3BF848E815AFD8E800922FB2 /* GCIPTableViewController.m */,
 				3BF848E515AFD8E800922FB2 /* GCIPGroupPickerController.h */,
 				3BF848E615AFD8E800922FB2 /* GCIPGroupPickerController.m */,
+				3BF848E115AFD8E800922FB2 /* GCIPAssetPickerController.h */,
+				3BF848E215AFD8E800922FB2 /* GCIPAssetPickerController.m */,
+				3BF848DF15AFD8E800922FB2 /* GCIPAssetGridCell.h */,
+				3BF848E015AFD8E800922FB2 /* GCIPAssetGridCell.m */,
+				3BF848E315AFD8E800922FB2 /* GCIPAssetView.h */,
+				3BF848E415AFD8E800922FB2 /* GCIPAssetView.m */,
+				3BF848EB15AFD8E800922FB2 /* GCIPViewController_Pad.h */,
+				3BF848EC15AFD8E800922FB2 /* GCIPViewController_Pad.m */,
 				3BF848D615AFD8E800922FB2 /* ALAssetRepresentation+GCImagePickerControllerAdditions.h */,
 				3BF848D715AFD8E800922FB2 /* ALAssetRepresentation+GCImagePickerControllerAdditions.m */,
 				3BF848D815AFD8E800922FB2 /* ALAssetsLibrary+GCImagePickerControllerAdditions.h */,
 				3BF848D915AFD8E800922FB2 /* ALAssetsLibrary+GCImagePickerControllerAdditions.m */,
 				3BF848DA15AFD8E800922FB2 /* GCImagePickerController.strings */,
-				3BF848DF15AFD8E800922FB2 /* GCIPAssetGridCell.h */,
-				3BF848E015AFD8E800922FB2 /* GCIPAssetGridCell.m */,
-				3BF848E115AFD8E800922FB2 /* GCIPAssetPickerController.h */,
-				3BF848E215AFD8E800922FB2 /* GCIPAssetPickerController.m */,
-				3BF848E315AFD8E800922FB2 /* GCIPAssetView.h */,
-				3BF848E415AFD8E800922FB2 /* GCIPAssetView.m */,
-				3BF848EB15AFD8E800922FB2 /* GCIPViewController_Pad.h */,
-				3BF848EC15AFD8E800922FB2 /* GCIPViewController_Pad.m */,
 				3BF848ED15AFD8E800922FB2 /* Images */,
 			);
 			name = GCImagePickerController;
@@ -267,13 +272,14 @@
 				3BF848F415AFD8E800922FB2 /* ALAssetRepresentation+GCImagePickerControllerAdditions.m in Sources */,
 				3BF848F515AFD8E800922FB2 /* ALAssetsLibrary+GCImagePickerControllerAdditions.m in Sources */,
 				3BF848F715AFD8E800922FB2 /* GCImagePickerController.m in Sources */,
-				3BF848F815AFD8E800922FB2 /* GCIPAssetGridCell.m in Sources */,
-				3BF848F915AFD8E800922FB2 /* GCIPAssetPickerController.m in Sources */,
-				3BF848FA15AFD8E800922FB2 /* GCIPAssetView.m in Sources */,
 				3BF848FB15AFD8E800922FB2 /* GCIPGroupPickerController.m in Sources */,
 				3BF848FC15AFD8E800922FB2 /* GCIPTableViewController.m in Sources */,
 				3BF848FD15AFD8E800922FB2 /* GCIPViewController.m in Sources */,
 				3BF848FE15AFD8E800922FB2 /* GCIPViewController_Pad.m in Sources */,
+				3BB0D41915FF7DF100A1D9CC /* GCIPAssetPickerController.m in Sources */,
+				3BB0D41A15FF7DF400A1D9CC /* GCIPAssetGridCell.m in Sources */,
+				3BB0D41B15FF7DF900A1D9CC /* GCIPAssetView.m in Sources */,
+				3BB0D41E15FF998300A1D9CC /* PPViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

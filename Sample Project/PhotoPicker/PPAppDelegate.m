@@ -8,18 +8,9 @@
 
 #import "PPAppDelegate.h"
 
-#import "GCImagePickercontroller.h"
-
 @implementation PPAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)options {
-    dispatch_time_t time = dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC);
-    dispatch_after(time, dispatch_get_main_queue(), ^(void){
-        GCImagePickerController *picker = [GCImagePickerController picker];
-        picker.finishBlock = ^{
-            
-        };
-    });
     return YES;
 }
 

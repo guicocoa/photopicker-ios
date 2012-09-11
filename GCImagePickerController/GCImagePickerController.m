@@ -23,10 +23,10 @@
  */
 
 #ifndef __IPHONE_5_0
-#error This project uses features only available in iOS SDK 5.0 and later.
+    #error This project uses features only available in iOS SDK 5.0 and later.
 #endif
 #if !__has_feature(objc_arc)
-#error This project requires ARC.
+    #error This project requires ARC.
 #endif
 
 #import <MobileCoreServices/MobileCoreServices.h>
@@ -37,12 +37,6 @@
 #import "GCIPGroupPickerController.h"
 
 @implementation GCImagePickerController
-
-@synthesize actionBlock = _actionBlock;
-@synthesize actionTitle = _actionTitle;
-@synthesize assetsFilter = _assetsFilter;
-@synthesize finishBlock = _didFinishBlock;
-@synthesize assetsLibrary = _assetsLibrary;
 
 #pragma mark - class methods
 
@@ -77,16 +71,10 @@
     
     // create root controller
     UIViewController *controller = nil;
-//    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-//        GCIPViewController_Pad *controller = [[GCIPViewController_Pad alloc] initWithNibName:nil bundle:nil];
-//        self = [super initWithRootViewController:controller];
-//        [controller release];
-//    }
-//    else {
-//        GCIPGroupPickerController *controller = [[GCIPGroupPickerController alloc] initWithNibName:nil bundle:nil];
-//        self = [super initWithRootViewController:controller];
-//        [controller release];
-//    }
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        controller = [[GCIPViewController_Pad alloc] init];
+    }
+    else { controller = [[GCIPGroupPickerController alloc] init]; }
     
     // create picker
     GCImagePickerController *picker = [[GCImagePickerController alloc] initWithRootViewController:controller];

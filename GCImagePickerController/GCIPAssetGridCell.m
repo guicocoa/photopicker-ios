@@ -29,23 +29,17 @@
 
 @implementation GCIPAssetGridCell
 
-@synthesize numberOfColumns = __numberOfColumns;
-
 #pragma mark - object methods
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)identifier {
     self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-    if (self) {
-        self.selectionStyle = UITableViewCellSelectionStyleNone;
-    }
+    if (self) { self.selectionStyle = UITableViewCellSelectionStyleNone; }
     return self;
 }
 
 - (void)setNumberOfColumns:(NSUInteger)count {
-    if (count == __numberOfColumns) {
-        return;
-    }
-    __numberOfColumns = count;
+    if (count == _numberOfColumns) { return; }
+    _numberOfColumns = count;
     [self setNeedsLayout];
 }
 
@@ -62,7 +56,6 @@
             assetView = [[GCIPAssetView alloc] initWithFrame:CGRectZero];
             assetView.tag = tag;
             [self.contentView addSubview:assetView];
-            [assetView release];
         }
         
         // setup view
@@ -92,7 +85,6 @@
         if (idx == columns - 1) { frame.size.width += extraSpace; }
         [(UIView *)obj setFrame:frame];
     }];
-    
 }
 
 @end

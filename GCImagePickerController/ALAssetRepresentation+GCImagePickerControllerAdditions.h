@@ -10,6 +10,12 @@
 
 @interface ALAssetRepresentation (GCImagePickerControllerAdditions)
 
-- (BOOL)writeToFile:(NSString *)path atomically:(BOOL)useAuxiliaryFile;
+/*
+ 
+ Write the receiver to the given file. Optionally write to a temporary location
+ then move into place atomically.
+ 
+ */
+- (BOOL)gcip_writeToFile:(NSString *)path atomically:(BOOL)useAuxiliaryFile;
 
 @end

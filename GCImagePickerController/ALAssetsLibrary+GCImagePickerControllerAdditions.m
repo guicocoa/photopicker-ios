@@ -10,9 +10,9 @@
 
 @implementation ALAssetsLibrary (GCImagePickerControllerAdditions)
 
-- (NSArray *)assetsGroupsWithTypes:(ALAssetsGroupType)types
-                      assetsFilter:(ALAssetsFilter *)filter
-                             error:(NSError **)outError {
+- (NSArray *)gcip_assetsGroupsWithTypes:(ALAssetsGroupType)types
+                           assetsFilter:(ALAssetsFilter *)filter
+                                  error:(NSError **)outError {
     
     // load groups
     __block BOOL wait = YES;
@@ -101,10 +101,10 @@
     
 }
 
-- (NSArray *)assetsInGroupWithIdentifier:(NSString *)identifier
-                                  filter:(ALAssetsFilter *)filter
-                                   group:(ALAssetsGroup **)outGroup
-                                   error:(NSError **)outError {
+- (NSArray *)gcip_assetsInGroupWithIdentifier:(NSString *)identifier
+                                       filter:(ALAssetsFilter *)filter
+                                        group:(ALAssetsGroup **)outGroup
+                                        error:(NSError **)outError {
     
     // load assets
     __block BOOL wait = YES;

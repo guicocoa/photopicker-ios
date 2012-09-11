@@ -30,46 +30,26 @@
 
 #import "ALAssetsLibrary+GCImagePickerControllerAdditions.h"
 
-@interface GCIPAssetPickerController ()
-@property (nonatomic, copy) NSArray *allAssets;
-@property (nonatomic, retain) NSMutableSet *selectedAssetURLs;
-@property (nonatomic, retain) ALAssetsGroup *group;
-- (void)updateTitle;
-- (void)cancel;
-@end
-
-@implementation GCIPAssetPickerController
-
-@synthesize groupIdentifier = __groupIdentifier;
-@synthesize selectedAssetURLs = __selectedAssets;
-@synthesize allAssets = __allAssets;
-@synthesize group = __group;
+@implementation GCIPAssetPickerController {
+    NSMutableSet *_selectedAssetURLs;
+    ALAssetsGroup *_group;
+    NSArray *_assets;
+}
 
 #pragma mark - object methods
 
-- (id)initWithNibName:(NSString *)nib bundle:(NSBundle *)bundle {
-    self = [super initWithNibName:nib bundle:bundle];
+- (id)init {
+    self = [super init];
     if (self) {
-        self.selectedAssetURLs = [NSMutableSet set];
+        _selectedAssetURLs = [NSMutableSet set];
         self.groupIdentifier = nil;
     }
     return self;
 }
 
-- (void)dealloc {
-    self.groupIdentifier = nil;
-    self.selectedAssetURLs = nil;
-    self.allAssets = nil;
-    self.group = nil;
-    [super dealloc];
-}
-
 - (void)setGroupIdentifier:(NSString *)identifier {
-    if ([identifier isEqualToString:__groupIdentifier]) {
-        return;
-    }
-    [__groupIdentifier release];
-    __groupIdentifier = [identifier copy];
+    if ([identifier isEqualToString:_groupIdentifier]) { return; }
+    _groupIdentifier = [identifier copy];
     [self cancel];
     [self reloadAssets];
     self.tableView.contentOffset = CGPointMake(0.0, -4.0);
@@ -80,8 +60,8 @@
     
     // no group
     if (self.groupIdentifier == nil) {
-        self.allAssets = nil;
-        self.group = nil;
+        _assets = nil;
+        _group = nil;
     }
     
     // view is loaded
@@ -94,27 +74,25 @@
         NSError *error = nil;
         
         // get assets
-        self.allAssets = [library
-                          assetsInGroupWithIdentifier:self.groupIdentifier
-                          filter:filter
-                          group:&group
-                          error:&error];
-        self.group = group;
-        if (error) {
-            [GCImagePickerController failedToLoadAssetsWithError:error];
-        }
+        _assets = [library
+                   gcip_assetsInGroupWithIdentifier:self.groupIdentifier
+                   filter:filter
+                   group:&group
+                   error:&error];
+        _group = group;
+        if (error) { [GCImagePickerController failedToLoadAssetsWithError:error]; }
         
     }
     
     // refresh view
     [self updateTitle];
     [self.tableView reloadData];
-    self.tableView.hidden = (![self.allAssets count]);
+    self.tableView.hidden = ([_assets count] == 0);
     
 }
 
 - (void)updateTitle {
-    NSUInteger count = [self.selectedAssetURLs count];
+    NSUInteger count = [_selectedAssetURLs count];
     if (count == 1) {
         self.title = [GCImagePickerController localizedString:@"PHOTO_COUNT_SINGLE"];
     }
@@ -124,7 +102,7 @@
                       count];
     }
     else {
-        self.title = [self.group valueForProperty:ALAssetsGroupPropertyName];
+        self.title = [_group valueForProperty:ALAssetsGroupPropertyName];
     }
 }
 
@@ -134,18 +112,15 @@
 }
 
 - (void)cancel {
-    self.selectedAssetURLs = [NSMutableSet set];
+    _selectedAssetURLs = [NSMutableSet set];
     self.navigationItem.leftBarButtonItem = nil;
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc]
-                                                   initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-                                                   target:self
-                                                   action:@selector(done)]
-                                                  autorelease];
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]
+                                                  initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                                  target:self
+                                                  action:@selector(done)];
     }
-    else {
-        self.navigationItem.rightBarButtonItem = nil;
-    }
+    else { self.navigationItem.rightBarButtonItem = nil; }
     [self.tableView reloadData];
     [self updateTitle];
 }
@@ -169,23 +144,25 @@
     [tap setNumberOfTapsRequired:1];
     [tap setNumberOfTouchesRequired:1];
     [self.tableView addGestureRecognizer:tap];
-    [tap release];
     
     // reload
     [self reloadAssets];
     
 }
 
-- (void)viewDidUnload {
-    [super viewDidUnload];
-    self.allAssets = nil;
+- (void)didReceiveMemoryWarning {
+    if (![self isViewLoaded]) {
+        _assets = nil;
+        _group = nil;
+    }
+    [super didReceiveMemoryWarning];
 }
 
 #pragma mark - button actions
 
 - (void)action {
     GCImagePickerControllerActionBlock block = [self.parentViewController performSelector:@selector(actionBlock)];
-    if (block) { block([[self.selectedAssetURLs copy] autorelease]); }
+    if (block) { block([_selectedAssetURLs copy]); }
     [self cancel];
 }
 
@@ -196,22 +173,22 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return (NSInteger)ceilf((float)[self.allAssets count] / 4.0);
+    return (NSInteger)ceilf((float)[_assets count] / 4.0);
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *identifier = @"CellIdentifier";
+    static NSString * const identifier = @"CellIdentifier";
     GCIPAssetGridCell *cell = (GCIPAssetGridCell *)[tableView dequeueReusableCellWithIdentifier:identifier];
     if (cell == nil) {
-        cell = [[[GCIPAssetGridCell alloc] initWithStyle:0 reuseIdentifier:identifier] autorelease];
+        cell = [[GCIPAssetGridCell alloc] initWithStyle:0 reuseIdentifier:identifier];
         cell.numberOfColumns = 4;
     }
     NSUInteger start = indexPath.row * 4;
-    NSUInteger length = MIN([self.allAssets count] - start, 4);
+    NSUInteger length = MIN([_assets count] - start, 4);
     NSRange range = NSMakeRange(start, length);
     [cell
-     setAssets:[self.allAssets subarrayWithRange:range]
-     selected:self.selectedAssetURLs];
+     setAssets:[_assets subarrayWithRange:range]
+     selected:_selectedAssetURLs];
     return cell;
 }
 
@@ -224,40 +201,34 @@
         if (indexPath == nil) { return; }
         NSUInteger column = location.x / (self.tableView.bounds.size.width / 4);
         NSUInteger index = indexPath.row * 4 + column;
-        if (index < [self.allAssets count]) {
+        if (index < [_assets count]) {
             
             // get asset stuff
-            ALAsset *asset = [self.allAssets objectAtIndex:index];
+            ALAsset *asset = [_assets objectAtIndex:index];
             ALAssetRepresentation *representation = [asset defaultRepresentation];
             NSURL *defaultURL = [representation url];
             if (defaultURL == nil) { return; }
             
             // modify set
-            if ([self.selectedAssetURLs containsObject:defaultURL]) {
-                [self.selectedAssetURLs removeObject:defaultURL];
+            if ([_selectedAssetURLs containsObject:defaultURL]) {
+                [_selectedAssetURLs removeObject:defaultURL];
             }
-            else {
-                [self.selectedAssetURLs addObject:defaultURL];
-            }
+            else { [_selectedAssetURLs addObject:defaultURL]; }
             
             // check set count
-            if ([self.selectedAssetURLs count] == 0) {
-                [self cancel];
-            }
+            if ([_selectedAssetURLs count] == 0) { [self cancel]; }
             else {
                 NSString *title = [self.parentViewController performSelector:@selector(actionTitle)];
-                UIBarButtonItem *item = [[[UIBarButtonItem alloc]
-                                          initWithTitle:title
-                                          style:UIBarButtonItemStyleDone
-                                          target:self
-                                          action:@selector(action)]
-                                         autorelease];
+                UIBarButtonItem *item = [[UIBarButtonItem alloc]
+                                         initWithTitle:title
+                                         style:UIBarButtonItemStyleDone
+                                         target:self
+                                         action:@selector(action)];
                 self.navigationItem.rightBarButtonItem = item;
-                item = [[[UIBarButtonItem alloc]
-                         initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                         target:self
-                         action:@selector(cancel)]
-                        autorelease];
+                item = [[UIBarButtonItem alloc]
+                        initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                        target:self
+                        action:@selector(cancel)];
                 item.style = UIBarButtonItemStyleBordered;
                 self.navigationItem.leftBarButtonItem = item;
                 [self updateTitle];

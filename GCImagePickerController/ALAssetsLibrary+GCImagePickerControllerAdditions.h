@@ -22,9 +22,9 @@
  returns: An array of asset groups.
  
  */
-- (NSArray *)assetsGroupsWithTypes:(ALAssetsGroupType)types
-                      assetsFilter:(ALAssetsFilter *)filter
-                             error:(NSError **)outError;
+- (NSArray *)gcip_assetsGroupsWithTypes:(ALAssetsGroupType)types
+                           assetsFilter:(ALAssetsFilter *)filter
+                                  error:(NSError **)outError;
 
 /*
  
@@ -38,9 +38,9 @@
  returns: An array of assets.
  
  */
-- (NSArray *)assetsInGroupWithIdentifier:(NSString *)identifier
-                                  filter:(ALAssetsFilter *)filter
-                                   group:(ALAssetsGroup **)outGroup
-                                   error:(NSError **)outError;
+- (NSArray *)gcip_assetsInGroupWithIdentifier:(NSString *)identifier
+                                       filter:(ALAssetsFilter *)filter
+                                        group:(ALAssetsGroup **)outGroup
+                                        error:(NSError **)outError;
 
 @end

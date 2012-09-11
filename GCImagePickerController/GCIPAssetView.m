@@ -27,19 +27,11 @@
 
 #import "GCIPAssetView.h"
 
-@interface GCIPAssetView()
-@property (nonatomic, retain) UIImageView *thumbnailView;
-@property (nonatomic, retain) UIImageView *videoIconView;
-@property (nonatomic, retain) UIImageView *selectedIconView;
-@end
-
-@implementation GCIPAssetView
-
-@synthesize asset               = __asset;
-@synthesize selected            = __selected;
-@synthesize thumbnailView       = __thumbnailView;
-@synthesize videoIconView       = __videoIconView;
-@synthesize selectedIconView    = __selectedIconView;
+@implementation GCIPAssetView {
+    UIImageView *_thumbnailView;
+    UIImageView *_videoIconView;
+    UIImageView *_selectedIconView;
+}
 
 #pragma mark - object methods
 
@@ -47,77 +39,55 @@
     self = [super initWithFrame:frame];
     if (self) {
         
-        // variables
-        UIImageView *imageView;
-        
         // base properties
         self.layer.borderColor = [[UIColor colorWithWhite:0.0 alpha:0.25] CGColor];
         self.layer.borderWidth = 1.0;
         self.autoresizesSubviews = NO;
         
         // thumbnail view
-        imageView = [[UIImageView alloc] initWithImage:nil];
-        imageView.contentMode = UIViewContentModeScaleAspectFill;
-        imageView.clipsToBounds = YES;
-        self.thumbnailView = imageView;
-        [imageView release];
+        _thumbnailView = [[UIImageView alloc] initWithImage:nil];
+        _thumbnailView.contentMode = UIViewContentModeScaleAspectFill;
+        _thumbnailView.clipsToBounds = YES;
         
         // video icon view
-        imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"GCImagePickerControllerVideoAsset"]];
-        imageView.layer.backgroundColor = [[UIColor colorWithWhite:0.0 alpha:0.25] CGColor];
-        imageView.contentMode = UIViewContentModeLeft;
-        self.videoIconView = imageView;
-        [imageView release];
+        _videoIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"GCImagePickerControllerVideoAsset"]];
+        _videoIconView.layer.backgroundColor = [[UIColor colorWithWhite:0.0 alpha:0.25] CGColor];
+        _videoIconView.contentMode = UIViewContentModeLeft;
         
         // selected icon view
-        imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"GCImagePickerControllerCheckGreen"]];
-        imageView.backgroundColor = [UIColor colorWithWhite:1.0 alpha:0.5];
-        imageView.contentMode = UIViewContentModeBottomRight;
-        self.selectedIconView = imageView;
-        [imageView release];
+        _selectedIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"GCImagePickerControllerCheckGreen"]];
+        _selectedIconView.backgroundColor = [UIColor colorWithWhite:1.0 alpha:0.5];
+        _selectedIconView.contentMode = UIViewContentModeBottomRight;
         
         // add subviews
-        [self addSubview:self.thumbnailView];
-        [self addSubview:self.videoIconView];
-        [self addSubview:self.selectedIconView];
+        [self addSubview:_thumbnailView];
+        [self addSubview:_videoIconView];
+        [self addSubview:_selectedIconView];
         
     }
     return self;
 }
 
-- (void)dealloc {
-    self.asset = nil;
-    self.thumbnailView = nil;
-    self.selectedIconView = nil;
-    self.videoIconView = nil;
-    [super dealloc];
-}
-
 - (void)setAsset:(ALAsset *)asset {
     
     // check for duplicate
-    if ([asset isEqual:__asset]) {
-        return;
-    }
+    if ([asset isEqual:_asset]) { return; }
     
     // save asset
-    [__asset release];
-    __asset = [asset retain];
+    _asset = asset;
     
     // set views
-    if (__asset) {
+    if (_asset) {
         
         // self
         self.hidden = NO;
         
         // thumbnail view
-        UIImage *thumbnailImage = [[UIImage alloc] initWithCGImage:[asset thumbnail]];
-        self.thumbnailView.image = thumbnailImage;
-        [thumbnailImage release];
+        _thumbnailView.image = [UIImage imageWithCGImage:[asset thumbnail]];
         
         // video view
         NSString *assetType = [asset valueForProperty:ALAssetPropertyType];
-        self.videoIconView.hidden = ![assetType isEqualToString:ALAssetTypeVideo];
+        _videoIconView.hidden = ![assetType isEqualToString:ALAssetTypeVideo];
         
     }
     
@@ -129,27 +99,28 @@
 }
 
 - (void)setSelected:(BOOL)selected {
-    self.selectedIconView.hidden = !selected;
+    _selectedIconView.hidden = !selected;
 }
 
 - (void)layoutSubviews {
     [super layoutSubviews];
     
     // thumbnail view
-    self.thumbnailView.frame = self.bounds;
+    _thumbnailView.frame = self.bounds;
     
     // video view
-    UIImage *videoIcon = self.videoIconView.image;
-    self.videoIconView.frame = CGRectMake(1.0,
-                                          self.bounds.size.height - videoIcon.size.height - 1.0,
-                                          self.bounds.size.width - 2.0,
-                                          videoIcon.size.height);
+    UIImage *videoIcon = _videoIconView.image;
+    _videoIconView.frame = CGRectMake(1.0,
+                                      self.bounds.size.height - videoIcon.size.height - 1.0,
+                                      self.bounds.size.width - 2.0,
+                                      videoIcon.size.height);
     
     // selected view
-    self.selectedIconView.frame = CGRectMake(1.0,
-                                             1.0, 
-                                             self.bounds.size.width - 2.0,
-                                             self.bounds.size.height - 2.0);
+    _selectedIconView.frame = CGRectMake(1.0,
+                                         1.0, 
+                                         self.bounds.size.width - 2.0,
+                                         self.bounds.size.height - 2.0);
+    
 }
 
 @end

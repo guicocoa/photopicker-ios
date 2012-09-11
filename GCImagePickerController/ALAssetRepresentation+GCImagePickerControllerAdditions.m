@@ -10,23 +10,24 @@
 
 @implementation ALAssetRepresentation (GCImagePickerControllerAdditions)
 
-- (BOOL)writeToFile:(NSString *)path atomically:(BOOL)useAuxiliaryFile {
+- (BOOL)gcip_writeToFile:(NSString *)path atomically:(BOOL)useAuxiliaryFile {
+    NSFileManager *manager = [NSFileManager defaultManager];
     
     // return if the file exists already
-    if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
+    if ([manager fileExistsAtPath:path]) {
         return NO;
     }
     
-    // get write path
+    // get path for writing
 	NSString *writePath = path;
 	if (useAuxiliaryFile) {
-		writePath = [NSTemporaryDirectory() stringByAppendingPathComponent:[path lastPathComponent]];
+        NSString *unique = [[NSProcessInfo processInfo] globallyUniqueString];
+        writePath = [NSTemporaryDirectory() stringByAppendingPathComponent:unique];
+        writePath = [writePath stringByAppendingPathComponent:[path lastPathComponent]];
 	}
     
     // return if we cannot create a file handle
-    if (![[NSFileManager defaultManager] createFileAtPath:writePath contents:nil attributes:nil]) {
-        return NO;
-    }
+    if (![manager createFileAtPath:writePath contents:nil attributes:nil]) { return NO; }
     
     // create file handle and return if unsuccessful
 	NSFileHandle *handle = [NSFileHandle fileHandleForWritingAtPath:writePath];
@@ -36,26 +37,25 @@
 	long long size = [self size];
     long long offset = 0;
 	while (offset < size) {
-		uint8_t buffer[1024];
+		uint8_t buffer[512];
         NSError *error = nil;
-        NSUInteger written = [self getBytes:buffer fromOffset:offset length:1024 error:&error];
+        NSUInteger written = [self getBytes:buffer fromOffset:offset length:512 error:&error];
         if (error) {
             NSLog(@"%@", error);
             [handle closeFile];
-            [[NSFileManager defaultManager] removeItemAtPath:writePath error:nil];
+            [manager removeItemAtPath:writePath error:nil];
             return NO;
         }
-        NSData *toWrite = [[NSData alloc] initWithBytes:buffer length:written];
-        [handle writeData:toWrite];
-        [toWrite release];
+        NSData *data = [NSData dataWithBytes:buffer length:written];
+        [handle writeData:data];
         offset += written;
 	}
 	[handle closeFile];
     
     // move file into place
 	if (useAuxiliaryFile) {
-		if (![[NSFileManager defaultManager] moveItemAtPath:writePath toPath:path error:nil]) {
-            [[NSFileManager defaultManager] removeItemAtPath:writePath error:nil];
+		if (![manager moveItemAtPath:writePath toPath:path error:nil]) {
+            [manager removeItemAtPath:writePath error:nil];
             return NO;
         }
 	}
