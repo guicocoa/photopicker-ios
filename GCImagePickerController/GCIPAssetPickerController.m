@@ -66,28 +66,22 @@
     
     // view is loaded
     else if ([self isViewLoaded]) {
-        
-        // collect variables
         ALAssetsLibrary *library = [self.parentViewController performSelector:@selector(assetsLibrary)];
         ALAssetsFilter *filter = [self.parentViewController performSelector:@selector(assetsFilter)];
-        ALAssetsGroup *group = nil;
-        NSError *error = nil;
-        
-        // get assets
-        _assets = [library
-                   gcip_assetsInGroupWithIdentifier:self.groupIdentifier
-                   filter:filter
-                   group:&group
-                   error:&error];
-        _group = group;
-        if (error) { [GCImagePickerController failedToLoadAssetsWithError:error]; }
-        
+        [library
+         gcip_assetsInGroupGroupWithIdentifier:self.groupIdentifier
+         assetsFilter:filter
+         completion:^(ALAssetsGroup *group, NSArray *assets) {
+             _group = group;
+             _assets = assets;
+             [self updateTitle];
+             [self.tableView reloadData];
+             self.tableView.hidden = ([_assets count] == 0);
+         }
+         failure:^(NSError *error) {
+             [GCImagePickerController failedToLoadAssetsWithError:error];
+         }];
     }
-    
-    // refresh view
-    [self updateTitle];
-    [self.tableView reloadData];
-    self.tableView.hidden = ([_assets count] == 0);
     
 }
 
@@ -101,13 +95,13 @@
                       [GCImagePickerController localizedString:@"PHOTO_COUNT_MULTIPLE"],
                       count];
     }
-    else {
+    else if (_group) {
         self.title = [_group valueForProperty:ALAssetsGroupPropertyName];
     }
 }
 
 - (void)done {
-    GCImagePickerControllerDidFinishBlock block = [self.parentViewController performSelector:@selector(didFinishBlock)];
+    GCImagePickerControllerDidFinishBlock block = [self.parentViewController performSelector:@selector(finishBlock)];
     if (block) { block(); }
 }
 
@@ -177,7 +171,7 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString * const identifier = @"CellIdentifier";
+    static NSString * const identifier = @"Cell";
     GCIPAssetGridCell *cell = (GCIPAssetGridCell *)[tableView dequeueReusableCellWithIdentifier:identifier];
     if (cell == nil) {
         cell = [[GCIPAssetGridCell alloc] initWithStyle:0 reuseIdentifier:identifier];
