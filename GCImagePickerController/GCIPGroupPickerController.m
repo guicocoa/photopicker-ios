@@ -34,10 +34,6 @@
 
 #pragma mark - object methods
 
-@synthesize delegate = _delegate;
-@synthesize showDisclosureIndicators = _showDisclosureIndicators;
-@synthesize groups = _groups;
-
 - (id)init {
     self = [super init];
     if (self) {
@@ -53,18 +49,16 @@
 
 - (void)reloadAssets {
     if ([self isViewLoaded]) {
-        ALAssetsLibrary *library = [self.parentViewController performSelector:@selector(assetsLibrary)];
-        ALAssetsFilter *filter = [self.parentViewController performSelector:@selector(assetsFilter)];
+//        ALAssetsLibrary *library = [self.parentViewController performSelector:@selector(assetsLibrary)];
+//        ALAssetsFilter *filter = [self.parentViewController performSelector:@selector(assetsFilter)];
         NSError *error = nil;
 //        self.groups = [library
 //                       assetsGroupsWithTypes:ALAssetsGroupAll
 //                       assetsFilter:filter
 //                       error:&error];
-        if (error) {
-            [GCImagePickerController failedToLoadAssetsWithError:error];
-        }
+        if (error) { [GCImagePickerController failedToLoadAssetsWithError:error]; }
         self.tableView.hidden = ([self.groups count] == 0);
-        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+//        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
         [self.tableView reloadData];
 //        if (indexPath && (NSUInteger)indexPath.row < [self.groups count]) {
 //            [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
@@ -122,9 +116,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     ALAssetsGroup *group = [self.groups objectAtIndex:indexPath.row];
-    if (self.delegate) {
-        [self.delegate groupPicker:self didSelectGroup:group];
-    }
+    if (self.delegate) { [self.delegate groupPicker:self didSelectGroup:group]; }
     else {
         GCIPAssetPickerController *assetPicker = [[GCIPAssetPickerController alloc] init];
         assetPicker.groupIdentifier = [group valueForProperty:ALAssetsGroupPropertyPersistentID];

@@ -26,9 +26,6 @@
 
 @implementation GCIPTableViewController
 
-@synthesize tableView = _tableView;
-@synthesize clearsSelectionOnViewWillAppear = _clearsSelectionOnViewWillAppear;
-
 #pragma mark - object methods
 
 - (id)init {

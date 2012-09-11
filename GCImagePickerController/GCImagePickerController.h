@@ -64,7 +64,7 @@ typedef void (^GCImagePickerControllerDidFinishBlock) ();
  */
 + (GCImagePickerController *)picker;
 
-// internal resources
+// internal
 @property (nonatomic, readonly) ALAssetsLibrary *assetsLibrary;
 + (NSString *)localizedString:(NSString *)key;
 + (void)failedToLoadAssetsWithError:(NSError *)error;
