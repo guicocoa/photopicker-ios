@@ -16,15 +16,15 @@
  
  types: Filter group types. Pass ALAssetGroupAll for all groups.
  filter: Filter asset types. Groups with no assets matching the filter will be
- omitted.
- error: Populated if an error occurs.
- 
- returns: An array of asset groups.
+    omitted.
+ completion: Called on the main thread with an array of groups.
+ failure: Called on the main thread with an error.
  
  */
-- (NSArray *)gcip_assetsGroupsWithTypes:(ALAssetsGroupType)types
-                           assetsFilter:(ALAssetsFilter *)filter
-                                  error:(NSError **)outError;
+- (void)gcip_assetsGroupsWithTypes:(ALAssetsGroupType)types
+                      assetsFilter:(ALAssetsFilter *)filter
+                        completion:(void (^) (NSArray *groups))completion
+                           failure:(void (^) (NSError *error))failure;
 
 /*
  
@@ -32,15 +32,14 @@
  
  identifier: The persistent identifier of the group.
  filter: Filter the types of assets returned.
- group: Populated with the resulting group.
- error: Populated if an error occurs.
- 
- returns: An array of assets.
+ completion: Called on the main thread with an array of assets and a reference
+    to the selected group.
+ failure: Called on the main thread with an error.
  
  */
-- (NSArray *)gcip_assetsInGroupWithIdentifier:(NSString *)identifier
-                                       filter:(ALAssetsFilter *)filter
-                                        group:(ALAssetsGroup **)outGroup
-                                        error:(NSError **)outError;
+- (void)gcip_assetsInGroupGroupWithIdentifier:(NSString *)identifier
+                                 assetsFilter:(ALAssetsFilter *)filter
+                                   completion:(void (^) (ALAssetsGroup *group, NSArray *assets))completion
+                                      failure:(void (^) (NSError *error))failure;
 
 @end
