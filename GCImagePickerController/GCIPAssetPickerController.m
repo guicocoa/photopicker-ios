@@ -42,14 +42,14 @@
     self = [super init];
     if (self) {
         _selectedAssetURLs = [NSMutableSet set];
-        self.groupIdentifier = nil;
+        self.groupURL = nil;
     }
     return self;
 }
 
-- (void)setGroupIdentifier:(NSString *)identifier {
-    if ([identifier isEqualToString:_groupIdentifier]) { return; }
-    _groupIdentifier = [identifier copy];
+- (void)setGroupURL:(NSURL *)URL {
+    if ([URL isEqual:_groupURL]) { return; }
+    _groupURL = [URL copy];
     [self cancel];
     [self reloadAssets];
     self.tableView.contentOffset = CGPointMake(0.0, -4.0);
@@ -59,7 +59,7 @@
 - (void)reloadAssets {
     
     // no group
-    if (self.groupIdentifier == nil) {
+    if (self.groupURL == nil) {
         _assets = nil;
         _group = nil;
     }
@@ -69,7 +69,7 @@
         ALAssetsLibrary *library = [self.parentViewController performSelector:@selector(assetsLibrary)];
         ALAssetsFilter *filter = [self.parentViewController performSelector:@selector(assetsFilter)];
         [library
-         gcip_assetsInGroupGroupWithIdentifier:self.groupIdentifier
+         gcip_assetsInGroupGroupWithURL:self.groupURL
          assetsFilter:filter
          completion:^(ALAssetsGroup *group, NSArray *assets) {
              _group = group;

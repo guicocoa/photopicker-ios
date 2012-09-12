@@ -28,6 +28,6 @@
 @interface GCIPAssetPickerController : GCIPTableViewController
 
 // the group to browse
-@property (nonatomic, copy) NSString *groupIdentifier;
+@property (nonatomic, copy) NSURL *groupURL;
 
 @end

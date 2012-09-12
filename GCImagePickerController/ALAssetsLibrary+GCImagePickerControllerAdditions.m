@@ -76,26 +76,23 @@
      }];
 }
 
-- (void)gcip_assetsInGroupGroupWithIdentifier:(NSString *)identifier
-                                 assetsFilter:(ALAssetsFilter *)filter
-                                   completion:(void (^) (ALAssetsGroup *group, NSArray *assets))completion
-                                      failure:(void (^) (NSError *error))failure {
+- (void)gcip_assetsInGroupGroupWithURL:(NSURL *)URL
+                          assetsFilter:(ALAssetsFilter *)filter
+                            completion:(void (^) (ALAssetsGroup *group, NSArray *assets))completion
+                               failure:(void (^) (NSError *error))failure {
     [self
-     enumerateGroupsWithTypes:ALAssetsGroupAll
-     usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
+     groupForURL:URL
+     resultBlock:^(ALAssetsGroup *group) {
+         NSMutableArray *assets = nil;
          if (group) {
-             NSString *groupIdentifier = [group valueForProperty:ALAssetsGroupPropertyPersistentID];
-             if ([groupIdentifier isEqualToString:identifier]) {
-                 [group setAssetsFilter:filter];
-                 NSMutableArray *assets = [NSMutableArray arrayWithCapacity:[group numberOfAssets]];
-                 [group enumerateAssetsWithOptions:NSEnumerationReverse usingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
-                     if (result) { [assets addObject:result]; }
-                 }];
-                 if (completion) {
-                     dispatch_async(dispatch_get_main_queue(), ^{ completion(group, assets); });
-                 }
-                 *stop = YES;
-             }
+             [group setAssetsFilter:filter];
+             assets = [NSMutableArray arrayWithCapacity:[group numberOfAssets]];
+             [group enumerateAssetsWithOptions:NSEnumerationReverse usingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
+                 if (result) { [assets addObject:result]; }
+             }];
+         }
+         if (completion) {
+             dispatch_async(dispatch_get_main_queue(), ^{ completion(group, assets); });
          }
      }
      failureBlock:^(NSError *error) {

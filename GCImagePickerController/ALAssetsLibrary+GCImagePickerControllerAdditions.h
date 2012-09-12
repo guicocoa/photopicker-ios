@@ -30,16 +30,16 @@
  
  Get assets belonging to a certain group with the newest asset appearing first.
  
- identifier: The persistent identifier of the group.
+ url: The URL that identifies the desired group.
  filter: Filter the types of assets returned.
  completion: Called on the main thread with an array of assets and a reference
     to the selected group.
  failure: Called on the main thread with an error.
  
  */
-- (void)gcip_assetsInGroupGroupWithIdentifier:(NSString *)identifier
-                                 assetsFilter:(ALAssetsFilter *)filter
-                                   completion:(void (^) (ALAssetsGroup *group, NSArray *assets))completion
-                                      failure:(void (^) (NSError *error))failure;
+- (void)gcip_assetsInGroupGroupWithURL:(NSURL *)URL
+                          assetsFilter:(ALAssetsFilter *)filter
+                            completion:(void (^) (ALAssetsGroup *group, NSArray *assets))completion
+                               failure:(void (^) (NSError *error))failure;
 
 @end
