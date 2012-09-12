@@ -103,6 +103,7 @@
 - (void)done {
     GCImagePickerControllerDidFinishBlock block = [self.parentViewController performSelector:@selector(finishBlock)];
     if (block) { block(); }
+    else { [self dismissViewControllerAnimated:YES completion:nil]; }
 }
 
 - (void)cancel {

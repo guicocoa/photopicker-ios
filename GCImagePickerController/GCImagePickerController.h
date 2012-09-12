@@ -53,8 +53,23 @@ typedef void (^GCImagePickerControllerDidFinishBlock) ();
  
  */
 @property (nonatomic, strong) ALAssetsFilter *assetsFilter;
+
+/*
+ 
+ Indicate what to do with items that have been selected. The title should
+ be localized. The block receives an `NSSet` of asset URLs.
+ 
+ */
 @property (nonatomic, copy) NSString *actionTitle;
 @property (nonatomic, copy) GCImagePickerControllerActionBlock actionBlock;
+
+/*
+ 
+ Customize the behavior of the "Done" button. Leaving this property `nil` will
+ result in the done button dismissing the modal view controller. Set this
+ property if you need more control over it.
+ 
+ */
 @property (nonatomic, copy) GCImagePickerControllerDidFinishBlock finishBlock;
 
 /*
