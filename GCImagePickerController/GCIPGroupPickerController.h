@@ -48,7 +48,7 @@
 @property (nonatomic, assign) id<GCIPGroupPickerControllerDelegate> delegate;
 
 // list of groups
-@property (nonatomic, readonly) NSArray *groups;
+@property (nonatomic, readonly, copy) NSArray *groups;
 
 // show or hide disclosure indicators
 @property (nonatomic, assign) BOOL showDisclosureIndicators;

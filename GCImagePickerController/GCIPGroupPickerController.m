@@ -28,9 +28,16 @@
 
 #import "ALAssetsLibrary+GCImagePickerControllerAdditions.h"
 
-@implementation GCIPGroupPickerController {
+@interface GCIPGroupPickerController () {
+    ALAssetsGroup *_selectedGroup;
     NSNumberFormatter *_numberFormatter;
 }
+
+@property (nonatomic, readwrite, copy) NSArray *groups;
+
+@end
+
+@implementation GCIPGroupPickerController
 
 #pragma mark - object methods
 
@@ -49,20 +56,35 @@
 
 - (void)reloadAssets {
     if ([self isViewLoaded]) {
-//        ALAssetsLibrary *library = [self.parentViewController performSelector:@selector(assetsLibrary)];
-//        ALAssetsFilter *filter = [self.parentViewController performSelector:@selector(assetsFilter)];
-        NSError *error = nil;
-//        self.groups = [library
-//                       assetsGroupsWithTypes:ALAssetsGroupAll
-//                       assetsFilter:filter
-//                       error:&error];
-        if (error) { [GCImagePickerController failedToLoadAssetsWithError:error]; }
-        self.tableView.hidden = ([self.groups count] == 0);
-//        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-        [self.tableView reloadData];
-//        if (indexPath && (NSUInteger)indexPath.row < [self.groups count]) {
-//            [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
-//        }
+        ALAssetsLibrary *library = [self.parentViewController performSelector:@selector(assetsLibrary)];
+        ALAssetsFilter *filter = [self.parentViewController performSelector:@selector(assetsFilter)];
+        [library
+         gcip_assetsGroupsWithTypes:ALAssetsGroupAll
+         assetsFilter:filter
+         completion:^(NSArray *groups) {
+             self.groups = groups;
+             self.tableView.hidden = ([groups count] == 0);
+             [self.tableView reloadData];
+             if (_selectedGroup && [groups count]) {
+                 NSIndexSet *set = [groups indexesOfObjectsPassingTest:^(id obj, NSUInteger idx, BOOL *stop) {
+                     NSString *IDOne = [obj valueForProperty:ALAssetsGroupPropertyPersistentID];
+                     NSString *IDTwo = [_selectedGroup valueForProperty:ALAssetsGroupPropertyPersistentID];
+                     if ([IDOne isEqualToString:IDTwo]) {
+                         *stop = YES;
+                         return YES;
+                     }
+                     return NO;
+                 }];
+                 NSUInteger index = [set firstIndex];
+                 if (index != NSNotFound) {
+                     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+                     [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionMiddle];
+                 }
+             }
+         }
+         failure:^(NSError *error) {
+             [GCImagePickerController failedToLoadAssetsWithError:error];
+         }];
     }
 }
 
@@ -73,6 +95,11 @@
     _numberFormatter = [[NSNumberFormatter alloc] init];
     self.tableView.rowHeight = 60.0;
     [self reloadAssets];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    _selectedGroup = nil;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -100,7 +127,7 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	static NSString *identifier = @"Cell";
+	static NSString * const identifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identifier];
@@ -115,12 +142,13 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    ALAssetsGroup *group = [self.groups objectAtIndex:indexPath.row];
-    if (self.delegate) { [self.delegate groupPicker:self didSelectGroup:group]; }
+    _selectedGroup = [self.groups objectAtIndex:indexPath.row];
+    if (self.delegate) { [self.delegate groupPicker:self didSelectGroup:_selectedGroup]; }
     else {
-        GCIPAssetPickerController *assetPicker = [[GCIPAssetPickerController alloc] init];
-        assetPicker.groupIdentifier = [group valueForProperty:ALAssetsGroupPropertyPersistentID];
-        [self.navigationController pushViewController:assetPicker animated:YES];
+        GCIPAssetPickerController *picker = [[GCIPAssetPickerController alloc] init];
+        picker.title = [_selectedGroup valueForProperty:ALAssetsGroupPropertyName];
+        picker.groupURL = [_selectedGroup valueForProperty:ALAssetsGroupPropertyURL];
+        [self.navigationController pushViewController:picker animated:YES];
     }
 }
 
