@@ -46,11 +46,6 @@ static int GCIPGroupPickerControllerGroupsContext = 0;
         _groupPickerController.clearsSelectionOnViewWillAppear = NO;
         _groupPickerController.showDisclosureIndicators = NO;
         _groupPickerController.delegate = self;
-        [_groupPickerController
-         addObserver:self
-         forKeyPath:@"groups"
-         options:0
-         context:&GCIPGroupPickerControllerGroupsContext];
         self.title = _groupPickerController.title;
         [self addChildViewController:_groupPickerController];
         [_groupPickerController didMoveToParentViewController:self];
@@ -62,13 +57,6 @@ static int GCIPGroupPickerControllerGroupsContext = 0;
         
     }
     return self;
-}
-
-- (void)dealloc {
-    [_groupPickerController
-     removeObserver:self
-     forKeyPath:@"groups"
-     context:&GCIPGroupPickerControllerGroupsContext];
 }
 
 - (id)forwardingTargetForSelector:(SEL)selector {
@@ -112,27 +100,10 @@ static int GCIPGroupPickerControllerGroupsContext = 0;
     
 }
 
-#pragma mark - kvo
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if (context == &GCIPGroupPickerControllerGroupsContext) {
-        if (!_assetPickerController.groupIdentifier && [_groupPickerController.groups count] > 0) {
-            ALAssetsGroup *group = [_groupPickerController.groups objectAtIndex:0];
-            [self groupPicker:_groupPickerController didSelectGroup:group];
-            [_groupPickerController.tableView reloadData];
-            [_groupPickerController.tableView
-             selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]
-             animated:NO
-             scrollPosition:UITableViewScrollPositionNone];
-        }
-    }
-}
-
 #pragma mark - group picker delegate
 
 - (void)groupPicker:(GCIPGroupPickerController *)picker didSelectGroup:(ALAssetsGroup *)group {
-    NSString *identifier = [group valueForProperty:ALAssetsGroupPropertyPersistentID];
-    _assetPickerController.groupIdentifier = identifier;
+    _assetPickerController.groupURL = [group valueForProperty:ALAssetsGroupPropertyURL];
 }
 
 @end
