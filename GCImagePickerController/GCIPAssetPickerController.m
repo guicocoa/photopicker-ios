@@ -41,8 +41,9 @@
 - (id)init {
     self = [super init];
     if (self) {
-        _selectedAssetURLs = [NSMutableSet set];
+        self.title = [GCImagePickerController localizedString:@"PHOTO_LIBRARY"];
         self.groupURL = nil;
+        _selectedAssetURLs = [NSMutableSet set];
     }
     return self;
 }
