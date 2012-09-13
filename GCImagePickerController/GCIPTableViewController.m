@@ -54,6 +54,7 @@
     tableView.delegate = self;
     tableView.dataSource = self;
     tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+    tableView.hidden = YES;
     [self.view addSubview:tableView];
     self.tableView = tableView;
     
