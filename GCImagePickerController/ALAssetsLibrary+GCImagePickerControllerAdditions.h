@@ -1,9 +1,8 @@
 //
 //  ALAssetsLibrary+GCImagePickerControllerAdditions.h
-//  QuickShot
 //
 //  Created by Caleb Davenport on 3/9/12.
-//  Copyright (c) 2012 GUI Cocoa, LLC. All rights reserved.
+//  Copyright (c) 2012 Caleb Davenport.
 //
 
 #import <AssetsLibrary/AssetsLibrary.h>
