@@ -14,6 +14,10 @@
 
 - (IBAction)showPhotoPicker:(id)sender {
     GCImagePickerController *picker = [GCImagePickerController picker];
+    picker.actionTitle = @"Upload";
+    picker.actionBlock = ^(NSSet *URLs) {
+        NSLog(@"%@", URLs);
+    };
     picker.finishBlock = ^{
         [self dismissViewControllerAnimated:YES completion:nil];
     };

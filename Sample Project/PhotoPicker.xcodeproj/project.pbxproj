@@ -11,6 +11,7 @@
 		3BB0D41A15FF7DF400A1D9CC /* GCIPAssetGridCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BF848E015AFD8E800922FB2 /* GCIPAssetGridCell.m */; };
 		3BB0D41B15FF7DF900A1D9CC /* GCIPAssetView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BF848E415AFD8E800922FB2 /* GCIPAssetView.m */; };
 		3BB0D41E15FF998300A1D9CC /* PPViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BB0D41D15FF998300A1D9CC /* PPViewController.m */; };
+		3BBEE469160238BE0018CA9F /* GCImagePickerController.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3BBEE468160238BE0018CA9F /* GCImagePickerController.bundle */; };
 		3BF848B215AFD7EA00922FB2 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BF848B115AFD7EA00922FB2 /* UIKit.framework */; };
 		3BF848B415AFD7EA00922FB2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BF848B315AFD7EA00922FB2 /* Foundation.framework */; };
 		3BF848B615AFD7EA00922FB2 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BF848B515AFD7EA00922FB2 /* CoreGraphics.framework */; };
@@ -21,7 +22,6 @@
 		3BF848D415AFD86200922FB2 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BF848D315AFD86200922FB2 /* AssetsLibrary.framework */; };
 		3BF848F415AFD8E800922FB2 /* ALAssetRepresentation+GCImagePickerControllerAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BF848D715AFD8E800922FB2 /* ALAssetRepresentation+GCImagePickerControllerAdditions.m */; };
 		3BF848F515AFD8E800922FB2 /* ALAssetsLibrary+GCImagePickerControllerAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BF848D915AFD8E800922FB2 /* ALAssetsLibrary+GCImagePickerControllerAdditions.m */; };
-		3BF848F615AFD8E800922FB2 /* GCImagePickerController.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3BF848DA15AFD8E800922FB2 /* GCImagePickerController.strings */; };
 		3BF848F715AFD8E800922FB2 /* GCImagePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BF848DE15AFD8E800922FB2 /* GCImagePickerController.m */; };
 		3BF848FB15AFD8E800922FB2 /* GCIPGroupPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BF848E615AFD8E800922FB2 /* GCIPGroupPickerController.m */; };
 		3BF848FC15AFD8E800922FB2 /* GCIPTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BF848E815AFD8E800922FB2 /* GCIPTableViewController.m */; };
@@ -39,6 +39,9 @@
 /* Begin PBXFileReference section */
 		3BB0D41C15FF998300A1D9CC /* PPViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PPViewController.h; sourceTree = "<group>"; };
 		3BB0D41D15FF998300A1D9CC /* PPViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PPViewController.m; sourceTree = "<group>"; };
+		3BBEE468160238BE0018CA9F /* GCImagePickerController.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = GCImagePickerController.bundle; sourceTree = "<group>"; };
+		3BBEE46C16023C9B0018CA9F /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
+		3BBEE46D16023C9B0018CA9F /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		3BF848AD15AFD7EA00922FB2 /* PhotoPicker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PhotoPicker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3BF848B115AFD7EA00922FB2 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		3BF848B315AFD7EA00922FB2 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -55,8 +58,6 @@
 		3BF848D715AFD8E800922FB2 /* ALAssetRepresentation+GCImagePickerControllerAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ALAssetRepresentation+GCImagePickerControllerAdditions.m"; sourceTree = "<group>"; };
 		3BF848D815AFD8E800922FB2 /* ALAssetsLibrary+GCImagePickerControllerAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ALAssetsLibrary+GCImagePickerControllerAdditions.h"; sourceTree = "<group>"; };
 		3BF848D915AFD8E800922FB2 /* ALAssetsLibrary+GCImagePickerControllerAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ALAssetsLibrary+GCImagePickerControllerAdditions.m"; sourceTree = "<group>"; };
-		3BF848DB15AFD8E800922FB2 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/GCImagePickerController.strings; sourceTree = "<group>"; };
-		3BF848DC15AFD8E800922FB2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/GCImagePickerController.strings; sourceTree = "<group>"; };
 		3BF848DD15AFD8E800922FB2 /* GCImagePickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCImagePickerController.h; sourceTree = "<group>"; };
 		3BF848DE15AFD8E800922FB2 /* GCImagePickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCImagePickerController.m; sourceTree = "<group>"; };
 		3BF848DF15AFD8E800922FB2 /* GCIPAssetGridCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCIPAssetGridCell.h; sourceTree = "<group>"; };
@@ -101,6 +102,8 @@
 		3BF848A215AFD7EA00922FB2 = {
 			isa = PBXGroup;
 			children = (
+				3BBEE46C16023C9B0018CA9F /* LICENSE */,
+				3BBEE46D16023C9B0018CA9F /* README.md */,
 				3BF848D515AFD8E800922FB2 /* GCImagePickerController */,
 				3BF848B715AFD7EA00922FB2 /* PhotoPicker */,
 				3BF848B015AFD7EA00922FB2 /* Frameworks */,
@@ -175,7 +178,7 @@
 				3BF848D715AFD8E800922FB2 /* ALAssetRepresentation+GCImagePickerControllerAdditions.m */,
 				3BF848D815AFD8E800922FB2 /* ALAssetsLibrary+GCImagePickerControllerAdditions.h */,
 				3BF848D915AFD8E800922FB2 /* ALAssetsLibrary+GCImagePickerControllerAdditions.m */,
-				3BF848DA15AFD8E800922FB2 /* GCImagePickerController.strings */,
+				3BBEE468160238BE0018CA9F /* GCImagePickerController.bundle */,
 				3BF848ED15AFD8E800922FB2 /* Images */,
 			);
 			name = GCImagePickerController;
@@ -249,7 +252,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				3BF848BC15AFD7EA00922FB2 /* InfoPlist.strings in Resources */,
-				3BF848F615AFD8E800922FB2 /* GCImagePickerController.strings in Resources */,
 				3BF848FF15AFD8E800922FB2 /* GCImagePickerControllerCheckGreen.png in Resources */,
 				3BF8490015AFD8E800922FB2 /* GCImagePickerControllerCheckGreen@2x.png in Resources */,
 				3BF8490115AFD8E800922FB2 /* GCImagePickerControllerFilmRoll.png in Resources */,
@@ -257,6 +259,7 @@
 				3BF8490315AFD8E800922FB2 /* GCImagePickerControllerVideoAsset.png in Resources */,
 				3BF8490415AFD8E800922FB2 /* GCImagePickerControllerVideoAsset@2x.png in Resources */,
 				3BF8490615AFD8FE00922FB2 /* Storyboard.storyboard in Resources */,
+				3BBEE469160238BE0018CA9F /* GCImagePickerController.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -292,15 +295,6 @@
 				3BF848BB15AFD7EA00922FB2 /* en */,
 			);
 			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		3BF848DA15AFD8E800922FB2 /* GCImagePickerController.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				3BF848DB15AFD8E800922FB2 /* de */,
-				3BF848DC15AFD8E800922FB2 /* en */,
-			);
-			name = GCImagePickerController.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

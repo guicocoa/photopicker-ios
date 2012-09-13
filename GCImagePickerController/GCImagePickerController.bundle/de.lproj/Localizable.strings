@@ -1,0 +1,27 @@
+/*
+ 
+ Created by Caleb Davenport on 3/17/11.
+ Copyright 2011 GUI Cocoa, LLC. All rights reserved.
+ 
+ */
+
+// title of main photo library view
+"PHOTO_LIBRARY" = "Fotoarchiv";
+
+// title when one item is selected
+"PHOTO_COUNT_SINGLE" = "1 Objekt";
+
+// title when multiple items are selected
+"PHOTO_COUNT_MULTIPLE" = "%d Objekte";
+
+// title of alert when an error occurs
+"ERROR" = "Fehler";
+
+// title for ok button
+"OK" = "OK";
+
+// message for an unkown error
+"UNKNOWN_LIBRARY_ERROR" = "An unknown error has occurred.";
+
+// message for instances where access has not been granted to see the photo library
+"PHOTO_ROLL_ACCESS_ERROR" = "This application has not been granted access to your Photo Library.";

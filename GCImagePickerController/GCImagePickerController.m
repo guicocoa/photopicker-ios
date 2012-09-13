@@ -41,7 +41,14 @@
 #pragma mark - class methods
 
 + (NSString *)localizedString:(NSString *)key {
-    return [[NSBundle mainBundle] localizedStringForKey:key value:nil table:NSStringFromClass(self)];
+    static NSURL *URL = nil;
+    static NSBundle *bundle = nil;
+    static dispatch_once_t token;
+    dispatch_once(&token, ^{
+        URL = [[NSBundle mainBundle] URLForResource:NSStringFromClass(self) withExtension:@"bundle"];
+        bundle = [NSBundle bundleWithURL:URL];
+    });
+    return [bundle localizedStringForKey:key value:nil table:nil];
 }
 
 + (void)failedToLoadAssetsWithError:(NSError *)error {
@@ -50,7 +57,7 @@
     if (code == ALAssetsLibraryAccessUserDeniedError || code == ALAssetsLibraryAccessGloballyDeniedError) {
         alert = [[UIAlertView alloc]
                  initWithTitle:[self localizedString:@"ERROR"]
-                 message:[self localizedString:@"PHOTO_ROLL_LOCATION_ERROR"]
+                 message:[self localizedString:@"PHOTO_ROLL_ACCESS_ERROR"]
                  delegate:nil
                  cancelButtonTitle:[self localizedString:@"OK"]
                  otherButtonTitles:nil];

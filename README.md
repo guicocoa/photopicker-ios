@@ -1,42 +1,44 @@
 # About
 
-This library is designed to mimick the core functionality of `UIImagePickerController`. It has a few unique features not found in the Apple implementation.
+This library is designed to mimick the core functionality of `UIImagePickerController`. It also has a few unique features not found Apple's implementation.
 
 - Full-screen library browser for the iPad
-- Ability to email and copy items from the photo library
 - Preserves all item metadata (including location data)
 
 # Requirements
 
 This library requires the presence of the following frameworks:
 
-- MobileCoreServices.framework
-- MessageUI.framework
-- AssetsLibrary.framework
+- `AssetsLibrary.framework`
+- `QuartzCore.framework`
 
-It requires the project to be built against 4.0 or higher.
+The project must be built against the iOS 5.0 SDK or higher.
+
+If your project is not setup to use ARC, add `-fobjc-arc` to all source files for this library in your target's "Compile Sources" build phase.
 
 # Usage
 
-Drag the "Photo Picker" folder into your project. Import the main header where you intent to use the picker.
+Add the "GCImagePickerController" folder to your project. Import the main header where you intend to use the picker.
 
-````objc
+```objc
 #import "GCImagePickerController.h"
-````
+```
 
 Use the picker.
 
-````objc
+```objc
 // create picker
-GCImagePickerController *picker = [[GCImagePickerController alloc] initWithRootViewController:nil];
+GCImagePickerController *picker = [GCImagePickerController picker];
 
 // set custom action title and block
-picker.actionTitle = @"Upload"; // add custom action button
-picker.actionBlock = ^(NSURL *URL, BOOL *stop) {
-    // special action to perform on each selected item
-}
+picker.actionTitle = @"Upload";
+picker.actionBlock = ^(NSSet *URLs) {
+    NSLog(@"%@", URLs);
+};
 
-// show and release
-[self presentModalViewController:picker animated:YES];
-[picker release];
+// finish up and present
+picker.finishBlock = ^{ // this is optional
+    [self dismissViewControllerAnimated:YES completion:nil];
+};
+[self presentViewController:picker animated:YES completion:nil];
 ````
