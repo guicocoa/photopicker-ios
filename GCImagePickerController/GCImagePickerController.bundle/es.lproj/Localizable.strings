@@ -6,22 +6,22 @@
  */
 
 // title of main photo library view
-"PHOTO_LIBRARY" = "Photo Library";
+"PHOTO_LIBRARY" = "Biblioteca de fotos";
 
 // title when one item is selected
-"PHOTO_COUNT_SINGLE" = "1 Item";
+"PHOTO_COUNT_SINGLE" = "1 elemento";
 
 // title when multiple items are selected
-"PHOTO_COUNT_MULTIPLE" = "%d Items";
+"PHOTO_COUNT_MULTIPLE" = "%d elementos";
 
 // title of alert when an error occurs
 "ERROR" = "Error";
 
 // title for ok button
-"OK" = "OK";
+"OK" = "Aceptar";
 
 // message for an unkown error
-"UNKNOWN_LIBRARY_ERROR" = "An unknown error has occurred.";
+"UNKNOWN_LIBRARY_ERROR" = "Se ha producido un error desconocido.";
 
 // message for instances where access has not been granted to see the photo library
-"PHOTO_ROLL_ACCESS_ERROR" = "This application does not have permission to access to your Photo Library.";
+"PHOTO_ROLL_ACCESS_ERROR" = "Esta aplicación no tiene autorización para acceder a tu Biblioteca de fotos.";

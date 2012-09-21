@@ -6,22 +6,22 @@
  */
 
 // title of main photo library view
-"PHOTO_LIBRARY" = "Photo Library";
+"PHOTO_LIBRARY" = "사진 보관함";
 
 // title when one item is selected
-"PHOTO_COUNT_SINGLE" = "1 Item";
+"PHOTO_COUNT_SINGLE" = "1개의 아이템";
 
 // title when multiple items are selected
-"PHOTO_COUNT_MULTIPLE" = "%d Items";
+"PHOTO_COUNT_MULTIPLE" = "%d개의 아이템";
 
 // title of alert when an error occurs
-"ERROR" = "Error";
+"ERROR" = "오류";
 
 // title for ok button
-"OK" = "OK";
+"OK" = "확인";
 
 // message for an unkown error
-"UNKNOWN_LIBRARY_ERROR" = "An unknown error has occurred.";
+"UNKNOWN_LIBRARY_ERROR" = "알 수 없는 오류가 발생했습니다.";
 
 // message for instances where access has not been granted to see the photo library
-"PHOTO_ROLL_ACCESS_ERROR" = "This application does not have permission to access to your Photo Library.";
+"PHOTO_ROLL_ACCESS_ERROR" = "이 앱은 사진 보관함에 접근할 수 있는 권한이 없습니다.";
