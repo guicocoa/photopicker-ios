@@ -1,0 +1,27 @@
+/*
+ 
+ Created by Caleb Davenport on 3/17/11.
+ Copyright 2011-2012 Caleb Davenport.
+ 
+ */
+
+// title of main photo library view
+"PHOTO_LIBRARY" = "フォトライブラリ";
+
+// title when one item is selected
+"PHOTO_COUNT_SINGLE" = "1件のアイテム";
+
+// title when multiple items are selected
+"PHOTO_COUNT_MULTIPLE" = "%d アイテム";
+
+// title of alert when an error occurs
+"ERROR" = "エラー";
+
+// title for ok button
+"OK" = "OK";
+
+// message for an unkown error
+"UNKNOWN_LIBRARY_ERROR" = "不明なエラーが発生しました。";
+
+// message for instances where access has not been granted to see the photo library
+"PHOTO_ROLL_ACCESS_ERROR" = "このアプリはあなたのフォトライブラリにアクセスする権限を持っていません。";
