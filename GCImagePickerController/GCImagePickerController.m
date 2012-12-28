@@ -19,6 +19,10 @@
 #import "GCIPGroupPickerController.h"
 #import "GCIPAssetPickerController.h"
 
+@interface GCImagePickerController () <UINavigationControllerDelegate>
+
+@end
+
 @implementation GCImagePickerController
 
 #pragma mark - class methods
@@ -78,6 +82,7 @@
     GCImagePickerController *picker = [[GCImagePickerController alloc] initWithRootViewController:controller];
     picker.modalPresentationStyle = UIModalPresentationPageSheet;
     picker.assetsFilter = [ALAssetsFilter allAssets];
+    picker.delegate = picker;
     
     // push a group on if we have one
     if (groupURL && UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
@@ -115,6 +120,37 @@
             [(GCIPViewController *)obj reloadAssets];
         }
     }];
+}
+
+- (void)setAllowsMultipleSelection:(BOOL)allow {
+    _allowsMultipleSelection = allow;
+    if (!_allowsMultipleSelection && UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        [self.viewControllers enumerateObjectsUsingBlock:^(UIViewController *controller, NSUInteger idx, BOOL *stop) {
+            controller.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]
+                                                            initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                            target:self
+                                                            action:@selector(cancelForSingleSelection)];
+        }];
+    }
+}
+
+- (void)cancelForSingleSelection {
+    if (self.finishBlock) {
+        self.finishBlock();
+        return;
+    }
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - UINavivationControllerDelegate
+
+- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
+    if (!self.allowsMultipleSelection && UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        viewController.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]
+                                                            initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                            target:self
+                                                            action:@selector(cancelForSingleSelection)];
+    }
 }
 
 @end
