@@ -56,6 +56,13 @@ typedef void (^GCImagePickerControllerDidFinishBlock) ();
 
 /*
  
+ Enable or disable multiple selection.
+ 
+ */
+@property (nonatomic, assign) BOOL allowsMultipleSelection;
+
+/*
+ 
  Create a new picker which should be shown as a modal view controller.
  
  */

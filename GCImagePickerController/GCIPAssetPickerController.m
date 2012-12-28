@@ -185,6 +185,14 @@
             NSURL *defaultURL = [representation url];
             if (defaultURL == nil) { return; }
             
+            // check if multiple selection is allowed
+            BOOL allowsMultipleSelection = (BOOL)[self.parentViewController performSelector:@selector(allowsMultipleSelection)];
+            if (!allowsMultipleSelection) {
+                GCImagePickerControllerActionBlock block = [self.parentViewController performSelector:@selector(actionBlock)];
+                if (block) { block([NSSet setWithObject:defaultURL]); }
+                return;
+            }
+            
             // modify set
             if ([_selectedAssetURLs containsObject:defaultURL]) {
                 [_selectedAssetURLs removeObject:defaultURL];
