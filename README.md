@@ -32,7 +32,7 @@ GCImagePickerController *picker = [GCImagePickerController picker];
 
 // set custom action title and block
 picker.actionTitle = @"Upload";
-picker.actionBlock = ^(NSSet *URLs) {
+picker.selectedItemsBlock = ^(NSSet *URLs) {
     NSLog(@"%@", URLs);
 };
 

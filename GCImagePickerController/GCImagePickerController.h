@@ -16,11 +16,11 @@
  ALAssetLibrary.
  
  */
-typedef void (^GCImagePickerControllerActionBlock) (NSSet *set);
+typedef void (^GCImagePickerControllerSelectedItemsBlock) (NSSet *set);
 
 /*
  
- Block called when the "Done" button is pressed. Dismiss the picker here.
+ Called when the "Done" or "Cancel" button is pressed to dismiss the view.
  
  */
 typedef void (^GCImagePickerControllerDidFinishBlock) ();
@@ -43,7 +43,7 @@ typedef void (^GCImagePickerControllerDidFinishBlock) ();
  
  */
 @property (nonatomic, copy) NSString *actionTitle;
-@property (nonatomic, copy) GCImagePickerControllerActionBlock actionBlock;
+@property (nonatomic, copy) GCImagePickerControllerSelectedItemsBlock selectedItemsBlock;
 
 /*
  

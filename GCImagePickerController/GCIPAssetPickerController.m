@@ -137,7 +137,7 @@
 #pragma mark - button actions
 
 - (void)action {
-    GCImagePickerControllerActionBlock block = [self.parentViewController performSelector:@selector(actionBlock)];
+    GCImagePickerControllerSelectedItemsBlock block = [self.parentViewController performSelector:@selector(selectedItemsBlock)];
     if (block) { block([_selectedAssetURLs copy]); }
     [self cancel];
 }
@@ -188,7 +188,7 @@
             // check if multiple selection is allowed
             BOOL allowsMultipleSelection = (BOOL)[self.parentViewController performSelector:@selector(allowsMultipleSelection)];
             if (!allowsMultipleSelection) {
-                GCImagePickerControllerActionBlock block = [self.parentViewController performSelector:@selector(actionBlock)];
+                GCImagePickerControllerSelectedItemsBlock block = [self.parentViewController performSelector:@selector(selectedItemsBlock)];
                 if (block) { block([NSSet setWithObject:defaultURL]); }
                 return;
             }
