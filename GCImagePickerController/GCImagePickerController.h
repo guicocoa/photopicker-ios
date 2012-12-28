@@ -61,6 +61,20 @@ typedef void (^GCImagePickerControllerDidFinishBlock) ();
  */
 + (GCImagePickerController *)picker;
 
+/*
+ 
+ Create a picker and present it with a certain group displayed instead of the
+ main group list. This is only valid on an iPhone or similar form factor.
+ 
+ */
++ (GCImagePickerController *)pickerForGroupWithURL:(NSURL *)URL;
+
+/*
+ 
+ Helper to get the saved photos (camera roll) assets group
+ 
+ */
+
 // internal
 @property (nonatomic, readonly) ALAssetsLibrary *assetsLibrary;
 + (NSString *)localizedString:(NSString *)key;

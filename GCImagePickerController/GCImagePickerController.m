@@ -17,6 +17,7 @@
 #import "GCImagePickerController.h"
 #import "GCIPViewController_Pad.h"
 #import "GCIPGroupPickerController.h"
+#import "GCIPAssetPickerController.h"
 
 @implementation GCImagePickerController
 
@@ -61,6 +62,10 @@
 }
 
 + (GCImagePickerController *)picker {
+    return [self pickerForGroupWithURL:nil];
+}
+
++ (GCImagePickerController *)pickerForGroupWithURL:(NSURL *)groupURL {
     
     // create root controller
     UIViewController *controller = nil;
@@ -73,6 +78,13 @@
     GCImagePickerController *picker = [[GCImagePickerController alloc] initWithRootViewController:controller];
     picker.modalPresentationStyle = UIModalPresentationPageSheet;
     picker.assetsFilter = [ALAssetsFilter allAssets];
+    
+    // push a group on if we have one
+    if (groupURL && UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        GCIPAssetPickerController *assetPicker = [[GCIPAssetPickerController alloc] init];
+        assetPicker.groupURL = groupURL;
+        [picker pushViewController:assetPicker animated:NO];
+    }
     
     // assets library
     picker->_assetsLibrary = [[ALAssetsLibrary alloc] init];
