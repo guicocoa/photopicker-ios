@@ -10,6 +10,4 @@
 
 @interface PPViewController : UIViewController
 
-- (IBAction)showPhotoPicker:(id)sender;
-
 @end

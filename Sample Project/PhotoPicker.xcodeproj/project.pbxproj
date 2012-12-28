@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3B48D9EA168D5C1200B55E66 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B48D9E9168D5C1200B55E66 /* Default-568h@2x.png */; };
 		3BB0D41915FF7DF100A1D9CC /* GCIPAssetPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BF848E215AFD8E800922FB2 /* GCIPAssetPickerController.m */; };
 		3BB0D41A15FF7DF400A1D9CC /* GCIPAssetGridCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BF848E015AFD8E800922FB2 /* GCIPAssetGridCell.m */; };
 		3BB0D41B15FF7DF900A1D9CC /* GCIPAssetView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BF848E415AFD8E800922FB2 /* GCIPAssetView.m */; };
@@ -37,6 +38,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3B48D9E9168D5C1200B55E66 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		3BB0D41C15FF998300A1D9CC /* PPViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PPViewController.h; sourceTree = "<group>"; };
 		3BB0D41D15FF998300A1D9CC /* PPViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PPViewController.m; sourceTree = "<group>"; };
 		3BBEE468160238BE0018CA9F /* GCImagePickerController.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = GCImagePickerController.bundle; sourceTree = "<group>"; };
@@ -102,6 +104,7 @@
 		3BF848A215AFD7EA00922FB2 = {
 			isa = PBXGroup;
 			children = (
+				3B48D9E9168D5C1200B55E66 /* Default-568h@2x.png */,
 				3BBEE46C16023C9B0018CA9F /* LICENSE */,
 				3BBEE46D16023C9B0018CA9F /* README.md */,
 				3BF848D515AFD8E800922FB2 /* GCImagePickerController */,
@@ -260,6 +263,7 @@
 				3BF8490415AFD8E800922FB2 /* GCImagePickerControllerVideoAsset@2x.png in Resources */,
 				3BF8490615AFD8FE00922FB2 /* Storyboard.storyboard in Resources */,
 				3BBEE469160238BE0018CA9F /* GCImagePickerController.bundle in Resources */,
+				3B48D9EA168D5C1200B55E66 /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
