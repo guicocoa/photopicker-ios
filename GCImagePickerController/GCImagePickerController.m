@@ -37,9 +37,13 @@
     NSInteger code = [error code];
     UIAlertView *alert = nil;
     if (code == ALAssetsLibraryAccessUserDeniedError || code == ALAssetsLibraryAccessGloballyDeniedError) {
+        NSString *message = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
+        message = [NSString stringWithFormat:
+                   [self localizedString:@"PHOTO_ROLL_ACCESS_ERROR"],
+                   message];
         alert = [[UIAlertView alloc]
                  initWithTitle:[self localizedString:@"ERROR"]
-                 message:[self localizedString:@"PHOTO_ROLL_ACCESS_ERROR"]
+                 message:message
                  delegate:nil
                  cancelButtonTitle:[self localizedString:@"OK"]
                  otherButtonTitles:nil];

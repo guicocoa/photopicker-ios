@@ -24,4 +24,4 @@
 "UNKNOWN_LIBRARY_ERROR" = "An unknown error has occurred.";
 
 // message for instances where access has not been granted to see the photo library
-"PHOTO_ROLL_ACCESS_ERROR" = "This application does not have permission to access to your Photo Library.";
+"PHOTO_ROLL_ACCESS_ERROR" = "%@ does not have permission to access to your Photo Library.";
