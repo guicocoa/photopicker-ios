@@ -12,7 +12,6 @@
 
 @interface GCIPGroupPickerController () {
     ALAssetsGroup *_selectedGroup;
-    NSNumberFormatter *_numberFormatter;
 }
 
 @property (nonatomic, readwrite, copy) NSArray *groups;
@@ -74,7 +73,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    _numberFormatter = [[NSNumberFormatter alloc] init];
     self.tableView.rowHeight = 60.0;
     [self reloadAssets];
 }
@@ -87,7 +85,6 @@
 - (void)didReceiveMemoryWarning {
     if (![self isViewLoaded]) {
         _groups = nil;
-        _numberFormatter = nil;
     }
 }
 
@@ -119,8 +116,7 @@
     ALAssetsGroup *group = [self.groups objectAtIndex:indexPath.row];
 	cell.textLabel.text = [group valueForProperty:ALAssetsGroupPropertyName];
 	cell.imageView.image = [UIImage imageWithCGImage:[group posterImage]];
-    NSNumber *count = [NSNumber numberWithInteger:[group numberOfAssets]];
-    cell.detailTextLabel.text = [_numberFormatter stringFromNumber:count];
+    cell.detailTextLabel.text = [NSNumberFormatter localizedStringFromNumber:@([group numberOfAssets]) numberStyle:NSNumberFormatterDecimalStyle];
     return cell;
 }
 

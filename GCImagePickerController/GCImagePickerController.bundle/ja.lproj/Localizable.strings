@@ -12,7 +12,7 @@
 "PHOTO_COUNT_SINGLE" = "1件のアイテム";
 
 // title when multiple items are selected
-"PHOTO_COUNT_MULTIPLE" = "%d アイテム";
+"PHOTO_COUNT_MULTIPLE" = "%@ アイテム";
 
 // title of alert when an error occurs
 "ERROR" = "エラー";
