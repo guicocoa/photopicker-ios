@@ -6,6 +6,10 @@
 
 #import "GCIPTableViewController.h"
 
+@interface GCIPTableViewController () <UITableViewDelegate, UITableViewDataSource>
+
+@end
+
 @implementation GCIPTableViewController
 
 #pragma mark - object methods

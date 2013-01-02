@@ -44,7 +44,7 @@
         // add subviews
         [self addSubview:_thumbnailView];
         [self addSubview:_videoIconView];
-        [self addSubview:_selectedIconView];
+//        [self addSubview:_selectedIconView];
         
     }
     return self;
@@ -81,7 +81,8 @@
 }
 
 - (void)setSelected:(BOOL)selected {
-    _selectedIconView.hidden = !selected;
+//    [super setSelected:selected];
+//    _selectedIconView.hidden = !selected;
 }
 
 - (void)layoutSubviews {

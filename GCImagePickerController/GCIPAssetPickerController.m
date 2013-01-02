@@ -7,8 +7,15 @@
 #import "GCIPAssetPickerController.h"
 #import "GCIPAssetGridCell.h"
 #import "GCImagePickerController.h"
+#import "GCIPAssetView.h"
 
 #import "ALAssetsLibrary+GCImagePickerControllerAdditions.h"
+
+@interface GCIPAssetPickerController () <UICollectionViewDataSource, UICollectionViewDelegate>
+
+@property (nonatomic, weak) UICollectionView *collectionView;
+
+@end
 
 @implementation GCIPAssetPickerController {
     NSMutableSet *_selectedAssetURLs;
@@ -33,8 +40,8 @@
     _groupURL = [URL copy];
     [self cancel];
     [self reloadAssets];
-    self.tableView.contentOffset = CGPointMake(0.0, -4.0);
-    [self.tableView flashScrollIndicators];
+//    self.tableView.contentOffset = CGPointMake(0.0, -4.0);
+    [self.collectionView flashScrollIndicators];
 }
 
 - (void)reloadAssets {
@@ -56,8 +63,8 @@
              _group = group;
              _assets = assets;
              [self updateTitle];
-             [self.tableView reloadData];
-             self.tableView.hidden = ([_assets count] == 0);
+             [self.collectionView reloadData];
+             self.collectionView.hidden = ([_assets count] == 0);
          }
          failure:^(NSError *error) {
              [GCImagePickerController failedToLoadAssetsWithError:error];
@@ -97,7 +104,7 @@
                                                   action:@selector(done)];
     }
     else { self.navigationItem.rightBarButtonItem = nil; }
-    [self.tableView reloadData];
+    [self.collectionView reloadData];
     [self updateTitle];
 }
 
@@ -108,18 +115,31 @@
     // super
     [super viewDidLoad];
     
-    // table view
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    self.tableView.rowHeight = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? 109.0 : 79.0;
-    self.tableView.contentInset = UIEdgeInsetsMake(4.0, 0.0, 0.0, 0.0);
+    // self
+    self.view.backgroundColor = [UIColor whiteColor];
     
-    // gesture
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
-                                   initWithTarget:self
-                                   action:@selector(tableDidReceiveTap:)];
-    [tap setNumberOfTapsRequired:1];
-    [tap setNumberOfTouchesRequired:1];
-    [self.tableView addGestureRecognizer:tap];
+    // collection view
+    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
+    layout.scrollDirection = UICollectionViewScrollDirectionVertical;
+    layout.sectionInset = UIEdgeInsetsMake(4.0, 4.0, 4.0, 4.0);
+    layout.minimumInteritemSpacing = 4.0;
+    layout.minimumLineSpacing = 4.0;
+    layout.itemSize = CGSizeMake(75.0, 75.0);
+    UICollectionView *collectionView = [[UICollectionView alloc]
+                                        initWithFrame:self.view.bounds
+                                        collectionViewLayout:layout];
+    collectionView.delegate = self;
+    collectionView.dataSource = self;
+    collectionView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+    collectionView.hidden = YES;
+    collectionView.backgroundView = nil;
+    collectionView.backgroundColor = [UIColor whiteColor];
+    collectionView.bounces = YES;
+    collectionView.alwaysBounceVertical = YES;
+    collectionView.allowsMultipleSelection = YES;
+    [collectionView registerClass:[GCIPAssetView class] forCellWithReuseIdentifier:@"AssetCell"];
+    [self.view addSubview:collectionView];
+    self.collectionView = collectionView;
     
     // reload
     [self reloadAssets];
@@ -142,86 +162,64 @@
     [self cancel];
 }
 
-#pragma mark - table view
+#pragma mark - collection view
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
     return 1;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return (NSInteger)ceilf((float)[_assets count] / 4.0);
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    return [_assets count];
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString * const identifier = @"Cell";
-    GCIPAssetGridCell *cell = (GCIPAssetGridCell *)[tableView dequeueReusableCellWithIdentifier:identifier];
-    if (cell == nil) {
-        cell = [[GCIPAssetGridCell alloc] initWithStyle:0 reuseIdentifier:identifier];
-        cell.numberOfColumns = 4;
-    }
-    NSUInteger start = indexPath.row * 4;
-    NSUInteger length = MIN([_assets count] - start, 4);
-    NSRange range = NSMakeRange(start, length);
-    [cell
-     setAssets:[_assets subarrayWithRange:range]
-     selected:_selectedAssetURLs];
-    return cell;
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    GCIPAssetView *view = [collectionView dequeueReusableCellWithReuseIdentifier:@"AssetCell" forIndexPath:indexPath];
+    view.asset = [_assets objectAtIndex:indexPath.row];
+    return view;
 }
 
-#pragma mark - gestures
-
-- (void)tableDidReceiveTap:(UITapGestureRecognizer *)gesture {
-    if (gesture.state == UIGestureRecognizerStateEnded && gesture.view == self.tableView) {
-        CGPoint location = [gesture locationInView:gesture.view];
-        NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:location];
-        if (indexPath == nil) { return; }
-        NSUInteger column = location.x / (self.tableView.bounds.size.width / 4);
-        NSUInteger index = indexPath.row * 4 + column;
-        if (index < [_assets count]) {
-            
-            // get asset stuff
-            ALAsset *asset = [_assets objectAtIndex:index];
-            ALAssetRepresentation *representation = [asset defaultRepresentation];
-            NSURL *defaultURL = [representation url];
-            if (defaultURL == nil) { return; }
-            
-            // check if multiple selection is allowed
-            BOOL allowsMultipleSelection = (BOOL)[self.parentViewController performSelector:@selector(allowsMultipleSelection)];
-            if (!allowsMultipleSelection) {
-                GCImagePickerControllerSelectedItemsBlock block = [self.parentViewController performSelector:@selector(selectedItemsBlock)];
-                if (block) { block([NSSet setWithObject:defaultURL]); }
-                return;
-            }
-            
-            // modify set
-            if ([_selectedAssetURLs containsObject:defaultURL]) {
-                [_selectedAssetURLs removeObject:defaultURL];
-            }
-            else { [_selectedAssetURLs addObject:defaultURL]; }
-            
-            // check set count
-            if ([_selectedAssetURLs count] == 0) { [self cancel]; }
-            else {
-                NSString *title = [self.parentViewController performSelector:@selector(actionTitle)];
-                UIBarButtonItem *item = [[UIBarButtonItem alloc]
-                                         initWithTitle:title
-                                         style:UIBarButtonItemStyleDone
-                                         target:self
-                                         action:@selector(action)];
-                self.navigationItem.rightBarButtonItem = item;
-                item = [[UIBarButtonItem alloc]
-                        initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                        target:self
-                        action:@selector(cancel)];
-                item.style = UIBarButtonItemStyleBordered;
-                self.navigationItem.leftBarButtonItem = item;
-                [self updateTitle];
-                NSArray *paths = [NSArray arrayWithObject:indexPath];
-                [self.tableView reloadRowsAtIndexPaths:paths withRowAnimation:UITableViewRowAnimationNone];
-            }
-            
-        }
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    
+    // get asset stuff
+    ALAsset *asset = [_assets objectAtIndex:indexPath.row];
+    ALAssetRepresentation *representation = [asset defaultRepresentation];
+    NSURL *defaultURL = [representation url];
+    if (defaultURL == nil) { return; }
+    
+    // check if multiple selection is allowed
+    BOOL allowsMultipleSelection = (BOOL)[self.parentViewController performSelector:@selector(allowsMultipleSelection)];
+    if (!allowsMultipleSelection) {
+        GCImagePickerControllerSelectedItemsBlock block = [self.parentViewController performSelector:@selector(selectedItemsBlock)];
+        if (block) { block([NSSet setWithObject:defaultURL]); }
+        return;
     }
+    
+    // modify set
+    if ([_selectedAssetURLs containsObject:defaultURL]) {
+        [_selectedAssetURLs removeObject:defaultURL];
+    }
+    else { [_selectedAssetURLs addObject:defaultURL]; }
+    
+    // check set count
+    if ([_selectedAssetURLs count] == 0) { [self cancel]; }
+    else {
+        NSString *title = [self.parentViewController performSelector:@selector(actionTitle)];
+        UIBarButtonItem *item = [[UIBarButtonItem alloc]
+                                 initWithTitle:title
+                                 style:UIBarButtonItemStyleDone
+                                 target:self
+                                 action:@selector(action)];
+        self.navigationItem.rightBarButtonItem = item;
+        item = [[UIBarButtonItem alloc]
+                initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                target:self
+                action:@selector(cancel)];
+        item.style = UIBarButtonItemStyleBordered;
+        self.navigationItem.leftBarButtonItem = item;
+        [self updateTitle];
+        [self.collectionView reloadItemsAtIndexPaths:@[ indexPath ]];
+    }
+    
 }
 
 @end

@@ -8,9 +8,8 @@
 
 @class ALAsset;
 
-@interface GCIPAssetView : UIView
+@interface GCIPAssetView : UICollectionViewCell
 
 @property (nonatomic, retain) ALAsset *asset;
-@property (nonatomic, assign) BOOL selected;
 
 @end

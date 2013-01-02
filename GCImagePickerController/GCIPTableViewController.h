@@ -12,7 +12,7 @@
  assets library in a table format.
  
  */
-@interface GCIPTableViewController : GCIPViewController <UITableViewDelegate, UITableViewDataSource>
+@interface GCIPTableViewController : GCIPViewController
 
 // table view - this should be hidden when there are no assets
 @property (nonatomic, weak) UITableView *tableView;
