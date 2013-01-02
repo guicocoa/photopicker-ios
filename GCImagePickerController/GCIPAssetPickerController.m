@@ -74,7 +74,7 @@
     else if (count > 1) {
         self.title = [NSString stringWithFormat:
                       [GCImagePickerController localizedString:@"PHOTO_COUNT_MULTIPLE"],
-                      count];
+                      [NSNumberFormatter localizedStringFromNumber:@(count) numberStyle:NSNumberFormatterDecimalStyle]];
     }
     else if (_group) {
         self.title = [_group valueForProperty:ALAssetsGroupPropertyName];

@@ -12,7 +12,7 @@
 "PHOTO_COUNT_SINGLE" = "1개의 아이템";
 
 // title when multiple items are selected
-"PHOTO_COUNT_MULTIPLE" = "%d개의 아이템";
+"PHOTO_COUNT_MULTIPLE" = "%@개의 아이템";
 
 // title of alert when an error occurs
 "ERROR" = "오류";

@@ -12,7 +12,7 @@
 "PHOTO_COUNT_SINGLE" = "1 Item";
 
 // title when multiple items are selected
-"PHOTO_COUNT_MULTIPLE" = "%d Items";
+"PHOTO_COUNT_MULTIPLE" = "%@ Items";
 
 // title of alert when an error occurs
 "ERROR" = "Error";
