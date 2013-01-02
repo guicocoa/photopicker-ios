@@ -56,7 +56,7 @@ typedef void (^GCImagePickerControllerDidFinishBlock) ();
 
 /*
  
- Enable or disable multiple selection.
+ Enable or disable multiple selection. Defaults to `YES`.
  
  */
 @property (nonatomic, assign) BOOL allowsMultipleSelection;
