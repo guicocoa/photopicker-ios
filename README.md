@@ -12,7 +12,7 @@ This library requires the presence of the following frameworks:
 - `AssetsLibrary.framework`
 - `QuartzCore.framework`
 
-The project must be built against the iOS 5.0 SDK or higher.
+The project must be built against the iOS 6.0 SDK or higher.
 
 If your project is not setup to use ARC, add `-fobjc-arc` to all source files for this library in your target's "Compile Sources" build phase.
 
