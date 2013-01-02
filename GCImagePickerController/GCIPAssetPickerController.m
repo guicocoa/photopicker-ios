@@ -5,7 +5,6 @@
 //
 
 #import "GCIPAssetPickerController.h"
-#import "GCIPAssetGridCell.h"
 #import "GCImagePickerController.h"
 #import "GCIPAssetView.h"
 

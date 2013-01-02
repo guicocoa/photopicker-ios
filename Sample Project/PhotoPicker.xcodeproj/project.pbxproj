@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		3B48D9EA168D5C1200B55E66 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B48D9E9168D5C1200B55E66 /* Default-568h@2x.png */; };
 		3BB0D41915FF7DF100A1D9CC /* GCIPAssetPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BF848E215AFD8E800922FB2 /* GCIPAssetPickerController.m */; };
-		3BB0D41A15FF7DF400A1D9CC /* GCIPAssetGridCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BF848E015AFD8E800922FB2 /* GCIPAssetGridCell.m */; };
 		3BB0D41B15FF7DF900A1D9CC /* GCIPAssetView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BF848E415AFD8E800922FB2 /* GCIPAssetView.m */; };
 		3BB0D41E15FF998300A1D9CC /* PPViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BB0D41D15FF998300A1D9CC /* PPViewController.m */; };
 		3BBEE469160238BE0018CA9F /* GCImagePickerController.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3BBEE468160238BE0018CA9F /* GCImagePickerController.bundle */; };
@@ -62,8 +61,6 @@
 		3BF848D915AFD8E800922FB2 /* ALAssetsLibrary+GCImagePickerControllerAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ALAssetsLibrary+GCImagePickerControllerAdditions.m"; sourceTree = "<group>"; };
 		3BF848DD15AFD8E800922FB2 /* GCImagePickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCImagePickerController.h; sourceTree = "<group>"; };
 		3BF848DE15AFD8E800922FB2 /* GCImagePickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCImagePickerController.m; sourceTree = "<group>"; };
-		3BF848DF15AFD8E800922FB2 /* GCIPAssetGridCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCIPAssetGridCell.h; sourceTree = "<group>"; };
-		3BF848E015AFD8E800922FB2 /* GCIPAssetGridCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCIPAssetGridCell.m; sourceTree = "<group>"; };
 		3BF848E115AFD8E800922FB2 /* GCIPAssetPickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCIPAssetPickerController.h; sourceTree = "<group>"; };
 		3BF848E215AFD8E800922FB2 /* GCIPAssetPickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCIPAssetPickerController.m; sourceTree = "<group>"; };
 		3BF848E315AFD8E800922FB2 /* GCIPAssetView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCIPAssetView.h; sourceTree = "<group>"; };
@@ -171,8 +168,6 @@
 				3BF848E615AFD8E800922FB2 /* GCIPGroupPickerController.m */,
 				3BF848E115AFD8E800922FB2 /* GCIPAssetPickerController.h */,
 				3BF848E215AFD8E800922FB2 /* GCIPAssetPickerController.m */,
-				3BF848DF15AFD8E800922FB2 /* GCIPAssetGridCell.h */,
-				3BF848E015AFD8E800922FB2 /* GCIPAssetGridCell.m */,
 				3BF848E315AFD8E800922FB2 /* GCIPAssetView.h */,
 				3BF848E415AFD8E800922FB2 /* GCIPAssetView.m */,
 				3BF848EB15AFD8E800922FB2 /* GCIPViewController_Pad.h */,
@@ -284,7 +279,6 @@
 				3BF848FD15AFD8E800922FB2 /* GCIPViewController.m in Sources */,
 				3BF848FE15AFD8E800922FB2 /* GCIPViewController_Pad.m in Sources */,
 				3BB0D41915FF7DF100A1D9CC /* GCIPAssetPickerController.m in Sources */,
-				3BB0D41A15FF7DF400A1D9CC /* GCIPAssetGridCell.m in Sources */,
 				3BB0D41B15FF7DF900A1D9CC /* GCIPAssetView.m in Sources */,
 				3BB0D41E15FF998300A1D9CC /* PPViewController.m in Sources */,
 			);
