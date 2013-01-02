@@ -82,6 +82,7 @@
     GCImagePickerController *picker = [[GCImagePickerController alloc] initWithRootViewController:controller];
     picker.modalPresentationStyle = UIModalPresentationPageSheet;
     picker.assetsFilter = [ALAssetsFilter allAssets];
+    picker.allowsMultipleSelection = YES;
     picker.delegate = picker;
     
     // push a group on if we have one
