@@ -119,12 +119,18 @@
     self.view.backgroundColor = [UIColor whiteColor];
     
     // collection view
+    CGRect screenBounds = [[UIScreen mainScreen] bounds];
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
     layout.scrollDirection = UICollectionViewScrollDirectionVertical;
     layout.sectionInset = UIEdgeInsetsMake(4.0, 4.0, 4.0, 4.0);
     layout.minimumInteritemSpacing = 4.0;
     layout.minimumLineSpacing = 4.0;
-    layout.itemSize = CGSizeMake(75.0, 75.0);
+    if (screenBounds.size.height > 400.0) {
+        layout.itemSize = CGSizeMake(101.0, 101.0);
+    }
+    else {
+        layout.itemSize = CGSizeMake(75.0, 75.0);
+    }
     UICollectionView *collectionView = [[UICollectionView alloc]
                                         initWithFrame:self.view.bounds
                                         collectionViewLayout:layout];
