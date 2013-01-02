@@ -40,7 +40,7 @@
     _groupURL = [URL copy];
     [self cancel];
     [self reloadAssets];
-//    self.tableView.contentOffset = CGPointMake(0.0, -4.0);
+    self.collectionView.contentOffset = CGPointMake(0.0, 0.0);
     [self.collectionView flashScrollIndicators];
 }
 
@@ -190,7 +190,7 @@
     ALAsset *asset = [_assets objectAtIndex:indexPath.row];
     ALAssetRepresentation *representation = [asset defaultRepresentation];
     NSURL *defaultURL = [representation url];
-    if (defaultURL == nil) { return; }
+    if (defaultURL) { [_selectedAssetURLs addObject:defaultURL]; }
     
     // check if multiple selection is allowed
     BOOL allowsMultipleSelection = (BOOL)[self.parentViewController performSelector:@selector(allowsMultipleSelection)];
@@ -200,15 +200,9 @@
         return;
     }
     
-    // modify set
-    if ([_selectedAssetURLs containsObject:defaultURL]) {
-        [_selectedAssetURLs removeObject:defaultURL];
-    }
-    else { [_selectedAssetURLs addObject:defaultURL]; }
-    
-    // check set count
-    if ([_selectedAssetURLs count] == 0) { [self cancel]; }
-    else {
+    // view stuff
+    [self updateTitle];
+    if ([[collectionView indexPathsForSelectedItems] count] == 1) {
         NSString *title = [self.parentViewController performSelector:@selector(actionTitle)];
         UIBarButtonItem *item = [[UIBarButtonItem alloc]
                                  initWithTitle:title
@@ -220,12 +214,20 @@
                 initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
                 target:self
                 action:@selector(cancel)];
-        item.style = UIBarButtonItemStyleBordered;
         self.navigationItem.leftBarButtonItem = item;
-        [self updateTitle];
-        [self.collectionView reloadItemsAtIndexPaths:@[ indexPath ]];
     }
     
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
+    ALAsset *asset = [_assets objectAtIndex:indexPath.row];
+    ALAssetRepresentation *representation = [asset defaultRepresentation];
+    NSURL *defaultURL = [representation url];
+    if (defaultURL) { [_selectedAssetURLs removeObject:defaultURL]; }
+    [self updateTitle];
+    if ([[collectionView indexPathsForSelectedItems] count] == 0) {
+        [self cancel];
+    }
 }
 
 @end

@@ -40,11 +40,12 @@
         _selectedIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"GCImagePickerControllerCheckGreen"]];
         _selectedIconView.backgroundColor = [UIColor colorWithWhite:1.0 alpha:0.5];
         _selectedIconView.contentMode = UIViewContentModeBottomRight;
+        _selectedIconView.hidden = YES;
         
         // add subviews
         [self addSubview:_thumbnailView];
         [self addSubview:_videoIconView];
-//        [self addSubview:_selectedIconView];
+        [self addSubview:_selectedIconView];
         
     }
     return self;
@@ -61,9 +62,6 @@
     // set views
     if (_asset) {
         
-        // self
-        self.hidden = NO;
-        
         // thumbnail view
         _thumbnailView.image = [UIImage imageWithCGImage:[asset thumbnail]];
         
@@ -75,14 +73,16 @@
     
     // clear views
     else {
-        self.hidden = YES;
+        _thumbnailView.image = nil;
+        _thumbnailView.hidden = YES;
+        _videoIconView.hidden = YES;
     }
     
 }
 
 - (void)setSelected:(BOOL)selected {
-//    [super setSelected:selected];
-//    _selectedIconView.hidden = !selected;
+    [super setSelected:selected];
+    _selectedIconView.hidden = !selected;
 }
 
 - (void)layoutSubviews {
