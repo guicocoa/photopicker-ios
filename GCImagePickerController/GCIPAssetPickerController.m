@@ -7,6 +7,7 @@
 #import "GCIPAssetPickerController.h"
 #import "GCIPAssetGridCell.h"
 #import "GCImagePickerController.h"
+#import "GCIPAssetView.h"
 
 #import "ALAssetsLibrary+GCImagePickerControllerAdditions.h"
 
@@ -190,56 +191,66 @@
 #pragma mark - gestures
 
 - (void)tableDidReceiveTap:(UITapGestureRecognizer *)gesture {
-    if (gesture.state == UIGestureRecognizerStateEnded && gesture.view == self.tableView) {
+    if (gesture.state == UIGestureRecognizerStateRecognized) {
+        
+        // calculate stuff
         CGPoint location = [gesture locationInView:gesture.view];
         NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:location];
         if (indexPath == nil) { return; }
         NSUInteger column = location.x / (self.tableView.bounds.size.width / 4);
         NSUInteger index = indexPath.row * 4 + column;
-        if (index < [_assets count]) {
-            
-            // get asset stuff
-            ALAsset *asset = [_assets objectAtIndex:index];
-            ALAssetRepresentation *representation = [asset defaultRepresentation];
-            NSURL *defaultURL = [representation url];
-            if (defaultURL == nil) { return; }
-            
-            // check if multiple selection is allowed
-            BOOL allowsMultipleSelection = (BOOL)[self.parentViewController performSelector:@selector(allowsMultipleSelection)];
-            if (!allowsMultipleSelection) {
+        
+        // bounds check
+        if (index >= [_assets count]) { return; }
+        
+        // get asset stuff
+        ALAsset *asset = [_assets objectAtIndex:index];
+        ALAssetRepresentation *representation = [asset defaultRepresentation];
+        NSURL *defaultURL = [representation url];
+        if (defaultURL == nil) { return; }
+        
+        // check if multiple selection is allowed
+        BOOL allowsMultipleSelection = (BOOL)[self.parentViewController performSelector:@selector(allowsMultipleSelection)];
+        if (!allowsMultipleSelection) {
+            [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                GCIPAssetGridCell *cell = (id)[self.tableView cellForRowAtIndexPath:indexPath];
+                GCIPAssetView *assetView = [cell assetViewAtColumn:column];
+                [assetView setHighlighted:YES];
                 GCImagePickerControllerSelectedItemsBlock block = [self.parentViewController performSelector:@selector(selectedItemsBlock)];
                 if (block) { block([NSSet setWithObject:defaultURL]); }
-                return;
-            }
-            
-            // modify set
-            if ([_selectedAssetURLs containsObject:defaultURL]) {
-                [_selectedAssetURLs removeObject:defaultURL];
-            }
-            else { [_selectedAssetURLs addObject:defaultURL]; }
-            
-            // check set count
-            if ([_selectedAssetURLs count] == 0) { [self cancel]; }
-            else {
-                NSString *title = [self.parentViewController performSelector:@selector(actionTitle)];
-                UIBarButtonItem *item = [[UIBarButtonItem alloc]
-                                         initWithTitle:title
-                                         style:UIBarButtonItemStyleDone
-                                         target:self
-                                         action:@selector(action)];
-                self.navigationItem.rightBarButtonItem = item;
-                item = [[UIBarButtonItem alloc]
-                        initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                        target:self
-                        action:@selector(cancel)];
-                item.style = UIBarButtonItemStyleBordered;
-                self.navigationItem.leftBarButtonItem = item;
-                [self updateTitle];
-                NSArray *paths = [NSArray arrayWithObject:indexPath];
-                [self.tableView reloadRowsAtIndexPaths:paths withRowAnimation:UITableViewRowAnimationNone];
-            }
-            
+                [[UIApplication sharedApplication] endIgnoringInteractionEvents];
+            });
+            return;
         }
+        
+        // modify set
+        if ([_selectedAssetURLs containsObject:defaultURL]) {
+            [_selectedAssetURLs removeObject:defaultURL];
+        }
+        else { [_selectedAssetURLs addObject:defaultURL]; }
+        
+        // check set count
+        if ([_selectedAssetURLs count] == 0) { [self cancel]; }
+        else {
+            NSString *title = [self.parentViewController performSelector:@selector(actionTitle)];
+            UIBarButtonItem *item = [[UIBarButtonItem alloc]
+                                     initWithTitle:title
+                                     style:UIBarButtonItemStyleDone
+                                     target:self
+                                     action:@selector(action)];
+            self.navigationItem.rightBarButtonItem = item;
+            item = [[UIBarButtonItem alloc]
+                    initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                    target:self
+                    action:@selector(cancel)];
+            item.style = UIBarButtonItemStyleBordered;
+            self.navigationItem.leftBarButtonItem = item;
+            [self updateTitle];
+            NSArray *paths = [NSArray arrayWithObject:indexPath];
+            [self.tableView reloadRowsAtIndexPaths:paths withRowAnimation:UITableViewRowAnimationNone];
+        }
+        
     }
 }
 

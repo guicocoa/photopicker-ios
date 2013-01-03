@@ -25,18 +25,26 @@
     [self setNeedsLayout];
 }
 
+- (NSUInteger)tagForColumn:(NSUInteger)column {
+    return column + 1;
+}
+
+- (GCIPAssetView *)assetViewAtColumn:(NSUInteger)column {
+    NSUInteger tag = [self tagForColumn:column];
+    return (id)[self.contentView viewWithTag:tag];
+}
+
 - (void)setAssets:(NSArray *)assets selected:(NSSet *)selected {
     NSUInteger count = [assets count];
     for (NSUInteger index = 0; index < self.numberOfColumns; index++) {
         
         // get view
-        NSUInteger tag = index + 1;
-        GCIPAssetView *assetView = (GCIPAssetView *)[self.contentView viewWithTag:tag];
+        GCIPAssetView *assetView = [self assetViewAtColumn:index];
         
         // create view if we need one
         if (assetView == nil && index < count) {
             assetView = [[GCIPAssetView alloc] initWithFrame:CGRectZero];
-            assetView.tag = tag;
+            assetView.tag = [self tagForColumn:index];
             [self.contentView addSubview:assetView];
         }
         
