@@ -13,6 +13,7 @@
     UIImageView *_thumbnailView;
     UIImageView *_videoIconView;
     UIImageView *_selectedIconView;
+    UIView *_highlightView;
 }
 
 #pragma mark - object methods
@@ -41,9 +42,16 @@
         _selectedIconView.backgroundColor = [UIColor colorWithWhite:1.0 alpha:0.5];
         _selectedIconView.contentMode = UIViewContentModeBottomRight;
         
+        // highlight view
+        _highlightView = [[UIView alloc] initWithFrame:CGRectZero];
+        _highlightView.backgroundColor = [UIColor blackColor];
+        _highlightView.alpha = 0.5;
+        _highlightView.hidden = YES;
+        
         // add subviews
         [self addSubview:_thumbnailView];
         [self addSubview:_videoIconView];
+        [self addSubview:_highlightView];
         [self addSubview:_selectedIconView];
         
     }
@@ -84,6 +92,11 @@
     _selectedIconView.hidden = !selected;
 }
 
+- (void)setHighlighted:(BOOL)highlighted {
+    _highlightView.hidden = !highlighted;
+    self.layer.borderWidth = (highlighted ? 0.0 : 1.0);
+}
+
 - (void)layoutSubviews {
     [super layoutSubviews];
     
@@ -103,6 +116,21 @@
                                          self.bounds.size.width - 2.0,
                                          self.bounds.size.height - 2.0);
     
+    // highlight view
+    _highlightView.frame = self.bounds;
+    
+}
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    [self setHighlighted:YES];
+}
+
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+    [self setHighlighted:NO];
+}
+
+- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
+    [self setHighlighted:NO];
 }
 
 @end

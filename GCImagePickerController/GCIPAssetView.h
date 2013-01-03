@@ -12,5 +12,6 @@
 
 @property (nonatomic, retain) ALAsset *asset;
 @property (nonatomic, assign) BOOL selected;
+@property (nonatomic, assign) BOOL highlighted;
 
 @end
