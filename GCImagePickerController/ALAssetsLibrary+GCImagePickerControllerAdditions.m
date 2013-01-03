@@ -86,7 +86,7 @@
          if (group) {
              [group setAssetsFilter:filter];
              assets = [NSMutableArray arrayWithCapacity:[group numberOfAssets]];
-             [group enumerateAssetsWithOptions:NSEnumerationReverse usingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
+             [group enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
                  if (result) { [assets addObject:result]; }
              }];
          }
