@@ -19,7 +19,7 @@
 - (void)presentPhotoPickerForGroupWithURL:(NSURL *)URL {
     GCImagePickerController *picker = [GCImagePickerController pickerForGroupWithURL:URL];
     picker.actionTitle = @"Upload";
-    picker.actionBlock = ^(NSSet *URLs) {
+    picker.selectedItemsBlock = ^(NSSet *URLs) {
         NSLog(@"%@", URLs);
     };
     picker.finishBlock = ^{
