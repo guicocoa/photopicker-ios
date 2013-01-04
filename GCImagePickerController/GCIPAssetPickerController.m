@@ -20,6 +20,7 @@
     NSMutableSet *_selectedAssetURLs;
     ALAssetsGroup *_group;
     NSArray *_assets;
+    BOOL _needsFirstLoad;
 }
 
 #pragma mark - object methods
@@ -30,6 +31,7 @@
         self.title = [GCImagePickerController localizedString:@"PHOTO_LIBRARY"];
         self.groupURL = nil;
         _selectedAssetURLs = [NSMutableSet set];
+        _needsFirstLoad = YES;
     }
     return self;
 }
@@ -59,11 +61,27 @@
          gcip_assetsInGroupGroupWithURL:self.groupURL
          assetsFilter:filter
          completion:^(ALAssetsGroup *group, NSArray *assets) {
+             
+             // save ivars
              _group = group;
              _assets = assets;
              [self updateTitle];
              [self.collectionView reloadData];
-             self.collectionView.hidden = ([_assets count] == 0);
+             NSUInteger count = [_assets count];
+             self.collectionView.hidden = (count == 0);
+             
+             // scroll to bottom if this is camera roll and and we have rows we haven't done that yet
+             if ([[_group valueForProperty:ALAssetsGroupPropertyType] unsignedIntegerValue] == ALAssetsGroupSavedPhotos && _needsFirstLoad) {
+                 if (count > 0) {
+                     _needsFirstLoad = NO;
+                     NSIndexPath *indexPath = [NSIndexPath indexPathForItem:(count - 1) inSection:0];
+                     [self.collectionView
+                      scrollToItemAtIndexPath:indexPath
+                      atScrollPosition:UICollectionViewScrollPositionBottom
+                      animated:NO];
+                 }
+             }
+             
          }
          failure:^(NSError *error) {
              [GCImagePickerController failedToLoadAssetsWithError:error];
@@ -105,6 +123,10 @@
     else { self.navigationItem.rightBarButtonItem = nil; }
     [self.collectionView reloadData];
     [self updateTitle];
+}
+
+- (NSInteger)numberOfRowsInGridView {
+    return (NSInteger)ceilf((float)[_assets count] / 4.0);
 }
 
 #pragma mark - view lifecycle
