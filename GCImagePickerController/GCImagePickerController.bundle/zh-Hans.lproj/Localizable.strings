@@ -1,0 +1,26 @@
+/*
+ 
+ Created by foxling on 1/4/13.
+ 
+ */
+
+// title of main photo library view
+"PHOTO_LIBRARY" = "相簿";
+
+// title when one item is selected
+"PHOTO_COUNT_SINGLE" = "已选择1张";
+
+// title when multiple items are selected
+"PHOTO_COUNT_MULTIPLE" = "已选择%@张";
+
+// title of alert when an error occurs
+"ERROR" = "错误";
+
+// title for ok button
+"OK" = "确定";
+
+// message for an unkown error
+"UNKNOWN_LIBRARY_ERROR" = "未知的错误。";
+
+// message for instances where access has not been granted to see the photo library
+"PHOTO_ROLL_ACCESS_ERROR" = "%@ 没有权限使用你的相簿。";
