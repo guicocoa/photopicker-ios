@@ -7,6 +7,7 @@
 #import "GCIPGroupPickerController.h"
 #import "GCIPAssetPickerController.h"
 #import "GCImagePickerController.h"
+#import "GCImagePickerAppearenceDelegate.h"
 
 #import "ALAssetsLibrary+GCImagePickerControllerAdditions.h"
 
@@ -27,10 +28,6 @@
     if (self) {
         self.title = [GCImagePickerController localizedString:@"PHOTO_LIBRARY"];
         self.showDisclosureIndicators = YES;
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]
-                                                  initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-                                                  target:self
-                                                  action:@selector(done)];
     }
     return self;
 }
@@ -75,6 +72,19 @@
     [super viewDidLoad];
     self.tableView.rowHeight = 60.0;
     [self reloadAssets];
+    
+    GCImagePickerController *imagePickerController = (GCImagePickerController *)self.parentViewController;
+    
+    if (imagePickerController.appearenceDelegate != nil &&
+        [imagePickerController.appearenceDelegate respondsToSelector:@selector(groupPickerController:setNavigationItemWithRightAction:)] ) {
+        
+        [imagePickerController.appearenceDelegate groupPickerController:self setNavigationItemWithRightAction:@selector(done)];
+    } else {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]
+                                                  initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                                  target:self
+                                                  action:@selector(done)];
+    }    
 }
 
 - (void)viewDidAppear:(BOOL)animated {

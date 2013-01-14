@@ -9,6 +9,8 @@
 @class ALAssetsLibrary;
 @class ALAssetsFilter;
 
+@protocol GCImagePickerAppearenceDelegate;
+
 /*
  
  This block will be called with a set of URLs that correspond to the selected
@@ -60,6 +62,10 @@ typedef void (^GCImagePickerControllerDidFinishBlock) ();
  
  */
 @property (nonatomic, assign) BOOL allowsMultipleSelection;
+
+@property (nonatomic, assign) id<GCImagePickerAppearenceDelegate> appearenceDelegate;
+
+@property (nonatomic, copy) NSSet *selectedPhotoUrls;
 
 /*
  

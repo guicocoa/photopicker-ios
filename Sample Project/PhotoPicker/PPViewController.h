@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "GCImagePickerAppearenceDelegate.h"
 
-@interface PPViewController : UIViewController
+@interface PPViewController : UIViewController <GCImagePickerAppearenceDelegate>
 
 @end
