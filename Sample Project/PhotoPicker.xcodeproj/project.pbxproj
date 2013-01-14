@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		068DE42516A45A6F00797542 /* BackButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 068DE42216A45A6F00797542 /* BackButton.png */; };
+		068DE42616A45A6F00797542 /* CameraButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 068DE42316A45A6F00797542 /* CameraButton.png */; };
+		068DE42716A45A6F00797542 /* SaveButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 068DE42416A45A6F00797542 /* SaveButton.png */; };
 		3B48D9EA168D5C1200B55E66 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B48D9E9168D5C1200B55E66 /* Default-568h@2x.png */; };
 		3BB0D41915FF7DF100A1D9CC /* GCIPAssetPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BF848E215AFD8E800922FB2 /* GCIPAssetPickerController.m */; };
 		3BB0D41A15FF7DF400A1D9CC /* GCIPAssetGridCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BF848E015AFD8E800922FB2 /* GCIPAssetGridCell.m */; };
@@ -38,6 +41,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		068DE41916A44D2A00797542 /* GCImagePickerAppearenceDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCImagePickerAppearenceDelegate.h; sourceTree = "<group>"; };
+		068DE42216A45A6F00797542 /* BackButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BackButton.png; sourceTree = "<group>"; };
+		068DE42316A45A6F00797542 /* CameraButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CameraButton.png; sourceTree = "<group>"; };
+		068DE42416A45A6F00797542 /* SaveButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SaveButton.png; sourceTree = "<group>"; };
 		3B48D9E9168D5C1200B55E66 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "../Default-568h@2x.png"; sourceTree = "<group>"; };
 		3BB0D41C15FF998300A1D9CC /* PPViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PPViewController.h; sourceTree = "<group>"; };
 		3BB0D41D15FF998300A1D9CC /* PPViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PPViewController.m; sourceTree = "<group>"; };
@@ -101,6 +108,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		068DE41B16A4564700797542 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				068DE42216A45A6F00797542 /* BackButton.png */,
+				068DE42316A45A6F00797542 /* CameraButton.png */,
+				068DE42416A45A6F00797542 /* SaveButton.png */,
+			);
+			path = Images;
+			sourceTree = "<group>";
+		};
 		3BF848A215AFD7EA00922FB2 = {
 			isa = PBXGroup;
 			children = (
@@ -140,6 +157,7 @@
 				3BF848C115AFD7EA00922FB2 /* PPAppDelegate.m */,
 				3BB0D41C15FF998300A1D9CC /* PPViewController.h */,
 				3BB0D41D15FF998300A1D9CC /* PPViewController.m */,
+				068DE41B16A4564700797542 /* Images */,
 				3BF848B815AFD7EA00922FB2 /* Supporting Files */,
 			);
 			path = PhotoPicker;
@@ -161,6 +179,7 @@
 		3BF848D515AFD8E800922FB2 /* GCImagePickerController */ = {
 			isa = PBXGroup;
 			children = (
+				068DE41916A44D2A00797542 /* GCImagePickerAppearenceDelegate.h */,
 				3BF848DD15AFD8E800922FB2 /* GCImagePickerController.h */,
 				3BF848DE15AFD8E800922FB2 /* GCImagePickerController.m */,
 				3BF848E915AFD8E800922FB2 /* GCIPViewController.h */,
@@ -264,6 +283,9 @@
 				3BF8490615AFD8FE00922FB2 /* Storyboard.storyboard in Resources */,
 				3BBEE469160238BE0018CA9F /* GCImagePickerController.bundle in Resources */,
 				3B48D9EA168D5C1200B55E66 /* Default-568h@2x.png in Resources */,
+				068DE42516A45A6F00797542 /* BackButton.png in Resources */,
+				068DE42616A45A6F00797542 /* CameraButton.png in Resources */,
+				068DE42716A45A6F00797542 /* SaveButton.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

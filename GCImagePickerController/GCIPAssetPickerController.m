@@ -11,6 +11,8 @@
 
 #import "ALAssetsLibrary+GCImagePickerControllerAdditions.h"
 
+#import "GCImagePickerAppearenceDelegate.h"
+
 @implementation GCIPAssetPickerController {
     NSMutableSet *_selectedAssetURLs;
     ALAssetsGroup *_group;
@@ -105,7 +107,7 @@
 
 - (void)cancel {
     _selectedAssetURLs = [NSMutableSet set];
-    self.navigationItem.leftBarButtonItem = nil;
+    [self showBackButton];
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]
                                                   initWithBarButtonSystemItem:UIBarButtonSystemItemDone
@@ -128,6 +130,8 @@
     // super
     [super viewDidLoad];
     
+    [_selectedAssetURLs unionSet:[self.parentViewController performSelector:@selector(selectedPhotoUrls)]];
+    
     // table view
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.rowHeight = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? 109.0 : 79.0;
@@ -144,6 +148,7 @@
     // reload
     [self reloadAssets];
     
+    [self showBackButton];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -233,25 +238,56 @@
         // check set count
         if ([_selectedAssetURLs count] == 0) { [self cancel]; }
         else {
-            NSString *title = [self.parentViewController performSelector:@selector(actionTitle)];
-            UIBarButtonItem *item = [[UIBarButtonItem alloc]
-                                     initWithTitle:title
-                                     style:UIBarButtonItemStyleDone
-                                     target:self
-                                     action:@selector(action)];
-            self.navigationItem.rightBarButtonItem = item;
-            item = [[UIBarButtonItem alloc]
-                    initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                    target:self
-                    action:@selector(cancel)];
-            item.style = UIBarButtonItemStyleBordered;
-            self.navigationItem.leftBarButtonItem = item;
+            [self updateNavigationBarButton];
             [self updateTitle];
             NSArray *paths = [NSArray arrayWithObject:indexPath];
             [self.tableView reloadRowsAtIndexPaths:paths withRowAnimation:UITableViewRowAnimationNone];
         }
         
     }
+}
+
+#pragma mark - custom navigation bar items
+
+- (void)updateNavigationBarButton {
+    
+    GCImagePickerController *imagePickerController = (GCImagePickerController *)self.parentViewController;
+    
+    if (imagePickerController.appearenceDelegate != nil &&
+        [imagePickerController.appearenceDelegate respondsToSelector:@selector(assetPickerControllerDidSelectedPhoto:updateNavigationBarButtonWithCancelAction:doneAction:)] ) {
+        
+        [imagePickerController.appearenceDelegate assetPickerControllerDidSelectedPhoto:self
+                                              updateNavigationBarButtonWithCancelAction:@selector(cancel)
+                                                                             doneAction:@selector(action)];
+    } else {
+        NSString *title = [self.parentViewController performSelector:@selector(actionTitle)];
+        UIBarButtonItem *item = [[UIBarButtonItem alloc]
+                                 initWithTitle:title
+                                 style:UIBarButtonItemStyleDone
+                                 target:self
+                                 action:@selector(action)];
+        self.navigationItem.rightBarButtonItem = item;
+        item = [[UIBarButtonItem alloc]
+                initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                target:self
+                action:@selector(cancel)];
+        item.style = UIBarButtonItemStyleBordered;
+        self.navigationItem.leftBarButtonItem = item;
+    }
+}
+
+- (void)showBackButton {
+    GCImagePickerController *imagePickerController = (GCImagePickerController *)self.parentViewController;
+    
+    if (imagePickerController.appearenceDelegate != nil &&
+        [imagePickerController.appearenceDelegate respondsToSelector:@selector(assetPickerController:leftBarButtonItemWithAction:)] ) {
+        
+        [imagePickerController.appearenceDelegate assetPickerController:self leftBarButtonItemWithAction:@selector(back)];
+    }
+}
+
+- (void)back {
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 @end
